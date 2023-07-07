@@ -1,9 +1,19 @@
 <resources>
     <string name="app_name">TripMoto_Compose</string>
+
+    <!--Login-->
     <string name="try_again">Retry</string>
     <string name="email_error">Invalid Email</string>
     <string name="empty_password_error">Password cannot be empty.</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="sign_in">Sign in</string>
+
+    <!--Title-->
+    <string name="trip_moto">TripMoto</string>
+    <string name="new_guide_of_trip">새로운 여행 가이드</string>
+
+    <!--MenuTitle-->
+    <string name="login">Login</string>
+
 </resources>

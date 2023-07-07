@@ -22,6 +22,8 @@ import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.BasicButton
+import com.insu.tripmoto_compose.common.composable.SubTitleText
+import com.insu.tripmoto_compose.common.composable.TitleText
 import com.insu.tripmoto_compose.common.ext.basicButton
 import com.insu.tripmoto_compose.suitFamily
 import kotlinx.coroutines.delay
@@ -43,27 +45,8 @@ fun SplashScreen(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            modifier = Modifier
-                .padding(top = 108.dp),
-            text = "TripMoto",
-            color = colorResource(R.color.primary_800),
-            fontSize = 46.sp,
-            fontFamily = suitFamily,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-        )
-        Text(
-            modifier = Modifier
-                .padding(top = 8.dp),
-            text = "새로운 여행 가이드",
-            color = colorResource(R.color.primary_800),
-            fontSize = 16.sp,
-            fontFamily = suitFamily,
-            fontWeight = FontWeight.SemiBold,
-            textAlign = TextAlign.Center,
-        )
-
+        TitleText(modifier = Modifier.padding(top = 108.dp))
+        SubTitleText()
     }
 
     if(viewModel.showError.value) {
@@ -81,7 +64,7 @@ fun SplashScreen(
             CircularProgressIndicator(
                 modifier = Modifier
                     .padding(bottom = 148.dp),
-                color = MaterialTheme.colors.onBackground,
+                color = colorResource(R.color.primary_800),
             )
         }
 
