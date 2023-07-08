@@ -1,18 +1,17 @@
-package com.insu.tripmoto_compose.screen.login
+package com.insu.tripmoto_compose.screen.sign_up
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.insu.tripmoto_compose.common.ext.isValidEmail
+import com.insu.tripmoto_compose.common.ext.isValidPassword
+import com.insu.tripmoto_compose.common.ext.passwordMatches
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import com.insu.tripmoto_compose.R.string as AppText
 
-@HiltViewModel
-class LoginViewModel @Inject constructor(
-
-) : ViewModel(){
-    var uiState = mutableStateOf(LoginUiState())
+class SignUpViewModel @Inject constructor(
+): ViewModel() {
+    var uiState = mutableStateOf(SignUpUiState())
         private set
 
     private val email
@@ -28,19 +27,22 @@ class LoginViewModel @Inject constructor(
         uiState.value = uiState.value.copy(password = newValue)
     }
 
-    fun onSignInClick(openAndPopUp: (String, String) -> Unit) {
+    fun onRepeatPasswordChange(newValue: String) {
+        uiState.value = uiState.value.copy(repeatPassword = newValue)
+    }
+
+    fun onSignUpClick(onpenAndPopUp: (String, String) -> Unit) {
         if(!email.isValidEmail()) {
             SnackbarManager.showMessage(AppText.email_error)
             return
         }
-
-        if(password.isBlank()) {
-            SnackbarManager.showMessage(AppText.empty_password_error)
+        if(!password.isValidPassword()) {
+            SnackbarManager.showMessage(AppText.password_error)
             return
         }
-    }
-
-    fun goSignUp(openAndPopUp: (String, String) -> Unit) {
-        openAndPopUp("SignUpScreen", "LoginScreen")
+        if(!password.passwordMatches(uiState.value.repeatPassword)) {
+            SnackbarManager.showMessage(AppText.password_match_error)
+            return
+        }
     }
 }

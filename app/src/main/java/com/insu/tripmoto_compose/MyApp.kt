@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.screen.login.LoginScreen
+import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
 import kotlinx.coroutines.CoroutineScope
@@ -84,5 +85,8 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
     }
     composable("LoginScreen") {
         LoginScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+    }
+    composable("SignUpScreen") {
+        SignUpScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp)})
     }
 }

@@ -9,11 +9,18 @@
     <string name="password">Password</string>
     <string name="sign_in">Sign in</string>
 
+    <!--SignUp-->
+    <string name="password_error">Your password should have at least six digits and include one digit, one lower case letter and one upper case letter.</string>
+    <string name="password_match_error">Passwords do not match.</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="create_account">Create account</string>
+
     <!--Title-->
     <string name="trip_moto">TripMoto</string>
     <string name="new_guide_of_trip">새로운 여행 가이드</string>
 
     <!--MenuTitle-->
     <string name="login">Login</string>
+    <string name="login_with_google">Login with Google</string>
 
 </resources>
