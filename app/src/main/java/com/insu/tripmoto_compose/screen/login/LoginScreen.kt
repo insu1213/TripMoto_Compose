@@ -31,14 +31,14 @@ import com.insu.tripmoto_compose.R.string as AppText
 @Composable
 fun LoginScreen(
     openAndPopUp: (String, String) -> Unit,
-    modifier: Modifier = Modifier
-        .padding(24.dp),
+    modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState
 
     Column(
         modifier = modifier
+            .padding(24.dp)
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Top,

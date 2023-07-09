@@ -45,4 +45,8 @@ class SignUpViewModel @Inject constructor(
             return
         }
     }
+
+    fun goSignIn(openAndPopUp: (String, String) -> Unit) {
+        openAndPopUp("LoginScreen", "SignUpScreen")
+    }
 }
