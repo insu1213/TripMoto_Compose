@@ -19,7 +19,7 @@ sealed class SnackbarMessage {
         fun Throwable.toSnackbarMessage(): SnackbarMessage {
             val message = this.message.orEmpty()
             return if (message.isNotBlank()) StringSnackbar(message)
-            else StringSnackbar("Snackbar 에러 발생")
+            else StringSnackbar("에러가 발생하였습니다. 로그를 확인하세요.")
         }
     }
 }
