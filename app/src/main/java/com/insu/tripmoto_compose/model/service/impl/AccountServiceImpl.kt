@@ -25,7 +25,7 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth
         get() = callbackFlow {
             val listener =
                 FirebaseAuth.AuthStateListener { auth ->
-                    this.trySend(auth.currentUser?.let { User(it.uid) } ?: User())
+                    this.trySend(auth.currentUser?.let { User(it.uid, it.isAnonymous) } ?: User())
                 }
             auth.addAuthStateListener(listener)
             awaitClose { auth.removeAuthStateListener(listener) }
@@ -39,11 +39,14 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth
         auth.sendPasswordResetEmail(email).await()
     }
 
+    override suspend fun createAnonymousAccount() {
+        auth.signInAnonymously().await()
+    }
+
     override suspend fun linkAccount(email: String, password: String): Unit =
         trace(LINK_ACCOUNT_TRACE) {
             val credential = EmailAuthProvider.getCredential(email, password)
-            Log.d(TAG, "email: $email, pw: $password")
-            // TODO: auth.currentUser!!.linkWithCredential(credential).await() // NPE
+            auth.currentUser!!.linkWithCredential(credential).await()
         }
 
     override suspend fun deleteAccount() {
@@ -51,7 +54,12 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth
     }
 
     override suspend fun signOut() {
+        if(auth.currentUser!!.isAnonymous) {
+            auth.currentUser!!.delete()
+        }
         auth.signOut()
+
+        createAnonymousAccount()
     }
 
     companion object {

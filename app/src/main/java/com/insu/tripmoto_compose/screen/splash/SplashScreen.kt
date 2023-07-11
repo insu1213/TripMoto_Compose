@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -48,26 +49,23 @@ fun SplashScreen(
         TitleText(modifier = Modifier.padding(top = 108.dp))
         SubTitleText()
     }
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if(viewModel.showError.value) {
+            Text(text = "사용자 정보 데이터베이스를 불러오는데 실패했습니다.")
 
-    if(viewModel.showError.value) {
-        Text("로딩 중 문제가 발생하였습니다.")
-        BasicButton(AppText.try_again, Modifier.basicButton()) {
-            viewModel.onAppStart(openAndPopUp)
-        }
-    } else {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+            BasicButton(AppText.try_again, Modifier.basicButton()) { viewModel.onAppStart(openAndPopUp) }
+        } else {
             CircularProgressIndicator(
                 modifier = Modifier
                     .padding(bottom = 148.dp),
                 color = colorResource(R.color.primary_800),
             )
         }
-
     }
 
     LaunchedEffect(true) {
