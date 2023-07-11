@@ -24,4 +24,14 @@
     <string name="login">Login</string>
     <string name="login_with_google">Login with Google</string>
 
+    <!--Fore-->
+    <string name="next">Next</string>
+
+    <!--Fore/TravelPlace-->
+    <string name="empty_nation_error">Nation cannot be empty</string>
+    <string name="empty_city_error">City cannot be empty</string>
+    <string name="travel_place">Travel Place</string>
+    <string name="nation">Nation</string>
+    <string name="city">City</string>
+
 </resources>

@@ -18,8 +18,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
+import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen
 import com.insu.tripmoto_compose.screen.login.LoginScreen
 import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
@@ -88,5 +88,10 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
     }
     composable("SignUpScreen") {
         SignUpScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp)})
+    }
+
+
+    composable("TravelPlaceScreen") {
+        TravelPlaceScreen(openAndPopUp = { route -> appState.navigate(route)})
     }
 }

@@ -22,7 +22,7 @@ import com.insu.tripmoto_compose.R.drawable as AppIcon
 @Composable
 fun BasicField(
     @StringRes text: Int,
-    value: String,
+    value: String = "",
     onNewValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -31,7 +31,28 @@ fun BasicField(
         modifier = modifier,
         value = value,
         onValueChange = { onNewValue(it) },
-        placeholder = { Text(stringResource(text)) }
+        placeholder = { Text(stringResource(text)) },
+    )
+}
+
+@Composable
+fun BasicField(
+    @StringRes text: Int,
+    value: String = "",
+    onNewValue: (String) -> Unit,
+    icon: Int,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        singleLine = true,
+        modifier = modifier,
+        value = value,
+        onValueChange = { onNewValue(it) },
+        placeholder = { Text(stringResource(text)) },
+        leadingIcon = {
+            Icon(painter = painterResource(icon),
+                contentDescription = "Nation")
+        }
     )
 }
 
