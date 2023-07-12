@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen
+import com.insu.tripmoto_compose.screen.fore.travel_schedule.TravelScheduleScreen
 import com.insu.tripmoto_compose.screen.login.LoginScreen
 import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
@@ -93,5 +94,8 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
 
     composable("TravelPlaceScreen") {
         TravelPlaceScreen(openAndPopUp = { route -> appState.navigate(route)})
+    }
+    composable("TravelScheduleScreen") {
+        TravelScheduleScreen(openAndPopUp = { route -> appState.navigate(route)})
     }
 }

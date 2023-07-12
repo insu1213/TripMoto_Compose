@@ -34,4 +34,9 @@
     <string name="nation">Nation</string>
     <string name="city">City</string>
 
+    <!--Fore/TravelSchedule-->
+    <string name="empty_date_error">Date cannot be empty</string>
+    <string name="travel_schedule">Travel Schedule</string>
+    <string name="date">Date</string>
+
 </resources>

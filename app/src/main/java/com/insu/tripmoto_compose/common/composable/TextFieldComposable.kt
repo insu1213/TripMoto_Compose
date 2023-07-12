@@ -22,7 +22,7 @@ import com.insu.tripmoto_compose.R.drawable as AppIcon
 @Composable
 fun BasicField(
     @StringRes text: Int,
-    value: String = "",
+    value: String,
     onNewValue: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -38,7 +38,7 @@ fun BasicField(
 @Composable
 fun BasicField(
     @StringRes text: Int,
-    value: String = "",
+    value: String,
     onNewValue: (String) -> Unit,
     icon: Int,
     modifier: Modifier = Modifier

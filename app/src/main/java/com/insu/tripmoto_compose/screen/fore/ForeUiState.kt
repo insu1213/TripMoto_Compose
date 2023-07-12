@@ -6,8 +6,8 @@ data class ForeUiState(
     val nation: String = "",
     val city: String = "",
 
-    val schedule_start: Date = Date(20230701),
-    val schedule_end: Date = Date(20230701),
+    val schedule_start: String = "",
+    val schedule_end: String = "",
 
     val member_adult: Int = 0,
     val member_kids: Int = 0,
