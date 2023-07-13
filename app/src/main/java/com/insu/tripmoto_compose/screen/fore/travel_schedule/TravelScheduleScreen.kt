@@ -3,8 +3,8 @@ package com.insu.tripmoto_compose.screen.fore.travel_schedule
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
-import android.widget.ImageButton
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,11 +13,7 @@ import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -28,6 +24,7 @@ import com.insu.tripmoto_compose.common.ext.basicButton
 import com.insu.tripmoto_compose.screen.fore.ForeViewModel
 import kotlinx.coroutines.launch
 import com.insu.tripmoto_compose.R.string as AppText
+import com.insu.tripmoto_compose.R.color as AppColor
 
 @SuppressLint("CoroutineCreationDuringComposition", "RememberReturnType")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
@@ -39,17 +36,21 @@ fun TravelScheduleScreen(
 ) {
     val uiState by viewModel.uiState
     var isCalendarOpen by remember { mutableStateOf(false) }
+    val bottomSheetState =
+        rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+        )
 
-    val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
-
-    Column {
+    Column(
+        modifier = Modifier
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    isCalendarOpen = false
+                })
+            }
+    ) {
         Column(
             modifier = modifier
-                .clickable {
-                    focusManager.clearFocus()
-                    isCalendarOpen = false
-                }
                 .padding(24.dp)
                 .fillMaxWidth()
                 .fillMaxHeight(0.8F)
@@ -68,36 +69,31 @@ fun TravelScheduleScreen(
 
             MenuTitleText(modifier = Modifier.padding(top = 56.dp), text = AppText.travel_schedule)
 
-            ReadOnlyBasicField(
-                value = "${uiState.schedule_start} - ${uiState.schedule_end}",
-                onNewValue = {
-                },
-                modifier = Modifier
-                    .padding(top = 36.dp)
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            isCalendarOpen = true
-                        }
+            Row(modifier = Modifier.padding(top = 36.dp)) {
+                ReadOnlyBasicField(
+                    value = "${uiState.schedule_start} - ${uiState.schedule_end}",
+                    onNewValue = {
                     },
-                text = AppText.date,
-                icon = R.drawable.ic_calendar,
+                    modifier = Modifier,
+                    text = AppText.date,
+                    icon = R.drawable.ic_calendar,
 
-            )
+                    )
 
-//            IconButton(
-//                onClick = {
-//                    isCalendarOpen = true
-//                },
-//            ) {
-//                Icon(
-//                    painter = painterResource(R.drawable.calendar),
-//                    tint = MaterialTheme.colors.secondary,
-//                    contentDescription = null,
-//                    modifier = Modifier
-//                        .size(24.dp)
-//                )
-//            }
+                IconButton(
+                    onClick = {
+                        isCalendarOpen = true
+                    },
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.calendar),
+                        tint = MaterialTheme.colors.secondary,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(26.dp)
+                    )
+                }
+            }
 
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -119,12 +115,19 @@ fun TravelScheduleScreen(
         }
     }
 
-    if(isCalendarOpen) {
+
+
+    if (isCalendarOpen) {
         val state = rememberDateRangePickerState()
-        val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
         val coroutineScope = rememberCoroutineScope()
 
+        if(bottomSheetState.targetValue.name == "Expanded") {
+            Log.d(TAG, "진입함")
+            isCalendarOpen = false
+        }
+
         ModalBottomSheetLayout(
+            sheetElevation = 3.dp,
             sheetState = bottomSheetState,
             sheetContent = {
                 Box(
@@ -133,44 +136,40 @@ fun TravelScheduleScreen(
                         .height(600.dp)
                         .background(colorResource(R.color.white))
                 ) {
-                    DateRangePickerSample(state)
+                    DateRangePicker(state)
                     coroutineScope.launch {
                         bottomSheetState.show()
                     }
                     Button(
                         onClick = {
                             coroutineScope.launch {
-                                focusManager.clearFocus()
                                 isCalendarOpen = false
                                 bottomSheetState.hide()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = colorResource(R.color.black),
-                            contentColor = colorResource(R.color.white)
+                            backgroundColor = colorResource(AppColor.primary_800),
+                            contentColor = colorResource(AppColor.white)
                         ),
                         modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(end = 16.dp)
+                            .align(Alignment.TopEnd)
                     ) {
-                        Text("Done", color = colorResource(R.color.white))
+                        Text("확인", color = colorResource(R.color.white))
                     }
                 }
             },
             content = {
                 var startDate: String = ""
                 var endDate: String = ""
-                (if(state.selectedStartDateMillis!=null) {
+                (if (state.selectedStartDateMillis != null) {
                     state.selectedStartDateMillis?.let { getFormattedDate(it) }
-                }
-                else {
+                } else {
                     "Start Date"
                 })?.let { startDate = it }
 
-                (if(state.selectedEndDateMillis!=null) {
+                (if (state.selectedEndDateMillis != null) {
                     state.selectedEndDateMillis?.let { getFormattedDate(it) }
-                }
-                else {
+                } else {
                     "End Date"
                 })?.let { endDate = it }
 
