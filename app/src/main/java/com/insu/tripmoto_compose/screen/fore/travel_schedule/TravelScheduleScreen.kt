@@ -1,31 +1,32 @@
 package com.insu.tripmoto_compose.screen.fore.travel_schedule
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import android.widget.ImageButton
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberDateRangePickerState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.R
-import com.insu.tripmoto_compose.common.composable.BasicButton
-import com.insu.tripmoto_compose.common.composable.BasicField
-import com.insu.tripmoto_compose.common.composable.MenuTitleText
-import com.insu.tripmoto_compose.common.composable.SampleDatePickerView
+import com.insu.tripmoto_compose.common.composable.*
 import com.insu.tripmoto_compose.common.ext.basicButton
 import com.insu.tripmoto_compose.screen.fore.ForeViewModel
+import kotlinx.coroutines.launch
 import com.insu.tripmoto_compose.R.string as AppText
 
+@SuppressLint("CoroutineCreationDuringComposition")
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun TravelScheduleScreen(
     openAndPopUp: (String) -> Unit,
@@ -35,10 +36,7 @@ fun TravelScheduleScreen(
     val uiState by viewModel.uiState
     var isCalendarOpen by remember { mutableStateOf(false) }
 
-    if(isCalendarOpen) {
-        Log.d(TAG, "실행됨")
-        SampleDatePickerView()
-    }
+
 
     Column {
         Column(
@@ -75,6 +73,20 @@ fun TravelScheduleScreen(
 //                icon = R.drawable.ic_calendar,
 //            )
 
+            IconButton(
+                onClick = {
+                    isCalendarOpen = true
+                },
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.calendar),
+                    tint = MaterialTheme.colors.secondary,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+            }
+
         }
         Spacer(modifier = Modifier.weight(1f))
         Column(
@@ -91,8 +103,51 @@ fun TravelScheduleScreen(
                     .basicButton()
             ) {
                 //viewModel.placeOnNextClick(openAndPopUp)
-                isCalendarOpen = true
             }
         }
+    }
+
+    if(isCalendarOpen) {
+        val state = rememberDateRangePickerState()
+        val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+        val coroutineScope = rememberCoroutineScope()
+
+        ModalBottomSheetLayout(
+            sheetState = bottomSheetState,
+            sheetContent = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(600.dp)
+                        .background(colorResource(R.color.white))
+                ) {
+                    DateRangePickerSample(state)
+                    coroutineScope.launch {
+                        bottomSheetState.show()
+                    }
+                    Button(
+                        onClick = {
+                            coroutineScope.launch {
+                                isCalendarOpen = false
+                                bottomSheetState.hide()
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = colorResource(R.color.black),
+                            contentColor = colorResource(R.color.white)
+                        ),
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .padding(end = 16.dp)
+                    ) {
+                        Text("Done", color = colorResource(R.color.white))
+                    }
+                }
+            },
+            content = {},
+            scrimColor = colorResource(R.color.white).copy(alpha = 0.5f),
+            sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+        )
+
     }
 }

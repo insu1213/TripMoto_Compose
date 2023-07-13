@@ -1,5 +1,6 @@
 package com.insu.tripmoto_compose.common.composable
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,7 @@ import java.util.*
 import com.insu.tripmoto_compose.R.color as AppColor
 
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SampleDatePickerView(){
@@ -43,6 +45,9 @@ fun SampleDatePickerView(){
                     .background(colorResource(AppColor.white))
             ) {
                 DateRangePickerSample(state)
+                coroutineScope.launch {
+                    bottomSheetState.show()
+                }
                 Button(
                     onClick = {
                         coroutineScope.launch {
@@ -61,19 +66,7 @@ fun SampleDatePickerView(){
                 }
             }
         },
-        content = {
-            Column {
-                Button(onClick = {
-                    coroutineScope.launch {
-                        bottomSheetState.show()
-                    }
-                }, modifier = Modifier.padding(16.dp)) {
-                    Text(text = "Open Date Picker")
-                }
-                Text(text = "Start Date:" + if(state.selectedStartDateMillis!=null) state.selectedStartDateMillis?.let { getFormattedDate(it) } else "")
-                Text(text = "End Date:" + if(state.selectedEndDateMillis!=null) state.selectedEndDateMillis?.let { getFormattedDate(it) } else "")
-            }
-        },
+        content = {},
         scrimColor = colorResource(AppColor.white).copy(alpha = 0.5f),
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
     )
