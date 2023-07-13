@@ -57,6 +57,28 @@ fun BasicField(
 }
 
 @Composable
+fun ReadOnlyBasicField(
+    @StringRes text: Int,
+    value: String,
+    onNewValue: (String) -> Unit,
+    icon: Int,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        readOnly = true,
+        singleLine = true,
+        modifier = modifier,
+        value = value,
+        onValueChange = { onNewValue(it) },
+        placeholder = { Text(stringResource(text)) },
+        leadingIcon = {
+            Icon(painter = painterResource(icon),
+                contentDescription = "Nation")
+        }
+    )
+}
+
+@Composable
 fun EmailField(value: String, onNewValue: (String) -> Unit, modifier: Modifier = Modifier) {
     OutlinedTextField(
         singleLine = true,

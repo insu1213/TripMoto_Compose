@@ -13,7 +13,11 @@ import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -25,7 +29,7 @@ import com.insu.tripmoto_compose.screen.fore.ForeViewModel
 import kotlinx.coroutines.launch
 import com.insu.tripmoto_compose.R.string as AppText
 
-@SuppressLint("CoroutineCreationDuringComposition")
+@SuppressLint("CoroutineCreationDuringComposition", "RememberReturnType")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun TravelScheduleScreen(
@@ -36,11 +40,16 @@ fun TravelScheduleScreen(
     val uiState by viewModel.uiState
     var isCalendarOpen by remember { mutableStateOf(false) }
 
-
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     Column {
         Column(
             modifier = modifier
+                .clickable {
+                    focusManager.clearFocus()
+                    isCalendarOpen = false
+                }
                 .padding(24.dp)
                 .fillMaxWidth()
                 .fillMaxHeight(0.8F)
@@ -59,33 +68,36 @@ fun TravelScheduleScreen(
 
             MenuTitleText(modifier = Modifier.padding(top = 56.dp), text = AppText.travel_schedule)
 
-//            BasicField(
-//                value = uiState.schedule_start,
-//                onNewValue = {
-//
-//                },
-//                modifier = Modifier
-//                    .padding(top = 36.dp)
-//                    .clickable {
-//                        isCalendarOpen = true
-//                    },
-//                text = AppText.date,
-//                icon = R.drawable.ic_calendar,
-//            )
-
-            IconButton(
-                onClick = {
-                    isCalendarOpen = true
+            ReadOnlyBasicField(
+                value = "${uiState.schedule_start} - ${uiState.schedule_end}",
+                onNewValue = {
                 },
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.calendar),
-                    tint = MaterialTheme.colors.secondary,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(24.dp)
-                )
-            }
+                modifier = Modifier
+                    .padding(top = 36.dp)
+                    .focusRequester(focusRequester)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            isCalendarOpen = true
+                        }
+                    },
+                text = AppText.date,
+                icon = R.drawable.ic_calendar,
+
+            )
+
+//            IconButton(
+//                onClick = {
+//                    isCalendarOpen = true
+//                },
+//            ) {
+//                Icon(
+//                    painter = painterResource(R.drawable.calendar),
+//                    tint = MaterialTheme.colors.secondary,
+//                    contentDescription = null,
+//                    modifier = Modifier
+//                        .size(24.dp)
+//                )
+//            }
 
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -128,6 +140,7 @@ fun TravelScheduleScreen(
                     Button(
                         onClick = {
                             coroutineScope.launch {
+                                focusManager.clearFocus()
                                 isCalendarOpen = false
                                 bottomSheetState.hide()
                             }
@@ -144,7 +157,25 @@ fun TravelScheduleScreen(
                     }
                 }
             },
-            content = {},
+            content = {
+                var startDate: String = ""
+                var endDate: String = ""
+                (if(state.selectedStartDateMillis!=null) {
+                    state.selectedStartDateMillis?.let { getFormattedDate(it) }
+                }
+                else {
+                    "Start Date"
+                })?.let { startDate = it }
+
+                (if(state.selectedEndDateMillis!=null) {
+                    state.selectedEndDateMillis?.let { getFormattedDate(it) }
+                }
+                else {
+                    "End Date"
+                })?.let { endDate = it }
+
+                viewModel.onDateChange(Pair(startDate, endDate))
+            },
             scrimColor = colorResource(R.color.white).copy(alpha = 0.5f),
             sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
         )

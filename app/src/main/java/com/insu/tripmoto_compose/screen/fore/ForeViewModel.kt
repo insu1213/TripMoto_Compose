@@ -38,14 +38,13 @@ class ForeViewModel @Inject constructor(
         uiState.value = uiState.value.copy(city = newValue)
     }
 
-    fun onDateChange(newValue: Pair<Long, Long>?) {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = newValue?.first ?: 0
-        val startDate = SimpleDateFormat("yyyyMMdd").format(calendar.time).toString()
-        calendar.timeInMillis = newValue?.second ?: 0
-        val endDate = SimpleDateFormat("yyyyMMdd").format(calendar.time).toString()
-
-        uiState.value = uiState.value.copy(schedule_start = startDate, schedule_end = endDate)
+    fun onDateChange(newValue: Pair<String, String>) {
+//        val calendar = Calendar.getInstance()
+//        calendar.timeInMillis = newValue?.first ?: 0
+//        val startDate = SimpleDateFormat("yyyyMMdd").format(calendar.time).toString()
+//        calendar.timeInMillis = newValue?.second ?: 0
+//        val endDate = SimpleDateFormat("yyyyMMdd").format(calendar.time).toString()
+        uiState.value = uiState.value.copy(schedule_start = newValue.first, schedule_end = newValue.second)
     }
 
     fun placeOnNextClick(openAndPopUp: (String) -> Unit) {

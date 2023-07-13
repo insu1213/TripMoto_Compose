@@ -26,55 +26,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import com.insu.tripmoto_compose.R.color as AppColor
 
-
-@SuppressLint("CoroutineCreationDuringComposition")
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
-@Composable
-fun SampleDatePickerView(){
-    val state = rememberDateRangePickerState()
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
-    val coroutineScope = rememberCoroutineScope()
-
-    ModalBottomSheetLayout(
-        sheetState = bottomSheetState,
-        sheetContent = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(600.dp)
-                    .background(colorResource(AppColor.white))
-            ) {
-                DateRangePickerSample(state)
-                coroutineScope.launch {
-                    bottomSheetState.show()
-                }
-                Button(
-                    onClick = {
-                        coroutineScope.launch {
-                            bottomSheetState.hide()
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = colorResource(AppColor.black),
-                        contentColor = colorResource(AppColor.white)
-                    ),
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = 16.dp)
-                ) {
-                    Text("Done", color = colorResource(AppColor.white))
-                }
-            }
-        },
-        content = {},
-        scrimColor = colorResource(AppColor.white).copy(alpha = 0.5f),
-        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-    )
-}
+@SuppressLint("SimpleDateFormat")
 fun getFormattedDate(timeInMillis: Long): String{
     val calender = Calendar.getInstance()
     calender.timeInMillis = timeInMillis
-    val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+    val dateFormat = SimpleDateFormat("yyyyMMdd")
     return dateFormat.format(calender.timeInMillis)
 }
 
@@ -90,7 +46,8 @@ fun dateValidator(): (Long) -> Boolean {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateRangePickerSample(state: DateRangePickerState){
+fun DateRangePickerSample(state: DateRangePickerState) {
+
     DateRangePicker(state,
         modifier = Modifier,
         dateFormatter = DatePickerFormatter("yy MM dd", "yy MM dd", "yy MM dd"),
@@ -103,13 +60,23 @@ fun DateRangePickerSample(state: DateRangePickerState){
             Row(modifier = Modifier.fillMaxWidth()
                 .padding(16.dp)) {
                 Box(Modifier.weight(1f)) {
-                    (if(state.selectedStartDateMillis!=null) state.selectedStartDateMillis?.let { getFormattedDate(it) } else "Start Date")?.let { Text(text = it) }
+                    (if(state.selectedStartDateMillis!=null) {
+                        state.selectedStartDateMillis?.let { getFormattedDate(it) }
+                    }
+                    else {
+                        "Start Date"
+                    })?.let { Text(text = it) }
                 }
                 Box(Modifier.weight(1f)) {
-                    (if(state.selectedEndDateMillis!=null) state.selectedEndDateMillis?.let { getFormattedDate(it) } else "End Date")?.let { Text(text = it) }
+                    (if(state.selectedEndDateMillis!=null) {
+                        state.selectedEndDateMillis?.let { getFormattedDate(it) }
+                    }
+                    else {
+                        "End Date"
+                    })?.let { Text(text = it) }
                 }
                 Box(Modifier.weight(0.2f)) {
-                    Icon(imageVector = Icons.Default.Done, contentDescription = "Okk")
+                    Icon(imageVector = Icons.Default.Done, contentDescription = "Ok")
                 }
 
             }
@@ -131,11 +98,4 @@ fun DateRangePickerSample(state: DateRangePickerState){
             selectedDayContainerColor = Color.Black
         )
     )
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview16() {
-    SampleDatePickerView()
 }
