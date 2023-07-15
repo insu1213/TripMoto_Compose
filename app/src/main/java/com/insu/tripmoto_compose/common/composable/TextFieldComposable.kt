@@ -51,8 +51,24 @@ fun BasicField(
         placeholder = { Text(stringResource(text)) },
         leadingIcon = {
             Icon(painter = painterResource(icon),
-                contentDescription = "Nation")
+                contentDescription = "Icon")
         }
+    )
+}
+
+@Composable
+fun NumberOnlyBasicField(
+    @StringRes text: Int,
+    value: String,
+    onNewValue: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        singleLine = true,
+        modifier = modifier,
+        value = value,
+        onValueChange = { onNewValue(it) },
+        placeholder = { Text(stringResource(text)) },
     )
 }
 
@@ -73,7 +89,7 @@ fun ReadOnlyBasicField(
         placeholder = { Text(stringResource(text)) },
         leadingIcon = {
             Icon(painter = painterResource(icon),
-                contentDescription = "Nation")
+                contentDescription = "Icon")
         }
     )
 }

@@ -1,6 +1,8 @@
 package com.insu.tripmoto_compose.screen.fore
 
+import android.content.ContentValues.TAG
 import android.icu.util.Calendar
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
@@ -29,6 +31,11 @@ class ForeViewModel @Inject constructor(
     private val schedule_end
         get() = uiState.value.schedule_end
 
+    private val adult
+        get() = uiState.value.member_adult
+    private val kids
+        get() = uiState.value.member_kids
+
     fun onNationChange(newValue: String) {
         // nation의 값이 변경되면 city의 값도 기본값으로 초기화
         uiState.value = uiState.value.copy(nation = newValue, city = "")
@@ -38,13 +45,18 @@ class ForeViewModel @Inject constructor(
         uiState.value = uiState.value.copy(city = newValue)
     }
 
-    fun onDateChange(newValue: Pair<String, String>) {
-//        val calendar = Calendar.getInstance()
-//        calendar.timeInMillis = newValue?.first ?: 0
-//        val startDate = SimpleDateFormat("yyyyMMdd").format(calendar.time).toString()
-//        calendar.timeInMillis = newValue?.second ?: 0
-//        val endDate = SimpleDateFormat("yyyyMMdd").format(calendar.time).toString()
-        uiState.value = uiState.value.copy(schedule_start = newValue.first, schedule_end = newValue.second)
+    fun onDateChange(newValue: String) {
+        Log.d(TAG, "Date: $newValue")
+        val first = newValue.split(" - ")[0]
+        val second = newValue.split(" - ")[1]
+        uiState.value = uiState.value.copy(schedule_start = first, schedule_end = second)
+    }
+
+    fun onAdultChange(newValue: String) {
+        uiState.value = uiState.value.copy(member_adult = newValue)
+    }
+    fun onKidsChange(newValue: String) {
+        uiState.value = uiState.value.copy(member_kids = newValue)
     }
 
     fun placeOnNextClick(openAndPopUp: (String) -> Unit) {
@@ -59,5 +71,20 @@ class ForeViewModel @Inject constructor(
         }
 
         openAndPopUp("TravelScheduleScreen")
+    }
+
+    fun scheduleOnNextClick(openAndPopUp: (String) -> Unit) {
+        Log.d(TAG, "startDate: $schedule_start")
+        Log.d(TAG, "endDate: $schedule_end")
+        if(schedule_start == "StartDate" || schedule_start.isBlank()) {
+            SnackbarManager.showMessage(AppText.empty_startdate_error)
+            return
+        }
+        if(schedule_end == "EndDate" || schedule_end.isBlank()) {
+            SnackbarManager.showMessage(AppText.empty_enddate_error)
+            return
+        }
+
+        openAndPopUp("TravelMembersScreen")
     }
 }

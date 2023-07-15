@@ -72,6 +72,8 @@ fun TravelPlaceScreen(
                 text = AppText.city,
                 icon = R.drawable.ic_city,
             )
+
+            MenuTitleText(modifier = Modifier.padding(top = 56.dp), text = AppText.number_of_rooms)
         }
         Spacer(modifier = Modifier.weight(1f))
         Column(

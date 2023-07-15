@@ -9,9 +9,9 @@ data class ForeUiState(
     val schedule_start: String = "",
     val schedule_end: String = "",
 
-    val member_adult: Int = 0,
-    val member_kids: Int = 0,
-    val rooms: Int = 0,
+    val member_adult: String = "",
+    val member_kids: String = "",
+    val rooms: String = "",
 
-    val expenses: Int = 0
+    val expenses: String = ""
 )

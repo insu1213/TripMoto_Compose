@@ -38,5 +38,14 @@
     <string name="empty_date_error">Date cannot be empty</string>
     <string name="travel_schedule">Travel Schedule</string>
     <string name="date">Date</string>
+    <string name="empty_startdate_error">Date cannot be empty</string>
+    <string name="empty_enddate_error">Date cannot be empty</string>
+
+    <!--Fore/TravelMembers-->
+    <string name="travel_members">Travel Members</string>
+    <string name="adult">Adult</string>
+    <string name="kids">Kids</string>
+    <string name="number_of_rooms">Number of rooms</string>
+    <string name="rooms">Rooms</string>
 
 </resources>

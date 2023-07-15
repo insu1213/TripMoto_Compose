@@ -37,23 +37,14 @@ fun TravelScheduleScreen(
     viewModel: ForeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState
-    var isCalendarOpen by remember { mutableStateOf(false) }
     val state = rememberDateRangePickerState()
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetState =
         rememberModalBottomSheetState(
-            initialValue = ModalBottomSheetValue.Hidden,
-
+            initialValue = ModalBottomSheetValue.Hidden
         )
 
-    Column(
-        modifier = Modifier
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = {
-                    isCalendarOpen = false
-                })
-            }
-    ) {
+    Column {
         Column(
             modifier = modifier
                 .padding(24.dp)
@@ -77,12 +68,10 @@ fun TravelScheduleScreen(
             Row(modifier = Modifier.padding(top = 36.dp)) {
                 ReadOnlyBasicField(
                     value = "${uiState.schedule_start} - ${uiState.schedule_end}",
-                    onNewValue = {
-                    },
+                    onNewValue = viewModel::onDateChange,
                     modifier = Modifier,
                     text = AppText.date,
                     icon = R.drawable.ic_calendar,
-
                     )
 
                 IconButton(
@@ -117,16 +106,10 @@ fun TravelScheduleScreen(
                     .padding(bottom = 24.dp)
                     .basicButton()
             ) {
-                //viewModel.placeOnNextClick(openAndPopUp)
+                viewModel.scheduleOnNextClick(openAndPopUp)
             }
         }
     }
-
-
-
-
-
-
 
     ModalBottomSheetLayout(
         sheetElevation = 3.dp,
@@ -174,11 +157,9 @@ fun TravelScheduleScreen(
                 "End Date"
             })?.let { endDate = it }
 
-            viewModel.onDateChange(Pair(startDate, endDate))
+            viewModel.onDateChange("$startDate - $endDate")
         },
         scrimColor = colorResource(R.color.white).copy(alpha = 0.5f),
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
     )
-
-
 }
