@@ -50,10 +50,12 @@ class ForeViewModel @Inject constructor(
     fun placeOnNextClick(openAndPopUp: (String) -> Unit) {
         if(nation.isBlank()) {
             SnackbarManager.showMessage(AppText.empty_nation_error)
+            return
         }
 
         if(city.isBlank()) {
             SnackbarManager.showMessage(AppText.empty_city_error)
+            return
         }
 
         openAndPopUp("TravelScheduleScreen")

@@ -22,6 +22,8 @@ import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.*
 import com.insu.tripmoto_compose.common.ext.basicButton
 import com.insu.tripmoto_compose.screen.fore.ForeViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.insu.tripmoto_compose.R.string as AppText
 import com.insu.tripmoto_compose.R.color as AppColor
@@ -36,9 +38,12 @@ fun TravelScheduleScreen(
 ) {
     val uiState by viewModel.uiState
     var isCalendarOpen by remember { mutableStateOf(false) }
+    val state = rememberDateRangePickerState()
+    val coroutineScope = rememberCoroutineScope()
     val bottomSheetState =
         rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden,
+
         )
 
     Column(
@@ -82,7 +87,9 @@ fun TravelScheduleScreen(
 
                 IconButton(
                     onClick = {
-                        isCalendarOpen = true
+                        coroutineScope.launch {
+                            bottomSheetState.show()
+                        }
                     },
                 ) {
                     Icon(
@@ -117,67 +124,61 @@ fun TravelScheduleScreen(
 
 
 
-    if (isCalendarOpen) {
-        val state = rememberDateRangePickerState()
-        val coroutineScope = rememberCoroutineScope()
 
-        if(bottomSheetState.targetValue.name == "Expanded") {
-            Log.d(TAG, "진입함")
-            isCalendarOpen = false
-        }
 
-        ModalBottomSheetLayout(
-            sheetElevation = 3.dp,
-            sheetState = bottomSheetState,
-            sheetContent = {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(600.dp)
-                        .background(colorResource(R.color.white))
-                ) {
-                    DateRangePicker(state)
-                    coroutineScope.launch {
-                        bottomSheetState.show()
-                    }
-                    Button(
-                        onClick = {
-                            coroutineScope.launch {
-                                isCalendarOpen = false
-                                bottomSheetState.hide()
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = colorResource(AppColor.primary_800),
-                            contentColor = colorResource(AppColor.white)
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.TopEnd)
-                    ) {
-                        Text("확인", color = colorResource(R.color.white))
-                    }
+
+
+    ModalBottomSheetLayout(
+        sheetElevation = 3.dp,
+        sheetState = bottomSheetState,
+        sheetContent = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(600.dp)
+                    .background(colorResource(R.color.white))
+            ) {
+                DateRangePicker(state)
+                coroutineScope.launch {
+                    bottomSheetState.show()
                 }
-            },
-            content = {
-                var startDate: String = ""
-                var endDate: String = ""
-                (if (state.selectedStartDateMillis != null) {
-                    state.selectedStartDateMillis?.let { getFormattedDate(it) }
-                } else {
-                    "Start Date"
-                })?.let { startDate = it }
+                Button(
+                    onClick = {
+                        coroutineScope.launch {
+                            bottomSheetState.hide()
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = colorResource(AppColor.primary_800),
+                        contentColor = colorResource(AppColor.white)
+                    ),
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                ) {
+                    Text("확인", color = colorResource(R.color.white))
+                }
+            }
+        },
+        content = {
+            var startDate: String = ""
+            var endDate: String = ""
+            (if (state.selectedStartDateMillis != null) {
+                state.selectedStartDateMillis?.let { getFormattedDate(it) }
+            } else {
+                "Start Date"
+            })?.let { startDate = it }
 
-                (if (state.selectedEndDateMillis != null) {
-                    state.selectedEndDateMillis?.let { getFormattedDate(it) }
-                } else {
-                    "End Date"
-                })?.let { endDate = it }
+            (if (state.selectedEndDateMillis != null) {
+                state.selectedEndDateMillis?.let { getFormattedDate(it) }
+            } else {
+                "End Date"
+            })?.let { endDate = it }
 
-                viewModel.onDateChange(Pair(startDate, endDate))
-            },
-            scrimColor = colorResource(R.color.white).copy(alpha = 0.5f),
-            sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
-        )
+            viewModel.onDateChange(Pair(startDate, endDate))
+        },
+        scrimColor = colorResource(R.color.white).copy(alpha = 0.5f),
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+    )
 
-    }
+
 }
