@@ -35,6 +35,9 @@ class ForeViewModel @Inject constructor(
         get() = uiState.value.member_adult
     private val kids
         get() = uiState.value.member_kids
+    private val expenses
+        get() = uiState.value.expenses
+
 
     fun onNationChange(newValue: String) {
         // nation의 값이 변경되면 city의 값도 기본값으로 초기화
@@ -59,6 +62,10 @@ class ForeViewModel @Inject constructor(
         uiState.value = uiState.value.copy(member_kids = newValue)
     }
 
+    fun onExpensesChange(newValue: String) {
+        uiState.value = uiState.value.copy(expenses = newValue)
+    }
+
     fun placeOnNextClick(openAndPopUp: (String) -> Unit) {
         if(nation.isBlank()) {
             SnackbarManager.showMessage(AppText.empty_nation_error)
@@ -74,8 +81,6 @@ class ForeViewModel @Inject constructor(
     }
 
     fun scheduleOnNextClick(openAndPopUp: (String) -> Unit) {
-        Log.d(TAG, "startDate: $schedule_start")
-        Log.d(TAG, "endDate: $schedule_end")
         if(schedule_start == "StartDate" || schedule_start.isBlank()) {
             SnackbarManager.showMessage(AppText.empty_startdate_error)
             return
@@ -86,5 +91,30 @@ class ForeViewModel @Inject constructor(
         }
 
         openAndPopUp("TravelMembersScreen")
+    }
+
+    fun membersOnNextClick(openAndPopUp: (String) -> Unit) {
+        if(adult.isBlank()) {
+            SnackbarManager.showMessage(AppText.empty_adult_error)
+            return
+        }
+        if(kids.isBlank()) {
+            onKidsChange("0")
+        }
+
+        openAndPopUp("TravelExpensesScreen")
+    }
+
+    fun expensesOnNextClick(openAndPopUp: (String) -> Unit) {
+        if(expenses.isBlank()) {
+            SnackbarManager.showMessage(AppText.empty_expenses_error)
+            return
+        }
+        if(expenses.toInt() < 10000) {
+            SnackbarManager.showMessage(AppText.low_expenses_error)
+            return
+        }
+
+        openAndPopUp("TravelForeResultScreen")
     }
 }

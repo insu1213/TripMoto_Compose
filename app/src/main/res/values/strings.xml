@@ -47,5 +47,12 @@
     <string name="kids">Kids</string>
     <string name="number_of_rooms">Number of rooms</string>
     <string name="rooms">Rooms</string>
+    <string name="empty_adult_error">Adult cannot be empty</string>
+
+    <!--Fore/TravelExpenses-->
+    <string name="travel_expenses">Travel Expenses</string>
+    <string name="expenses">Expenses</string>
+    <string name="empty_expenses_error">Expenses cannot be empty</string>
+    <string name="low_expenses_error">The expenses is too low!</string>
 
 </resources>

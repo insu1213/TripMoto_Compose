@@ -39,7 +39,7 @@ fun TravelMembersScreen(
     Column() {
         Column(
             modifier = modifier
-                .padding(40.dp)
+                .padding(24.dp)
                 .fillMaxWidth()
                 .fillMaxHeight(0.8F)
                 .verticalScroll(rememberScrollState()),
@@ -60,7 +60,7 @@ fun TravelMembersScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 36.dp),
+                    .padding(top = 36.dp, start = 16.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
                 NumberOnlyBasicField(
@@ -86,7 +86,7 @@ fun TravelMembersScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 36.dp),
+                    .padding(top = 36.dp, start = 16.dp),
                 horizontalArrangement = Arrangement.Start
             ) {
                 NumberOnlyBasicField(
@@ -112,7 +112,7 @@ fun TravelMembersScreen(
                     .padding(bottom = 24.dp)
                     .basicButton()
             ) {
-                //viewModel.placeOnNextClick(openAndPopUp)
+                viewModel.membersOnNextClick(openAndPopUp)
             }
         }
     }
