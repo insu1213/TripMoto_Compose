@@ -105,7 +105,7 @@ class ForeViewModel @Inject constructor(
         openAndPopUp("TravelExpensesScreen")
     }
 
-    fun expensesOnNextClick(openAndPopUp: (String) -> Unit) {
+    fun expensesOnNextClick(openAndPopUp: (String, String) -> Unit) {
         if(expenses.isBlank()) {
             SnackbarManager.showMessage(AppText.empty_expenses_error)
             return
@@ -115,6 +115,6 @@ class ForeViewModel @Inject constructor(
             return
         }
 
-        openAndPopUp("TravelForeResultScreen")
+        openAndPopUp("MainScreen", "TravelExpensesScreen")
     }
 }

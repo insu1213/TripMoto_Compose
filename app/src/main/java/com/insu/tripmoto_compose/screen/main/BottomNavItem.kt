@@ -6,7 +6,7 @@ sealed class BottomNavItem(var title:String, var icon:Int, var screen_route:Stri
 
     object WishList: BottomNavItem("WishList", AppIcon.ic_wishlist, "home")
     object Direction: BottomNavItem("Direction", AppIcon.ic_direction, "direction")
-
+    object Map: BottomNavItem("Map", AppIcon.ic_map, "map")
     object Chat: BottomNavItem("Chat", AppIcon.ic_chat, "chat")
     object Menu: BottomNavItem("Menu", AppIcon.ic_menu, "menu")
 }

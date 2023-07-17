@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,7 +26,11 @@ import com.insu.tripmoto_compose.screen.fore.travel_members.TravelMembersScreen
 import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen
 import com.insu.tripmoto_compose.screen.fore.travel_schedule.TravelScheduleScreen
 import com.insu.tripmoto_compose.screen.login.LoginScreen
+import com.insu.tripmoto_compose.screen.main.BottomNavItem
+import com.insu.tripmoto_compose.screen.main.ChatScreen
 import com.insu.tripmoto_compose.screen.main.DirectionScreen
+import com.insu.tripmoto_compose.screen.main.MainScreen
+import com.insu.tripmoto_compose.screen.main.MainScreenView
 import com.insu.tripmoto_compose.screen.main.MapScreen
 import com.insu.tripmoto_compose.screen.main.MenuScreen
 import com.insu.tripmoto_compose.screen.main.WishListScreen
@@ -109,20 +114,32 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
         TravelMembersScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
     composable("TravelExpensesScreen") {
-        TravelExpensesScreen(openAndPopUp = { route -> appState.navigate(route) })
+        TravelExpensesScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
     }
 
 
-    composable("WishListScreen") {
-        WishListScreen()
+    composable("MainScreen") {
+        MainScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
-    composable("DirectionScreen") {
-        DirectionScreen()
-    }
-    composable("MapScreen") {
-        MapScreen()
-    }
-    composable("MenuScreen") {
-        MenuScreen()
+}
+
+@Composable
+fun NavigationGraph(navController: NavHostController) {
+    NavHost(navController, startDestination = BottomNavItem.Map.screen_route) {
+        composable(BottomNavItem.WishList.screen_route) {
+            WishListScreen()
+        }
+        composable(BottomNavItem.Direction.screen_route) {
+            DirectionScreen()
+        }
+        composable(BottomNavItem.Map.screen_route) {
+            MapScreen()
+        }
+        composable(BottomNavItem.Chat.screen_route) {
+            ChatScreen()
+        }
+        composable(BottomNavItem.Menu.screen_route) {
+            MenuScreen()
+        }
     }
 }
