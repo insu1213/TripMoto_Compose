@@ -1,5 +1,6 @@
 package com.insu.tripmoto_compose
 
+import android.app.DirectAction
 import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,10 @@ import com.insu.tripmoto_compose.screen.fore.travel_members.TravelMembersScreen
 import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen
 import com.insu.tripmoto_compose.screen.fore.travel_schedule.TravelScheduleScreen
 import com.insu.tripmoto_compose.screen.login.LoginScreen
+import com.insu.tripmoto_compose.screen.main.DirectionScreen
+import com.insu.tripmoto_compose.screen.main.MapScreen
+import com.insu.tripmoto_compose.screen.main.MenuScreen
+import com.insu.tripmoto_compose.screen.main.WishListScreen
 import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
@@ -105,5 +110,19 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
     }
     composable("TravelExpensesScreen") {
         TravelExpensesScreen(openAndPopUp = { route -> appState.navigate(route) })
+    }
+
+
+    composable("WishListScreen") {
+        WishListScreen()
+    }
+    composable("DirectionScreen") {
+        DirectionScreen()
+    }
+    composable("MapScreen") {
+        MapScreen()
+    }
+    composable("MenuScreen") {
+        MenuScreen()
     }
 }
