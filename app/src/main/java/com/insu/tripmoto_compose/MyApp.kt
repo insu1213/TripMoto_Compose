@@ -114,12 +114,12 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
         TravelMembersScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
     composable("TravelExpensesScreen") {
-        TravelExpensesScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+        TravelExpensesScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
 
 
     composable("MainScreen") {
-        MainScreen(openAndPopUp = { route -> appState.navigate(route) })
+        MainScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
 }
 

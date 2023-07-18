@@ -67,6 +67,7 @@ fun NumberOnlyBasicField(
         singleLine = true,
         modifier = modifier,
         value = value,
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
         onValueChange = { onNewValue(it) },
         placeholder = { Text(stringResource(text)) },
     )

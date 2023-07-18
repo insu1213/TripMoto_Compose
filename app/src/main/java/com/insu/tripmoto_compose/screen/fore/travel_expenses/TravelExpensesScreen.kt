@@ -28,7 +28,7 @@ import com.insu.tripmoto_compose.screen.fore.ForeViewModel
 
 @Composable
 fun TravelExpensesScreen(
-    openAndPopUp: (String, String) -> Unit,
+    openAndPopUp: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ForeViewModel = hiltViewModel()
 ) {

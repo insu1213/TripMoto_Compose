@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.insu.tripmoto_compose.NavigationGraph
+import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -19,3 +21,4 @@ fun MainScreenView() {
         NavigationGraph(navController = navController)
     }
 }
+
