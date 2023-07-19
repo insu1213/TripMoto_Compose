@@ -1,4 +1,4 @@
-package com.insu.tripmoto_compose.screen.main
+package com.insu.tripmoto_compose.screen.main.wishlist
 
 import android.graphics.Color
 import android.widget.Space

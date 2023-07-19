@@ -1,0 +1,53 @@
+package com.insu.tripmoto_compose.model.service.impl
+
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.dataObjects
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.perf.ktx.trace
+import com.insu.tripmoto_compose.model.User
+import com.insu.tripmoto_compose.model.WishList
+import com.insu.tripmoto_compose.model.service.AccountService
+import com.insu.tripmoto_compose.model.service.StorageService
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+
+class StorageServiceImpl @Inject constructor(
+    private val firestore: FirebaseFirestore, private val auth: AccountService
+): StorageService {
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val wishList: Flow<List<WishList>>
+        get() =
+            auth.currentUser.flatMapLatest { user: User ->
+                firestore.collection(WISH_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
+        }
+
+    override suspend fun getWishList(wishListId: String): WishList? =
+        firestore.collection(WISH_COLLECTION).document(wishListId).get().await().toObject()
+
+    override suspend fun save(wishList: WishList): String =
+        trace(SAVE_WISH_TRACE) {
+            val wishWithUserId = wishList.copy(userId = auth.currentUserId)
+            firestore.collection(WISH_COLLECTION).add(wishWithUserId).await().id
+        }
+
+    override suspend fun update(wishList: WishList): Unit =
+        trace(UPDATE_WISH_TRACE) {
+            firestore.collection(WISH_COLLECTION).document(wishList.id).set(wishList).await()
+        }
+
+    override suspend fun delete(wishListId: String) {
+        firestore.collection(WISH_COLLECTION).document(wishListId).delete().await()
+    }
+
+    companion object {
+        private const val USER_ID_FIELD = "userId"
+        private const val WISH_COLLECTION = "wishList"
+        private const val SAVE_WISH_TRACE = "saveWishList"
+        private const val UPDATE_WISH_TRACE = "updateWishList"
+    }
+}

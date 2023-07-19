@@ -1,8 +1,14 @@
 package com.insu.tripmoto_compose.model
 
+import androidx.annotation.IntegerRes
+import com.google.firebase.firestore.DocumentId
+
 data class WishList(
-    val id: Int,
-    val title: String,
-    val description: String,
-    val imageRes: Int
+    @DocumentId val id: String = "",
+    val title: String = "",
+    val description: String = "",
+    @IntegerRes val imageRes: Int? = null,
+    val userId: String = "",
+    val completed: Boolean = false,
+    val flag: Boolean = false
 )

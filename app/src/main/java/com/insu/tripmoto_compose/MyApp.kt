@@ -1,6 +1,5 @@
 package com.insu.tripmoto_compose
 
-import android.app.DirectAction
 import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,13 +25,12 @@ import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen
 import com.insu.tripmoto_compose.screen.fore.travel_schedule.TravelScheduleScreen
 import com.insu.tripmoto_compose.screen.login.LoginScreen
 import com.insu.tripmoto_compose.screen.main.BottomNavItem
-import com.insu.tripmoto_compose.screen.main.ChatScreen
-import com.insu.tripmoto_compose.screen.main.DirectionScreen
+import com.insu.tripmoto_compose.screen.main.chat.ChatScreen
+import com.insu.tripmoto_compose.screen.main.direction.DirectionScreen
 import com.insu.tripmoto_compose.screen.main.MainScreen
-import com.insu.tripmoto_compose.screen.main.MainScreenView
-import com.insu.tripmoto_compose.screen.main.MapScreen
-import com.insu.tripmoto_compose.screen.main.MenuScreen
-import com.insu.tripmoto_compose.screen.main.WishListScreen
+import com.insu.tripmoto_compose.screen.main.map.MapScreen
+import com.insu.tripmoto_compose.screen.main.menu.MenuScreen
+import com.insu.tripmoto_compose.screen.main.wishlist.WishListScreen
 import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme

@@ -1,4 +1,4 @@
-package com.insu.tripmoto_compose.screen.main
+package com.insu.tripmoto_compose.screen.main.map
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
