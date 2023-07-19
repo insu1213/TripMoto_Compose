@@ -62,3 +62,20 @@ fun MenuTitleText(
         textAlign = TextAlign.Start,
     )
 }
+
+@Composable
+fun MainTitleText(
+    modifier: Modifier = Modifier,
+    @StringRes text: Int
+) {
+    Text(
+        modifier = modifier
+            .fillMaxWidth(),
+        text = stringResource(text),
+        color = colorResource(R.color.black),
+        fontSize = 18.sp,
+        fontFamily = suitFamily,
+        fontWeight = FontWeight.SemiBold,
+        textAlign = TextAlign.Start,
+    )
+}

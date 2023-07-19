@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,8 +47,12 @@ fun BottomNavigation(navController: NavController) {
         contentColor = Color.Black,
         modifier = Modifier
             .padding(bottom = 12.dp, start = 8.dp, end = 8.dp)
-            .background(Color.White, shape = RoundedCornerShape(10.dp, 10.dp, 10.dp, 10.dp))
-            .shadow(elevation = 4.dp)
+            .graphicsLayer {
+                clip = true
+                shape = RoundedCornerShape(15.dp)
+                shadowElevation = 20f
+            },
+        elevation = 20.dp
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route

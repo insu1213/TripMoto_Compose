@@ -55,4 +55,7 @@
     <string name="empty_expenses_error">Expenses cannot be empty</string>
     <string name="low_expenses_error">The expenses is too low!</string>
 
+    <!--Main/WishList-->
+    <string name="wishlist">WishList</string>
+
 </resources>
