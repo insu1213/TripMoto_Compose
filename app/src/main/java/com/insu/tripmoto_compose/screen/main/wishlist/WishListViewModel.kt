@@ -3,6 +3,7 @@ package com.insu.tripmoto_compose.screen.main.wishlist
 import androidx.compose.runtime.mutableStateOf
 import com.insu.tripmoto_compose.common.ext.idFromParameter
 import com.insu.tripmoto_compose.model.WishList
+import com.insu.tripmoto_compose.model.service.ConfigurationService
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
@@ -12,26 +13,26 @@ import javax.inject.Inject
 @HiltViewModel
 class WishListViewModel @Inject constructor(
     logService: LogService,
-    private val storageService: StorageService
+    private val storageService: StorageService,
+    private val configurationService: ConfigurationService
 ): MyViewModel(logService) {
-
-//    val wishList = mutableStateOf(WishList())
-//
-//    fun initialize(wishListId: String) {
-//        launchCatching {
-//            if(wishListId != "-1") {
-//                wishList.value = storageService.getWishList(wishListId.idFromParameter()) ?: WishList()
-//            }
-//        }
-//    }
+    val options = mutableStateOf<List<String>>(listOf())
 
     val wishList = storageService.wishList
 
+    fun loadWishListOptions() {
+        val hasEditOption = configurationService.isShowWishListEditButtonConfig
+        options.value = WishListActionOption.getOptions(hasEditOption)
+    }
+
+    fun onAddClick(openScreen: (String) -> Unit) = openScreen("WishListEditScreen")
+
+
     fun onWishListActionClick(openScreen: (String) -> Unit, wishList: WishList, action: String) {
-        when (TaskActionOption.getByTitle(action)) {
-            TaskActionOption.EditTask -> openScreen("$EDIT_TASK_SCREEN?$TASK_ID={${task.id}}")
-            TaskActionOption.ToggleFlag -> onFlagTaskClick(task)
-            TaskActionOption.DeleteTask -> onDeleteTaskClick(task)
+        when (WishListActionOption.getByTitle(action)) {
+            WishListActionOption.EditWishList -> openScreen("WishListEditScreen?wishListId={${wishList.id}}")
+            WishListActionOption.ToggleFlag -> onFlagWishListClick(wishList)
+            WishListActionOption.DeleteWishList -> onDeleteWishListClick(wishList)
         }
     }
 

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">TripMoto_Compose</string>
 
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="flag">Flag</string>
+
     <!--Login-->
     <string name="try_again">Retry</string>
     <string name="email_error">Invalid Email</string>
