@@ -3,8 +3,11 @@ package com.insu.tripmoto_compose.screen.main.wishlist
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.widget.Space
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,8 +48,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.MainTitleText
+import com.insu.tripmoto_compose.rememberAppState
 import com.insu.tripmoto_compose.screen.fore.ForeViewModel
 import com.insu.tripmoto_compose.suitFamily
+import dagger.hilt.android.components.ActivityComponent
 import com.insu.tripmoto_compose.R.string as AppText
 import com.insu.tripmoto_compose.R.color as AppColor
 import com.insu.tripmoto_compose.R.drawable as AppIcon
@@ -58,6 +64,10 @@ fun WishListScreen(
     modifier: Modifier = Modifier,
     viewModel: WishListViewModel = hiltViewModel()
 ) {
+    val activity = LocalContext.current as ComponentActivity
+    BackHandler {
+        activity.finish()
+    }
 
     val listState = rememberLazyGridState(
         //initialFirstVisibleItemIndex = 99 해당 위치가 마지막으로 보이도록 설정
@@ -69,14 +79,22 @@ fun WishListScreen(
         modifier = Modifier
             .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 12.dp)
     ) {
-        Row() {
-            MainTitleText(text = AppText.wishlist)
-            TextButton(
-                modifier = modifier,
-                onClick =  {viewModel.onAddClick(openScreen) },
-            ) {
-                Text("추가하기")
-            }
+        Box(modifier = modifier.fillMaxWidth()) {
+            MainTitleText(
+                modifier = modifier.align(Alignment.CenterStart),
+                text = AppText.wishlist
+            )
+
+            Text(
+                modifier = modifier
+                    .align(Alignment.CenterEnd)
+                    .clickable {
+                        viewModel.onAddClick(openScreen)
+                    },
+                text = "추가하기",
+                color = colorResource(AppColor.primary_800)
+            )
+
         }
 
 

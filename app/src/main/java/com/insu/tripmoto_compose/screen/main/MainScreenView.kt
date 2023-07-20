@@ -7,18 +7,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.insu.tripmoto_compose.NavigationGraph
+import com.insu.tripmoto_compose.rememberAppState
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreenView() {
-    val navController = rememberNavController()
-
+    val appState = rememberAppState()
     Scaffold(
-        bottomBar = { BottomNavigation(navController = navController) }
+        bottomBar = { BottomNavigation(appState) }
     ) {
-        NavigationGraph(navController = navController)
+        NavigationGraph(appState)
     }
 }
 

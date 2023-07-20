@@ -18,6 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.screen.fore.travel_expenses.TravelExpensesScreen
 import com.insu.tripmoto_compose.screen.fore.travel_members.TravelMembersScreen
@@ -31,6 +32,7 @@ import com.insu.tripmoto_compose.screen.main.MainScreen
 import com.insu.tripmoto_compose.screen.main.map.MapScreen
 import com.insu.tripmoto_compose.screen.main.menu.MenuScreen
 import com.insu.tripmoto_compose.screen.main.wishlist.WishListScreen
+import com.insu.tripmoto_compose.screen.main.wishlist.edit.WishListEditScreen
 import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
@@ -59,7 +61,7 @@ fun MyApp() {
             ) { innerPaddingModifier ->
                 NavHost(
                     navController = appState.navController,
-                    startDestination = "SplashScreen",
+                    startDestination = "MainScreen",
                     modifier = Modifier.padding(innerPaddingModifier)
                 ) {
                     navGraph(appState)
@@ -118,13 +120,16 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
     composable("MainScreen") {
         MainScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
+
+
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun NavigationGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = BottomNavItem.Map.screen_route) {
+fun NavigationGraph(appState: MyAppState) {
+    NavHost(appState.navController, startDestination = BottomNavItem.Map.screen_route) {
         composable(BottomNavItem.WishList.screen_route) {
-            WishListScreen()
+            WishListScreen(openScreen = { route -> appState.navigate(route) })
         }
         composable(BottomNavItem.Direction.screen_route) {
             DirectionScreen()
@@ -137,6 +142,16 @@ fun NavigationGraph(navController: NavHostController) {
         }
         composable(BottomNavItem.Menu.screen_route) {
             MenuScreen()
+        }
+
+        composable(
+            route = "WishListEditScreen$WISHLIST_ID_ARG",
+            arguments = listOf(navArgument(WISHLIST_ID) { defaultValue = WISHLIST_DEFAULT_ID })
+        ) {
+            WishListEditScreen(
+                popUpScreen = { appState.popUp() },
+                wishListId = it.arguments?.getString(WISHLIST_ID) ?: WISHLIST_DEFAULT_ID
+            )
         }
     }
 }

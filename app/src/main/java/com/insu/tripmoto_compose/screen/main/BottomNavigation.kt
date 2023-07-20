@@ -27,14 +27,14 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.insu.tripmoto_compose.NavigationGraph
+import com.insu.tripmoto_compose.MyAppState
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
 import com.insu.tripmoto_compose.R.color as AppColor
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 
 @Composable
-fun BottomNavigation(navController: NavController) {
+fun BottomNavigation(appState: MyAppState) {
     val items = listOf(
         BottomNavItem.WishList,
         BottomNavItem.Direction,
@@ -54,7 +54,7 @@ fun BottomNavigation(navController: NavController) {
             },
         elevation = 20.dp
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val navBackStackEntry by appState.navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         items.forEach { item ->
             BottomNavigationItem(
@@ -72,8 +72,8 @@ fun BottomNavigation(navController: NavController) {
                 alwaysShowLabel = true,
                 selected = currentRoute == item.screen_route,
                 onClick = {
-                    navController.navigate(item.screen_route) {
-                        navController.graph.startDestinationRoute?.let { screen_route ->
+                    appState.navController.navigate(item.screen_route) {
+                        appState.navController.graph.startDestinationRoute?.let { screen_route ->
                             popUpTo(screen_route) {
                                 saveState = true
                             }
@@ -86,17 +86,3 @@ fun BottomNavigation(navController: NavController) {
         }
     }
 }
-
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@Preview
-@Composable
-fun preview() {
-    val navController = rememberNavController()
-
-    Scaffold(
-        bottomBar = { BottomNavigation(navController = navController) }
-    ) {
-        NavigationGraph(navController = navController)
-    }
-}
-

@@ -69,8 +69,6 @@ fun MainTitleText(
     @StringRes text: Int
 ) {
     Text(
-        modifier = modifier
-            .fillMaxWidth(),
         text = stringResource(text),
         color = colorResource(R.color.black),
         fontSize = 18.sp,

@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.insu.tripmoto_compose.common.composable.BasicField
 import com.insu.tripmoto_compose.common.composable.CardSelector
 import com.insu.tripmoto_compose.common.ext.card
@@ -50,7 +51,6 @@ fun WishListEditScreen(
 ) {
     val wishList by viewModel.wishList
 
-
     LaunchedEffect(Unit) { viewModel.initialize(wishListId) }
 
     Column(
@@ -61,13 +61,21 @@ fun WishListEditScreen(
     ) {
         val fieldModifier = Modifier.fieldModifier()
         BasicField(AppText.title, wishList.title, viewModel::onTitleChange, fieldModifier)
-        BasicField(AppText.description, wishList.description, viewModel::onDescriptionChange, fieldModifier)
+        BasicField(
+            AppText.description,
+            wishList.description,
+            viewModel::onDescriptionChange,
+            fieldModifier
+        )
 
         Spacer(modifier = Modifier.spacer())
 
         CardSelectors(wishList, viewModel::onFlagToggle)
 
         RequestContentPermission()
+
+        Button(onClick = { viewModel.onDoneClick(popUpScreen) }) {
+        }
     }
 }
 
@@ -78,7 +86,12 @@ private fun CardSelectors(
     onFlagToggle: (String) -> Unit
 ) {
     val flagSelection = EditFlagOption.getByCheckedState(wishList.flag).name
-    CardSelector(AppText.flag, EditFlagOption.getOptions(), flagSelection, Modifier.card()) { newValue
+    CardSelector(
+        AppText.flag,
+        EditFlagOption.getOptions(),
+        flagSelection,
+        Modifier.card()
+    ) { newValue
         ->
         onFlagToggle(newValue)
     }
@@ -91,12 +104,14 @@ fun RequestContentPermission() {
         mutableStateOf<Uri?>(null)
     }
     val context = LocalContext.current
-    val bitmap =  remember {
+    val bitmap = remember {
         mutableStateOf<Bitmap?>(null)
     }
 
-    val launcher = rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.GetContent()) { uri: Uri? ->
+    val launcher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
         imageUri = uri
     }
     Column() {
@@ -108,21 +123,25 @@ fun RequestContentPermission() {
 
         Spacer(modifier = Modifier.height(12.dp))
 
+
+
         imageUri?.let {
             if (Build.VERSION.SDK_INT < 28) {
                 bitmap.value = MediaStore.Images
-                    .Media.getBitmap(context.contentResolver,it)
+                    .Media.getBitmap(context.contentResolver, it)
 
             } else {
                 val source = ImageDecoder
-                    .createSource(context.contentResolver,it)
+                    .createSource(context.contentResolver, it)
                 bitmap.value = ImageDecoder.decodeBitmap(source)
             }
 
-            bitmap.value?.let {  btm ->
-                Image(bitmap = btm.asImageBitmap(),
-                    contentDescription =null,
-                    modifier = Modifier.size(400.dp))
+            bitmap.value?.let { btm ->
+                Image(
+                    bitmap = btm.asImageBitmap(),
+                    contentDescription = null,
+                    modifier = Modifier.size(400.dp)
+                )
             }
         }
 
