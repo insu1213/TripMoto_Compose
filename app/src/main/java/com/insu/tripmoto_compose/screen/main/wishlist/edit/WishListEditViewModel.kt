@@ -46,6 +46,8 @@ class WishListEditViewModel @Inject constructor(
 
     fun onImageResourceChange(newImage: Uri) {
         imageUri = newImage
+        wishList.value.isImage = true
+        // TODO: 이미지 업로드 후 삭제 기능
     }
 
     fun onFlagToggle(newValue: String) {
@@ -57,6 +59,7 @@ class WishListEditViewModel @Inject constructor(
         launchCatching {
             val editedWishList = wishList.value
             var wishListId: String? = null
+
             if(editedWishList.id.isBlank()) {
                 wishListId = storageService.save(editedWishList)
             } else {
@@ -67,11 +70,13 @@ class WishListEditViewModel @Inject constructor(
                 uploadImageToFirebaseStorage(
                     imageUri!!,
                     wishListId,
-                    onSuccess = { Log.d(TAG, "결과: 성공") },
+                    onSuccess = { popUpScreen() },
                     onFailure = { Log.d(TAG, "결과: 실패") },
                 )
+            } else {
+                popUpScreen()
             }
-            popUpScreen()
+
         }
     }
 }

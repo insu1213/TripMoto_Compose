@@ -1,5 +1,7 @@
 package com.insu.tripmoto_compose.screen.main.wishlist
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.DropdownContextMenu
+import com.insu.tripmoto_compose.common.composable.ImageLoad
 import com.insu.tripmoto_compose.common.ext.contextMenu
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.suitFamily
@@ -40,19 +43,17 @@ fun WishListItem(
     Card(
         shape = RoundedCornerShape(6.dp),
         modifier = Modifier
-            .padding(10.dp)
+            .padding(5.dp)
             .background(colorResource(R.color.gray_1)),
-        elevation = 8.dp
+        elevation = 2.dp
     ) {
         Column() {
-            wishList.imageRes?.let { painterResource(it) }?.let {
-                Image(
+            if(wishList.isImage) {
+                ImageLoad(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(100.dp),
-                    painter = it,
-                    contentDescription = null,
-                    contentScale = ContentScale.FillWidth
+                    imageName = wishList.id
                 )
             }
             Text(

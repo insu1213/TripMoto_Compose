@@ -8,7 +8,7 @@ data class WishList(
     @DocumentId val id: String = "",
     val title: String = "",
     val description: String = "",
-    @IntegerRes val imageRes: Int? = null,
+    var isImage: Boolean = false,
     val userId: String = "",
     val completed: Boolean = false,
     val flag: Boolean = false

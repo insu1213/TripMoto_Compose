@@ -70,7 +70,7 @@ fun WishListScreen(
 
     Column(
         modifier = Modifier
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 12.dp)
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 68.dp)
     ) {
         Box(modifier = modifier.fillMaxWidth()) {
             MainTitleText(
@@ -94,8 +94,8 @@ fun WishListScreen(
         LazyVerticalStaggeredGrid(
             columns = StaggeredGridCells.Adaptive(150.dp),
             state = listState,
-            verticalItemSpacing = 4.dp,
-            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalItemSpacing = 2.dp,
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
             content = {
                 items(wishList.value, key = { it.id }) { wishListItem ->
                     WishListItem(

@@ -1,11 +1,14 @@
 package com.insu.tripmoto_compose.screen.main.wishlist
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.insu.tripmoto_compose.common.ext.idFromParameter
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.model.service.ConfigurationService
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
+import com.insu.tripmoto_compose.model.service.removeImageFromFirebaseStorage
 import com.insu.tripmoto_compose.screen.MyViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -45,6 +48,14 @@ class WishListViewModel @Inject constructor(
     }
 
     private fun onDeleteWishListClick(wishList: WishList) {
-        launchCatching { storageService.delete(wishList.id) }
+        launchCatching {
+            storageService.delete(wishList.id)
+            if(wishList.isImage) {
+                removeImageFromFirebaseStorage(wishList.id,
+                onSuccess = { Log.d(TAG, "이미지를 삭제하는데 성공하였습니다.") },
+                onFailure = { Log.d(TAG, "이미지를 삭제하는데 실패하였습니다.") }
+                )
+            }
+        }
     }
 }
