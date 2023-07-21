@@ -1,5 +1,6 @@
 package com.insu.tripmoto_compose.model
 
+import android.graphics.Bitmap
 import androidx.annotation.IntegerRes
 import com.google.firebase.firestore.DocumentId
 

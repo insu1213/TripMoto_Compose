@@ -1,34 +1,26 @@
 package com.insu.tripmoto_compose.screen.main.wishlist
 
 import android.annotation.SuppressLint
-import android.graphics.Color
-import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -56,6 +48,7 @@ import com.insu.tripmoto_compose.R.string as AppText
 import com.insu.tripmoto_compose.R.color as AppColor
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 @ExperimentalMaterialApi
@@ -69,9 +62,9 @@ fun WishListScreen(
         activity.finish()
     }
 
-    val listState = rememberLazyGridState(
-        //initialFirstVisibleItemIndex = 99 해당 위치가 마지막으로 보이도록 설정
-    )
+    val listState = rememberLazyStaggeredGridState()
+    //initialFirstVisibleItemIndex = 99 해당 위치가 마지막으로 보이도록 설정
+
     val wishList = viewModel.wishList.collectAsStateWithLifecycle(emptyList())
     val options by viewModel.options
 
@@ -94,27 +87,32 @@ fun WishListScreen(
                 text = "추가하기",
                 color = colorResource(AppColor.primary_800)
             )
-
         }
-
 
         Spacer(modifier = Modifier.padding(bottom = 8.dp))
 
-        LazyVerticalGrid(
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Adaptive(150.dp),
             state = listState,
-            columns = GridCells.Adaptive(150.dp),
+            verticalItemSpacing = 4.dp,
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             content = {
                 items(wishList.value, key = { it.id }) { wishListItem ->
                     WishListItem(
                         wishList = wishListItem,
                         options = options,
                         onCheckChange = { viewModel.onWishListCheckChange(wishListItem) },
-                        onActionClick = { action -> viewModel.onWishListActionClick(openScreen, wishListItem, action)}
+                        onActionClick = { action ->
+                            viewModel.onWishListActionClick(
+                                openScreen,
+                                wishListItem,
+                                action
+                            )
+                        }
                     )
                 }
             }
         )
     }
-
     LaunchedEffect(viewModel) { viewModel.loadWishListOptions() }
 }

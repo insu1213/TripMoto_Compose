@@ -87,6 +87,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-storage:20.2.1'
 
     // CollectAsStateWithLifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
