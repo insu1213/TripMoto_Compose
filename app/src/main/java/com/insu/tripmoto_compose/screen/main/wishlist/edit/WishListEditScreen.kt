@@ -10,10 +10,13 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -32,8 +35,12 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.insu.tripmoto_compose.common.composable.BasicButton
 import com.insu.tripmoto_compose.common.composable.BasicField
 import com.insu.tripmoto_compose.common.composable.CardSelector
+import com.insu.tripmoto_compose.common.composable.LimitTextField
+import com.insu.tripmoto_compose.common.composable.MainTitleText
+import com.insu.tripmoto_compose.common.ext.basicButton
 import com.insu.tripmoto_compose.common.ext.card
 import com.insu.tripmoto_compose.common.ext.fieldModifier
 import com.insu.tripmoto_compose.common.ext.spacer
@@ -56,28 +63,48 @@ fun WishListEditScreen(
 
     Column(
         modifier = modifier
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 68.dp)
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val fieldModifier = Modifier.fieldModifier()
-        BasicField(AppText.title, wishList.title, viewModel::onTitleChange, fieldModifier)
-        BasicField(
+        Box(modifier = modifier.fillMaxWidth()) {
+            MainTitleText(
+                modifier = modifier.align(Alignment.CenterStart),
+                text = AppText.wishlist
+            )
+        }
+
+        LimitTextField(
+            15,
+            AppText.title,
+            wishList.title,
+            viewModel::onTitleChange,
+            fieldModifier
+                .padding(top = 8.dp)
+        )
+        LimitTextField(
+            100,
             AppText.description,
             wishList.description,
             viewModel::onDescriptionChange,
-            fieldModifier
+            fieldModifier.padding(top = 12.dp)
         )
 
         Spacer(modifier = Modifier.spacer())
 
         CardSelectors(wishList, viewModel::onFlagToggle)
 
-        RequestContentPermission() { uri ->
-            viewModel.onImageResourceChange(uri)
-        }
+//        RequestContentPermission() { uri ->
+//            viewModel.onImageResourceChange(uri)
+//        }
 
-        Button(onClick = { viewModel.onDoneClick(popUpScreen) }) {
+        BasicButton(AppText.done,
+            Modifier
+                .basicButton()
+                .padding(top = 44.dp)) {
+            viewModel.onDoneClick(popUpScreen)
         }
     }
 }

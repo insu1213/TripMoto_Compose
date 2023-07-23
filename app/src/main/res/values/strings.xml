@@ -3,7 +3,8 @@
 
     <string name="title">Title</string>
     <string name="description">Description</string>
-    <string name="flag">Flag</string>
+    <string name="flag">Star</string>
+    <string name="done">Done</string>
 
     <!--Login-->
     <string name="try_again">Retry</string>

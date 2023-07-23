@@ -5,6 +5,7 @@ plugins {
     id 'com.google.dagger.hilt.android'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -91,6 +92,10 @@ dependencies {
 
     // CollectAsStateWithLifecycle
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
+
+    // Google Map
+    implementation 'com.google.maps.android:maps-compose:2.11.4'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 }
 
 kapt {

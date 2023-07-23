@@ -1,6 +1,7 @@
 package com.insu.tripmoto_compose.common.composable
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -13,8 +14,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import com.insu.tripmoto_compose.R.string as AppText
 import com.insu.tripmoto_compose.R.drawable as AppIcon
@@ -53,6 +56,32 @@ fun BasicField(
             Icon(painter = painterResource(icon),
                 contentDescription = "Icon")
         }
+    )
+}
+
+@Composable
+fun LimitTextField(
+    maxLength: Int,
+    @StringRes text: Int,
+    value: String,
+    onNewValue: (String) -> Unit,
+    //icon: Int,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        singleLine = true,
+        modifier = modifier,
+        value = value,
+        onValueChange = {
+            if(it.length <= maxLength) {
+                onNewValue(it)
+            }
+        },
+        placeholder = { Text(stringResource(text)) },
+//        leadingIcon = {
+//            Icon(painter = painterResource(icon),
+//                contentDescription = "Icon")
+//        }
     )
 }
 

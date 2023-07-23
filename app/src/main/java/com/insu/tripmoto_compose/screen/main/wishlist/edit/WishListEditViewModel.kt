@@ -76,7 +76,6 @@ class WishListEditViewModel @Inject constructor(
             } else {
                 popUpScreen()
             }
-
         }
     }
 }

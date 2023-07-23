@@ -1,4 +1,4 @@
-package com.insu.tripmoto_compose.screen.main.wishlist.edit
+package com.insu.tripmoto_compose.screen.main.wishlist
 
 import android.content.ContentResolver
 import android.content.ContentValues

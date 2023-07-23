@@ -1,23 +1,19 @@
 package com.insu.tripmoto_compose.screen.main.wishlist
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Checkbox
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.DropdownContextMenu
-import com.insu.tripmoto_compose.common.composable.ImageLoad
 import com.insu.tripmoto_compose.common.ext.contextMenu
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.suitFamily
@@ -40,59 +35,85 @@ fun WishListItem(
     onCheckChange: () -> Unit,
     onActionClick: (String) -> Unit
 ) {
+    //val viewModel = ImageLoadViewModel()
+    //val imageBitmapState: State<ImageBitmap?>? = viewModel.getImageBitmap(wishList.id)
+
     Card(
         shape = RoundedCornerShape(6.dp),
+        backgroundColor = colorResource(R.color.gray_1),
         modifier = Modifier
-            .padding(5.dp)
-            .background(colorResource(R.color.gray_1)),
+            .padding(5.dp),
         elevation = 2.dp
     ) {
         Column() {
-            if(wishList.isImage) {
-                ImageLoad(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(100.dp),
-                    imageName = wishList.id
-                )
-            }
-            Text(
-                text = wishList.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp, start = 4.dp),
-                color = colorResource(R.color.black),
-                fontSize = 14.sp,
-                fontFamily = suitFamily,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Start,
-            )
+//            if(wishList.isImage) {
+//                if (imageBitmapState != null) {
+//                    imageBitmapState.value?.let { imageBitmap ->
+//                        Image(
+//                            bitmap = imageBitmap,
+//                            contentDescription = null,
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .height(100.dp),
+//                            contentScale = ContentScale.FillWidth
+//                        )
+//                    } ?: Image(
+//                        painter = painterResource(R.drawable.zoe),
+//                        contentDescription = null,
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(100.dp),
+//                        contentScale = ContentScale.FillWidth
+//                    )
+//                }
+//            }
+            Row(modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(modifier = Modifier.weight(8F)) {
+                    Text(
+                        text = wishList.title,
+                        modifier = Modifier
+                            .padding(top = 4.dp, start = 4.dp),
+                        color = colorResource(R.color.black),
+                        fontSize = 14.sp,
+                        fontFamily = suitFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Start,
+                    )
 
-            Text(
-                text = wishList.description,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp, bottom = 4.dp, start = 4.dp),
-                color = colorResource(R.color.black),
-                fontSize = 12.sp,
-                fontFamily = suitFamily,
-                fontWeight = FontWeight.Medium,
-                textAlign = TextAlign.Start,
-            )
-
-            Checkbox(
-                checked = wishList.completed,
-                onCheckedChange = { onCheckChange() },
-                modifier = Modifier.padding(8.dp, 0.dp)
-            )
-            if (wishList.flag) {
-                Icon(
-                    painter = painterResource(AppIcon.ic_flag),
-                    tint = Color.Yellow,
-                    contentDescription = "Flag"
-                )
+                    Text(
+                        text = wishList.description,
+                        modifier = Modifier
+                            .padding(top = 4.dp, bottom = 4.dp, start = 4.dp),
+                        color = colorResource(R.color.black),
+                        fontSize = 12.sp,
+                        fontFamily = suitFamily,
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.Start,
+                    )
+                }
+                Column(modifier = Modifier.weight(2F)) {
+                    DropdownContextMenu(options, Modifier.contextMenu(), onActionClick)
+                    if (wishList.flag) {
+                        Icon(
+                            modifier = Modifier
+                                .padding(start = 8.dp),
+                            painter = painterResource(AppIcon.ic_star),
+                            tint = Color(0xFFFFCD3C),
+                            contentDescription = "Star"
+                        )
+                    }
+                }
             }
-            DropdownContextMenu(options, Modifier.contextMenu(), onActionClick)
+
+//            Checkbox(
+//                checked = wishList.completed,
+//                onCheckedChange = { onCheckChange() },
+//                modifier = Modifier.padding(8.dp, 0.dp)
+//            )
+
         }
     }
 }
