@@ -5,6 +5,7 @@
     <string name="description">Description</string>
     <string name="flag">Star</string>
     <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
 
     <!--Login-->
     <string name="try_again">Retry</string>
@@ -62,5 +63,8 @@
 
     <!--Main/WishList-->
     <string name="wishlist">WishList</string>
+
+    <!--Main/Map-->
+    <string name="edit_marker">Edit Marker</string>
 
 </resources>

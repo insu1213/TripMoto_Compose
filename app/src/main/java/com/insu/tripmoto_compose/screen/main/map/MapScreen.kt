@@ -3,15 +3,23 @@ package com.insu.tripmoto_compose.screen.main.map
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
@@ -22,10 +30,13 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.insu.tripmoto_compose.rememberAppState
 import com.insu.tripmoto_compose.R.drawable as AppIcon
+import com.insu.tripmoto_compose.R.color as AppColor
 
 @Composable
 fun MapScreen() {
     val activity = LocalContext.current as ComponentActivity
+    var markerAddState by remember { mutableStateOf(false) }
+    var googleMapClickState by remember { mutableStateOf(false) }
     BackHandler {
         activity.finish()
     }
@@ -34,10 +45,20 @@ fun MapScreen() {
         position = CameraPosition.fromLatLngZoom(singapore, 10f)
     }
 
+    if(googleMapClickState) {
+        EditMarkerDialog {
+            googleMapClickState = false
+        }
+    }
 
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
-        cameraPositionState = cameraPositionState
+        cameraPositionState = cameraPositionState,
+        onMapClick = {
+            if(markerAddState) {
+                googleMapClickState = true
+            }
+        }
     ) {
         Marker(
             state = MarkerState(position = singapore),
@@ -50,11 +71,21 @@ fun MapScreen() {
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
 
-    Image(
+    Icon(
         modifier = Modifier
-            .offset(x = screenWidth-46.dp, y = screenHeight-140.dp)
-            .size(36.dp),
+            .offset(x = screenWidth - 46.dp, y = screenHeight - 140.dp)
+            .size(36.dp)
+            .clickable {
+                markerAddState = !markerAddState
+            },
         painter = painterResource(AppIcon.ic_add_marker),
-        contentDescription = "addMarker"
+        tint =
+            if(!markerAddState) colorResource(AppColor.gray_4)
+            else colorResource(AppColor.primary_800),
+        contentDescription = "addMarker",
     )
 }
+
+
+
+
