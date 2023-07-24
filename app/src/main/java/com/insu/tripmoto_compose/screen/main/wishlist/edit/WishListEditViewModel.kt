@@ -1,16 +1,10 @@
 package com.insu.tripmoto_compose.screen.main.wishlist.edit
 
 import android.content.ContentValues.TAG
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
-import androidx.annotation.IntegerRes
 import androidx.compose.runtime.mutableStateOf
-import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.ext.idFromParameter
-import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
@@ -61,9 +55,9 @@ class WishListEditViewModel @Inject constructor(
             var wishListId: String? = null
 
             if(editedWishList.id.isBlank()) {
-                wishListId = storageService.save(editedWishList)
+                wishListId = storageService.saveWishList(editedWishList)
             } else {
-                storageService.update(editedWishList)
+                storageService.updateWishList(editedWishList)
             }
 
             if(imageUri != null && wishListId != null) {

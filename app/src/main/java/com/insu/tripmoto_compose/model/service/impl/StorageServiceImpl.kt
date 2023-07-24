@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.dataObjects
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.perf.ktx.trace
+import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.model.service.AccountService
@@ -19,35 +20,63 @@ class StorageServiceImpl @Inject constructor(
     private val firestore: FirebaseFirestore, private val auth: AccountService
 ): StorageService {
 
+    // WishList
     @OptIn(ExperimentalCoroutinesApi::class)
     override val wishList: Flow<List<WishList>>
         get() =
             auth.currentUser.flatMapLatest { user: User ->
                 firestore.collection(WISH_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
         }
-
     override suspend fun getWishList(wishListId: String): WishList? =
         firestore.collection(WISH_COLLECTION).document(wishListId).get().await().toObject()
-
-    override suspend fun save(wishList: WishList): String =
+    override suspend fun saveWishList(wishList: WishList): String =
         trace(SAVE_WISH_TRACE) {
             val wishWithUserId = wishList.copy(userId = auth.currentUserId)
             firestore.collection(WISH_COLLECTION).add(wishWithUserId).await().id
         }
-
-    override suspend fun update(wishList: WishList): Unit =
+    override suspend fun updateWishList(wishList: WishList): Unit =
         trace(UPDATE_WISH_TRACE) {
             firestore.collection(WISH_COLLECTION).document(wishList.id).set(wishList).await()
         }
-
-    override suspend fun delete(wishListId: String) {
+    override suspend fun deleteWishList(wishListId: String) {
         firestore.collection(WISH_COLLECTION).document(wishListId).delete().await()
     }
 
+
+
+    // Google Map Marker
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val marker: Flow<List<MapMarker>>
+        get() =
+            auth.currentUser.flatMapLatest { user: User ->
+                firestore.collection(MARKER_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
+            }
+    override suspend fun getMarker(markerId: String): MapMarker? =
+        firestore.collection(MARKER_COLLECTION).document(markerId).get().await().toObject()
+
+    override suspend fun saveMarker(marker: MapMarker): String =
+        trace(SAVE_MARKER_TRACE) {
+            val markerWithUserId = marker.copy(userId = auth.currentUserId)
+            firestore.collection(MARKER_COLLECTION).add(markerWithUserId).await().id
+        }
+    override suspend fun updateMarker(marker: MapMarker): Unit =
+        trace(UPDATE_MARKER_TRACE) {
+            firestore.collection(MARKER_COLLECTION).document(marker.id).set(marker).await()
+        }
+    override suspend fun deleteMarker(markerId: String) {
+        firestore.collection(MARKER_COLLECTION).document(markerId).delete().await()
+    }
+
+
     companion object {
         private const val USER_ID_FIELD = "userId"
+
         private const val WISH_COLLECTION = "wishList"
         private const val SAVE_WISH_TRACE = "saveWishList"
         private const val UPDATE_WISH_TRACE = "updateWishList"
+
+        private const val MARKER_COLLECTION = "marker"
+        private const val SAVE_MARKER_TRACE = "saveMarker"
+        private const val UPDATE_MARKER_TRACE = "updateMarker"
     }
 }
