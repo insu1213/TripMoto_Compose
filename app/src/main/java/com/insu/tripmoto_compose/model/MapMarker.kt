@@ -7,7 +7,7 @@ data class MapMarker(
     val title: String = "",
     val description: String = "",
     val userId: String = "",
-    val lat: Float = 0f,
-    val lng: Float = 0f,
+    val lat: Double = 0.0,
+    val lng: Double = 0.0,
     val completed: Boolean = false,
 )

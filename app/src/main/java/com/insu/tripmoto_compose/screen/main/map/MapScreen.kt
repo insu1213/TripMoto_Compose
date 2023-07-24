@@ -1,5 +1,7 @@
 package com.insu.tripmoto_compose.screen.main.map
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -45,10 +47,15 @@ fun MapScreen() {
         position = CameraPosition.fromLatLngZoom(singapore, 10f)
     }
 
+    var clickPosition by remember { mutableStateOf(LatLng(0.0, 0.0)) };
+
     if(googleMapClickState) {
-        EditMarkerDialog {
+        Log.d(TAG, "출력됨: $clickPosition")
+        EditMarkerDialog(
+            position = clickPosition,
+            onDismiss = {
             googleMapClickState = false
-        }
+        })
     }
 
     GoogleMap(
@@ -56,6 +63,7 @@ fun MapScreen() {
         cameraPositionState = cameraPositionState,
         onMapClick = {
             if(markerAddState) {
+                clickPosition = it
                 googleMapClickState = true
             }
         }

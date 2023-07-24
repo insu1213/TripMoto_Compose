@@ -1,14 +1,13 @@
 package com.insu.tripmoto_compose.screen.main.map
 
-import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import com.google.android.gms.maps.model.LatLng
 import com.insu.tripmoto_compose.common.ext.idFromParameter
 import com.insu.tripmoto_compose.model.MapMarker
-import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
-import com.insu.tripmoto_compose.model.service.uploadImageToFirebaseStorage
 import com.insu.tripmoto_compose.screen.MyViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -36,21 +35,31 @@ class MapViewModel @Inject constructor(
         marker.value = marker.value.copy(description = newValue)
     }
 
+    fun onPositionChange(newValue: LatLng) {
+        marker.value = marker.value.copy(lat = newValue.latitude)
+        marker.value = marker.value.copy(lng = newValue.longitude)
+    }
+
     fun onDoneClick(onDismiss: () -> Unit) {
+        if(marker.value.title.isBlank()) {
+            Log.d(TAG, "Error: Title cannot empty")
+            return
+        }
+        if(marker.value.description.isBlank()) {
+            Log.d(TAG, "Error: Description cannot empty")
+            return
+        }
+
         launchCatching {
             val editedMarker = marker.value
             var markerId: String? = null
 
-            if(marker.value.id.isNotBlank() && marker.value.description.isNotBlank()) {
-                if(editedMarker.id.isBlank()) {
-                    markerId = storageService.saveMarker(editedMarker)
-                } else {
-                    storageService.updateMarker(editedMarker)
-                }
-                onDismiss()
+            if(editedMarker.id.isBlank()) {
+                markerId = storageService.saveMarker(editedMarker)
             } else {
-
+                storageService.updateMarker(editedMarker)
             }
+            onDismiss()
         }
     }
 }
