@@ -1,29 +1,19 @@
-package com.insu.tripmoto_compose.screen.main.map
+package com.insu.tripmoto_compose.screen.main.map.edit
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.LatLng
@@ -36,7 +26,11 @@ import com.insu.tripmoto_compose.R.color as AppColor
 
 @SuppressLint("ResourceType")
 @Composable
-fun EditMarkerDialog(position: LatLng, onDismiss: () -> Unit, viewModel: MapViewModel = hiltViewModel()) {
+fun EditMarkerDialog(
+    position: LatLng,
+    onDismiss: () -> Unit,
+    viewModel: EditMarkerViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val marker by viewModel.marker
     viewModel.onPositionChange(position)

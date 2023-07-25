@@ -1,0 +1,86 @@
+package com.insu.tripmoto_compose.screen.main.map.detail
+
+import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import com.insu.tripmoto_compose.R
+import com.insu.tripmoto_compose.common.composable.BasicColoringButton
+import com.insu.tripmoto_compose.common.composable.MainTitleText
+import com.insu.tripmoto_compose.model.MapMarker
+import com.insu.tripmoto_compose.suitFamily
+import com.insu.tripmoto_compose.R.color as AppColor
+
+@SuppressLint("ResourceType")
+@Composable
+fun DetailMarkerDialog(
+    marker: MapMarker,
+    onDismiss: () -> Unit,
+) {
+    Dialog(onDismissRequest = { onDismiss() }) {
+        Card(
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier.padding(8.dp),
+            elevation = 8.dp
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(Color.White)
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                MainTitleText(
+                    text = R.string.detail_marker,
+                    modifier = Modifier.padding(24.dp),
+                )
+
+                Text(
+                    text = marker.title,
+                    modifier = Modifier
+                        .padding(top = 4.dp, start = 4.dp)
+                        .fillMaxWidth(),
+                    color = colorResource(R.color.black),
+                    fontSize = 14.sp,
+                    fontFamily = suitFamily,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Start,
+                )
+
+                Text(
+                    text = marker.description,
+                    modifier = Modifier
+                        .padding(top = 4.dp, bottom = 4.dp, start = 4.dp)
+                        .fillMaxWidth(),
+                    color = colorResource(R.color.black),
+                    fontSize = 12.sp,
+                    fontFamily = suitFamily,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = TextAlign.Start,
+                )
+
+                BasicColoringButton(
+                    text = R.string.dismiss,
+                    color = AppColor.gray_3,
+                    modifier = Modifier
+                        .padding(top = 12.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)
+                ) {
+                    onDismiss()
+                }
+            }
+        }
+    }
+}

@@ -6,6 +6,7 @@
     <string name="flag">Star</string>
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
+    <string name="dismiss">Dismiss</string>
 
     <!--Login-->
     <string name="try_again">Retry</string>
@@ -66,5 +67,6 @@
 
     <!--Main/Map-->
     <string name="edit_marker">Edit Marker</string>
+    <string name="detail_marker">Detail Marker</string>
 
 </resources>
