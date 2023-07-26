@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +21,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -33,7 +36,7 @@ import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.color as AppColor
 
 @Composable
-fun MapScreen() {
+fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
     val activity = LocalContext.current as ComponentActivity
     var markerAddState by remember { mutableStateOf(false) }
     var googleMapClickState by remember { mutableStateOf(false) }
@@ -48,6 +51,8 @@ fun MapScreen() {
     var clickPosition by remember { mutableStateOf(LatLng(0.0, 0.0)) };
     var markerClickState by remember { mutableStateOf(false) }
     var markerClick by remember { mutableStateOf(MapMarker()) }
+
+    val options by viewModel.options
 
     if(googleMapClickState) {
         Log.d(TAG, "출력됨: $clickPosition")
@@ -75,7 +80,16 @@ fun MapScreen() {
         }
 
         if(markerClickState) {
-            DetailMarkerDialog(marker = markerClick) {
+            DetailMarkerDialog(
+                marker = markerClick,
+                options = options,
+                onActionClick = { action ->
+                    viewModel.onMarkerActionClick(
+                        markerClick,
+                        action
+                    )
+                }
+            ) {
                 markerClickState = false
             }
         }
@@ -98,6 +112,7 @@ fun MapScreen() {
             else colorResource(AppColor.primary_800),
         contentDescription = "addMarker",
     )
+    LaunchedEffect(viewModel) { viewModel.loadMarkerOptions() }
 }
 
 

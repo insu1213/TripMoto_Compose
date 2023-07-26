@@ -70,8 +70,9 @@ fun DropdownSelector(
 @ExperimentalMaterialApi
 fun DropdownContextMenu(
     options: List<String>,
-    modifier: Modifier,
-    onActionClick: (String) -> Unit
+    modifier: Modifier = Modifier,
+    onActionClick: (String) -> Unit,
+    onDismiss: () -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -96,6 +97,7 @@ fun DropdownContextMenu(
                     onClick = {
                         isExpanded = false
                         onActionClick(selectionOption)
+                        onDismiss()
                     }
                 ) {
                     Text(text = selectionOption)

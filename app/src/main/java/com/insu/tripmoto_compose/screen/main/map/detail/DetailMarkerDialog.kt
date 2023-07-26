@@ -2,13 +2,19 @@ package com.insu.tripmoto_compose.screen.main.map.detail
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,19 +24,27 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.BasicColoringButton
+import com.insu.tripmoto_compose.common.composable.DropdownContextMenu
 import com.insu.tripmoto_compose.common.composable.MainTitleText
+import com.insu.tripmoto_compose.common.ext.contextMenu
 import com.insu.tripmoto_compose.model.MapMarker
+import com.insu.tripmoto_compose.screen.main.map.MapViewModel
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.color as AppColor
 
+@OptIn(ExperimentalMaterialApi::class)
 @SuppressLint("ResourceType")
 @Composable
 fun DetailMarkerDialog(
     marker: MapMarker,
+    options: List<String>,
+    onActionClick: (String) -> Unit,
     onDismiss: () -> Unit,
 ) {
+
     Dialog(onDismissRequest = { onDismiss() }) {
         Card(
             shape = RoundedCornerShape(10.dp),
@@ -41,12 +55,24 @@ fun DetailMarkerDialog(
                 modifier = Modifier
                     .background(Color.White)
                     .padding(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                MainTitleText(
-                    text = R.string.detail_marker,
-                    modifier = Modifier.padding(24.dp),
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    MainTitleText(
+                        text = R.string.detail_marker,
+                        modifier = Modifier.padding(24.dp),
+                    )
+                    DropdownContextMenu(
+                        options,
+                        Modifier.contextMenu(),
+                        onActionClick
+                    ) {
+                        onDismiss()
+                    }
+                }
+
 
                 Text(
                     text = marker.title,

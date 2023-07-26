@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <defaults>
     <entry>
-        <key>show_task_edit_button</key>
+        <key>show_wishlist_edit_button</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>show_marker_edit_button</key>
         <value>true</value>
     </entry>
 </defaults>

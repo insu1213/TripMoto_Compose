@@ -95,7 +95,7 @@ fun WishListItem(
                     )
                 }
                 Column(modifier = Modifier.weight(2F)) {
-                    DropdownContextMenu(options, Modifier.contextMenu(), onActionClick)
+                    DropdownContextMenu(options, Modifier.contextMenu(), onActionClick) {}
                     if (wishList.flag) {
                         Icon(
                             modifier = Modifier
