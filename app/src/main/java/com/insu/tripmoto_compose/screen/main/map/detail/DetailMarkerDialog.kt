@@ -54,7 +54,7 @@ fun DetailMarkerDialog(
             Column(
                 modifier = Modifier
                     .background(Color.White)
-                    .padding(8.dp),
+                    .padding(12.dp),
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -66,7 +66,7 @@ fun DetailMarkerDialog(
                     )
                     DropdownContextMenu(
                         options,
-                        Modifier.contextMenu(),
+                        Modifier.contextMenu().padding(start = 20.dp),
                         onActionClick
                     ) {
                         onDismiss()

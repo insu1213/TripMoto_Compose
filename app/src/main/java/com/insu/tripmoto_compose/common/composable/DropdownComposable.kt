@@ -82,7 +82,6 @@ fun DropdownContextMenu(
         onExpandedChange = { isExpanded = !isExpanded }
     ) {
         Icon(
-            modifier = Modifier.padding(8.dp, 0.dp),
             imageVector = Icons.Default.MoreVert,
             contentDescription = "More"
         )

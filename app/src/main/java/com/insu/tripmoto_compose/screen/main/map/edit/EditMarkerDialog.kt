@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,13 +28,15 @@ import com.insu.tripmoto_compose.R.color as AppColor
 @SuppressLint("ResourceType")
 @Composable
 fun EditMarkerDialog(
-    position: LatLng,
+    position: LatLng? = null,
     onDismiss: () -> Unit,
+    markerId: String,
     viewModel: EditMarkerViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
     val marker by viewModel.marker
-    viewModel.onPositionChange(position)
+    position?.let { viewModel.onPositionChange(it) }
+
+    LaunchedEffect(Unit) { viewModel.initialize(markerId = markerId) }
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Card(

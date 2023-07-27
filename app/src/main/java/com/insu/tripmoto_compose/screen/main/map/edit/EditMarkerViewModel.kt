@@ -20,9 +20,12 @@ class EditMarkerViewModel @Inject constructor(
     var marker = mutableStateOf(MapMarker())
 
     fun initialize(markerId: String) {
+        Log.d(TAG, "실행markerId: $markerId")
         launchCatching {
             if(markerId != "-1") {
-                marker.value = storageService.getMarker(markerId.idFromParameter()) ?: MapMarker()
+                Log.d(TAG, "실행2")
+                marker.value = storageService.getMarker(markerId) ?: MapMarker()
+                Log.d(TAG, "실행marker.value: ${marker.value}")
             }
         }
     }

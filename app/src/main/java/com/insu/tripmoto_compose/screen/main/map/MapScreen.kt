@@ -52,16 +52,23 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
     var markerClickState by remember { mutableStateOf(false) }
     var markerClick by remember { mutableStateOf(MapMarker()) }
 
+    var editState by remember { mutableStateOf(false) }
+
     val options by viewModel.options
 
     if(googleMapClickState) {
-        Log.d(TAG, "출력됨: $clickPosition")
-        EditMarkerDialog(
-            position = clickPosition,
-            onDismiss = {
+        EditMarker(clickPosition) {
             googleMapClickState = false
             markerAddState = false
-        })
+        }
+    }
+
+    if(editState) {
+        EditMarker(LatLng(markerClick.lat, markerClick.lng), markerClick.id) {
+            googleMapClickState = false
+            markerAddState = false
+            editState = false
+        }
     }
 
     GoogleMap(
@@ -87,7 +94,9 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
                     viewModel.onMarkerActionClick(
                         markerClick,
                         action
-                    )
+                    ) {
+                        editState = true
+                    }
                 }
             ) {
                 markerClickState = false
@@ -113,6 +122,16 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
         contentDescription = "addMarker",
     )
     LaunchedEffect(viewModel) { viewModel.loadMarkerOptions() }
+}
+
+@Composable
+fun EditMarker(clickPosition: LatLng, markerId: String = "-1", onFinish: () -> Unit) {
+    EditMarkerDialog(
+        position = clickPosition,
+        markerId = markerId,
+        onDismiss = {
+            onFinish()
+        })
 }
 
 

@@ -2,6 +2,7 @@ package com.insu.tripmoto_compose.screen.main.map
 
 import android.content.ContentValues
 import android.util.Log
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.model.WishList
@@ -10,6 +11,7 @@ import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.model.service.removeImageFromFirebaseStorage
 import com.insu.tripmoto_compose.screen.MyViewModel
+import com.insu.tripmoto_compose.screen.main.map.edit.EditMarkerViewModel
 import com.insu.tripmoto_compose.screen.main.wishlist.WishListActionOption
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -20,6 +22,7 @@ class MapViewModel @Inject constructor(
     private val storageService: StorageService,
     private val configurationService: ConfigurationService
 ): MyViewModel(logService) {
+
     val options = mutableStateOf<List<String>>(listOf())
 
     val marker = storageService.marker
@@ -29,9 +32,9 @@ class MapViewModel @Inject constructor(
         options.value = MarkerActionOption.getOptions(hasEditOption)
     }
 
-    fun onMarkerActionClick(marker: MapMarker, action: String) {
+    fun onMarkerActionClick(marker: MapMarker, action: String, editMarker: () -> Unit) {
         when (MarkerActionOption.getByTitle(action)) {
-            MarkerActionOption.EditMarker -> TODO()
+            MarkerActionOption.EditMarker -> editMarker()
             MarkerActionOption.DeleteMarker -> onDeleteMarkerClick(marker)
         }
     }
