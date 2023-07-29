@@ -1,8 +1,8 @@
 package com.insu.tripmoto_compose.screen.main.map
 
 enum class MarkerActionOption(val title: String) {
-    EditMarker("Edit marker"),
-    DeleteMarker("Delete marker");
+    EditMarker("Edit"),
+    DeleteMarker("Delete");
 
     companion object {
         fun getByTitle(title: String): MarkerActionOption {

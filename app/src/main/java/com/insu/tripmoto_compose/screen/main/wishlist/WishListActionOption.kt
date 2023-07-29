@@ -1,9 +1,9 @@
 package com.insu.tripmoto_compose.screen.main.wishlist
 
 enum class WishListActionOption(val title: String) {
-    EditWishList("Edit wishList"),
-    ToggleFlag("Toggle flag"),
-    DeleteWishList("Delete wishList");
+    ToggleFlag("Bookmark"),
+    EditWishList("Edit"),
+    DeleteWishList("Delete");
 
     companion object {
         fun getByTitle(title: String): WishListActionOption {

@@ -69,4 +69,7 @@
     <string name="edit_marker">Edit Marker</string>
     <string name="detail_marker">Detail Marker</string>
 
+    <!--Main/Chat-->
+    <string name="chat">Chat</string>
+
 </resources>

@@ -38,7 +38,10 @@ fun EditMarkerDialog(
 
     LaunchedEffect(Unit) { viewModel.initialize(markerId = markerId) }
 
-    Dialog(onDismissRequest = { onDismiss() }) {
+    Dialog(onDismissRequest = {
+        onDismiss()
+
+    }) {
         Card(
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier.padding(8.dp),

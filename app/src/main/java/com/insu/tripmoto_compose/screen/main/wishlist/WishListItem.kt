@@ -71,7 +71,7 @@ fun WishListItem(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column(modifier = Modifier.weight(8F)) {
+                Column(modifier = Modifier.weight(8.5F)) {
                     Text(
                         text = wishList.title,
                         modifier = Modifier
@@ -94,12 +94,10 @@ fun WishListItem(
                         textAlign = TextAlign.Start,
                     )
                 }
-                Column(modifier = Modifier.weight(2F)) {
+                Column(modifier = Modifier.weight(1.5F)) {
                     DropdownContextMenu(options, Modifier.contextMenu(), onActionClick) {}
                     if (wishList.flag) {
                         Icon(
-                            modifier = Modifier
-                                .padding(start = 8.dp),
                             painter = painterResource(AppIcon.ic_star),
                             tint = Color(0xFFFFCD3C),
                             contentDescription = "Star"

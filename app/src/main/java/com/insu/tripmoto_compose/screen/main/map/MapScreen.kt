@@ -65,8 +65,6 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
 
     if(editState) {
         EditMarker(LatLng(markerClick.lat, markerClick.lng), markerClick.id) {
-            googleMapClickState = false
-            markerAddState = false
             editState = false
         }
     }
