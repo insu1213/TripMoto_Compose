@@ -4,16 +4,21 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.dataObjects
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.perf.ktx.trace
+import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.StorageService
+import com.insu.tripmoto_compose.screen.main.BottomNavItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.tasks.await
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 class StorageServiceImpl @Inject constructor(
@@ -68,6 +73,28 @@ class StorageServiceImpl @Inject constructor(
     }
 
 
+    // ChatList
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override val chatList: Flow<List<ChatList>>
+        get() =
+            auth.currentUser.flatMapLatest { user: User ->
+                firestore.collection(CHAT_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
+            }
+    override suspend fun getChatList(chatListId: String): ChatList? =
+        firestore.collection(CHAT_COLLECTION).document(chatListId).get().await().toObject()
+    override suspend fun saveChatList(chatList: ChatList): String =
+        trace(SAVE_CHAT_TRACE) {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
+            val currentTime = dateFormat.format(Date(System.currentTimeMillis()))
+            val chatWithUserIdAndTime = chatList.copy(userId = auth.currentUserId, uploadTime = currentTime)
+
+            firestore.collection(CHAT_COLLECTION).add(chatWithUserIdAndTime).await().id
+        }
+    override suspend fun deleteChatList(chatListId: String) {
+        firestore.collection(CHAT_COLLECTION).document(chatListId).delete().await()
+    }
+
+
     companion object {
         private const val USER_ID_FIELD = "userId"
 
@@ -78,5 +105,8 @@ class StorageServiceImpl @Inject constructor(
         private const val MARKER_COLLECTION = "marker"
         private const val SAVE_MARKER_TRACE = "saveMarker"
         private const val UPDATE_MARKER_TRACE = "updateMarker"
+
+        private const val CHAT_COLLECTION = "marker"
+        private const val SAVE_CHAT_TRACE = "saveMarker"
     }
 }
