@@ -29,7 +29,6 @@ class WishListViewModel @Inject constructor(
 
     fun onAddClick(openScreen: (String) -> Unit) = openScreen("WishListEditScreen")
 
-
     fun onWishListActionClick(openScreen: (String) -> Unit, wishList: WishList, action: String) {
         when (WishListActionOption.getByTitle(action)) {
             WishListActionOption.EditWishList -> openScreen("WishListEditScreen?wishListId={${wishList.id}}")
