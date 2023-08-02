@@ -16,6 +16,7 @@ class ChatViewModel @Inject constructor(
     private val storageService: StorageService,
 ): MyViewModel(logService) {
     var chatList = mutableStateOf(ChatList())
+    val chatListStorage = storageService.chatList
 
     fun onTextChange(newValue: String) {
         launchCatching { chatList.value = chatList.value.copy(text = newValue) }

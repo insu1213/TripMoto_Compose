@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -28,16 +29,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.common.composable.MenuTitleText
 import com.insu.tripmoto_compose.rememberAppState
+import com.insu.tripmoto_compose.screen.main.wishlist.WishListViewModel
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.string as AppText
 
-
 @Composable
-fun ChatScreen() {
+fun ChatScreen(
+    modifier: Modifier = Modifier,
+    viewModel: ChatViewModel = hiltViewModel()
+) {
     val activity = LocalContext.current as ComponentActivity
+    val chatList = viewModel.chatListStorage.collectAsStateWithLifecycle(emptyList())
+
     BackHandler {
         activity.finish()
     }
@@ -56,8 +64,16 @@ fun ChatScreen() {
         Spacer(modifier = Modifier.padding(bottom = 8.dp))
 
         LazyColumn() {
-            items(10) {
-                MessageCard(Message("조이, 여명의 성위", "야호! 재밌겠다! 그치?"))
+//            items(10) {
+//                MessageCard(Message("조이, 여명의 성위", "야호! 재밌겠다! 그치?"))
+//            }
+            itemsIndexed(
+                items = chatList.value,
+                key = { _, item ->
+                    item.id
+                }
+            ) { index, item ->
+                ChatListItem(item)
             }
         }
     }
