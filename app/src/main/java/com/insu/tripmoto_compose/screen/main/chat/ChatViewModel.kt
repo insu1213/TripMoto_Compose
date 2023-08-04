@@ -9,8 +9,10 @@ import com.insu.tripmoto_compose.model.service.ConfigurationService
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class ChatViewModel @Inject constructor(
     logService: LogService,
     private val storageService: StorageService,
@@ -35,7 +37,7 @@ class ChatViewModel @Inject constructor(
             } else {
                 storageService.saveChatList(editedChat)
             }
-            chatList = mutableStateOf(ChatList())
+            chatList = mutableStateOf(ChatList()) // 보내기 클릭 후 초기화
             onSuccess()
         }
     }
