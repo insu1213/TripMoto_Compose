@@ -2,7 +2,9 @@ package com.insu.tripmoto_compose.screen.main.chat
 
 import android.content.ContentValues
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.model.service.ConfigurationService
@@ -10,6 +12,7 @@ import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +21,12 @@ class ChatViewModel @Inject constructor(
     private val storageService: StorageService,
 ): MyViewModel(logService) {
     var chatList = mutableStateOf(ChatList())
+    val _chatListStorage = MutableStateFlow<List<ChatList>>(emptyList())
     val chatListStorage = storageService.chatList
+
+    fun updateChatListStorage(newList: List<ChatList>) {
+        _chatListStorage.value = newList
+    }
 
     fun onTextChange(newValue: String) {
         launchCatching { chatList.value = chatList.value.copy(text = newValue) }
@@ -37,8 +45,11 @@ class ChatViewModel @Inject constructor(
             } else {
                 storageService.saveChatList(editedChat)
             }
-            chatList = mutableStateOf(ChatList()) // 보내기 클릭 후 초기화
             onSuccess()
         }
+    }
+
+    fun clearText() {
+        launchCatching { chatList.value = chatList.value.copy(text = "") }
     }
 }
