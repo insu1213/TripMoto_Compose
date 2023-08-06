@@ -1,13 +1,10 @@
-package com.insu.tripmoto_compose.screen.main.chat
+package com.insu.tripmoto_compose.screen.main.chat.inner
 
-import android.content.ContentValues
-import android.util.Log
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.insu.tripmoto_compose.model.ChatList
-import com.insu.tripmoto_compose.model.MapMarker
-import com.insu.tripmoto_compose.model.service.ConfigurationService
+import com.insu.tripmoto_compose.model.User
+import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
@@ -19,7 +16,9 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor(
     logService: LogService,
     private val storageService: StorageService,
+    private val auth: AccountService
 ): MyViewModel(logService) {
+    val currentUser = auth.currentUser
     var chatList = mutableStateOf(ChatList())
     val _chatListStorage = MutableStateFlow<List<ChatList>>(emptyList())
     val chatListStorage = storageService.chatList
