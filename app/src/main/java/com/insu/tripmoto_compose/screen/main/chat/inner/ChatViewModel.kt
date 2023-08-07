@@ -18,7 +18,7 @@ class ChatViewModel @Inject constructor(
     private val storageService: StorageService,
     private val auth: AccountService
 ): MyViewModel(logService) {
-    val currentUser = auth.currentUser
+    val currentUserName = auth.currentUserId
     var chatList = mutableStateOf(ChatList())
     val _chatListStorage = MutableStateFlow<List<ChatList>>(emptyList())
     val chatListStorage = storageService.chatList

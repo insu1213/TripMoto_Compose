@@ -70,31 +70,31 @@ fun MessageCard(msg: ChatList) {
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            Surface(
-                color = colorResource(AppColor.primary_800),
-                shape = MaterialTheme.shapes.medium,
-                elevation = 2.dp) {
-                Text(
-                    text = msg.text,
-                    modifier = Modifier.padding(all = 8.dp),
-                    style = MaterialTheme.typography.body2,
-                    color = colorResource(AppColor.white)
-                )
+            Row(verticalAlignment = Alignment.Bottom) {
+                Surface(
+                    color = colorResource(AppColor.primary_800),
+                    shape = MaterialTheme.shapes.medium,
+                    elevation = 2.dp) {
+                    Text(
+                        text = msg.text,
+                        modifier = Modifier.padding(all = 8.dp),
+                        style = MaterialTheme.typography.body2,
+                        color = colorResource(AppColor.white)
+                    )
+                }
+                Box(
+                    contentAlignment = Alignment.BottomStart
+                ) {
+                    Text(
+                        modifier = Modifier.padding(start = 4.dp),
+                        text = msg.uploadTime,
+                        fontFamily = suitFamily,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 8.sp,
+                        color = colorResource(AppColor.gray_7),
+                    )
+                }
             }
-        }
-        Box(
-            modifier = Modifier
-                .padding(top = 50.dp),
-            contentAlignment = Alignment.BottomStart
-        ) {
-            Text(
-                modifier = Modifier.padding(start = 4.dp),
-                text = msg.uploadTime,
-                fontFamily = suitFamily,
-                fontWeight = FontWeight.Light,
-                fontSize = 8.sp,
-                color = colorResource(AppColor.gray_7),
-            )
         }
     }
 }
@@ -102,20 +102,8 @@ fun MessageCard(msg: ChatList) {
 @Composable
 fun MyMessageCard(msg: ChatList) {
     Row(modifier = Modifier.padding(all = 8.dp)) {
-        Box(
-            modifier = Modifier.weight(1f), // Box가 남은 공간을 차지하도록 weight 설정
-            contentAlignment = Alignment.BottomEnd
-        ) {
-            Text(
-                modifier = Modifier.padding(end = 4.dp),
-                text = msg.uploadTime,
-                fontFamily = suitFamily,
-                fontWeight = FontWeight.Light,
-                textAlign = TextAlign.End,
-                fontSize = 8.sp,
-                color = colorResource(AppColor.gray_7),
-            )
-        }
+
+
         Column(
             horizontalAlignment = Alignment.End
         ) {
@@ -127,12 +115,29 @@ fun MyMessageCard(msg: ChatList) {
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            Surface(shape = MaterialTheme.shapes.medium, elevation = 2.dp) {
-                Text(
-                    text = msg.text,
-                    modifier = Modifier.padding(all = 8.dp),
-                    style = MaterialTheme.typography.body2
-                )
+            Row(verticalAlignment = Alignment.Bottom) {
+                Box(
+                    modifier = Modifier.height(IntrinsicSize.Max), // Box가 남은 공간을 차지하도록 weight 설정
+                    contentAlignment = Alignment.BottomEnd
+                ) {
+                    Text(
+                        modifier = Modifier.padding(end = 4.dp),
+                        text = msg.uploadTime,
+                        fontFamily = suitFamily,
+                        fontWeight = FontWeight.Light,
+                        textAlign = TextAlign.End,
+                        fontSize = 8.sp,
+                        color = colorResource(AppColor.gray_7),
+                    )
+                }
+
+                Surface(shape = MaterialTheme.shapes.medium, elevation = 2.dp) {
+                    Text(
+                        text = msg.text,
+                        modifier = Modifier.padding(all = 8.dp),
+                        style = MaterialTheme.typography.body2
+                    )
+                }
             }
         }
 

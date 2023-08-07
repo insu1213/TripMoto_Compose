@@ -7,6 +7,7 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="dismiss">Dismiss</string>
+    <string name="logging">로그인되었습니다.</string>
 
     <!--Login-->
     <string name="try_again">Retry</string>

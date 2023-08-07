@@ -37,7 +37,6 @@ fun ChatScreen(
 ) {
     val activity = LocalContext.current as ComponentActivity
     val chatListStorage = viewModel.chatListStorage.collectAsStateWithLifecycle(emptyList())
-    val auth = viewModel.currentUser.collectAsStateWithLifecycle(User())
 
     val chatList by viewModel.chatList
 
@@ -65,7 +64,7 @@ fun ChatScreen(
                     item.id
                 }
             ) { _, item ->
-                ChatListItem(item, auth.value.id)
+                ChatListItem(item, viewModel.currentUserName)
             }
         }
     }
