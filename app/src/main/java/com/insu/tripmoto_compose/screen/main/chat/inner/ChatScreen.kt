@@ -1,5 +1,7 @@
 package com.insu.tripmoto_compose.screen.main.chat.inner
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
@@ -64,6 +66,7 @@ fun ChatScreen(
                     item.id
                 }
             ) { _, item ->
+                Log.d(TAG, "실행됨${item.text}")
                 ChatListItem(item, viewModel.currentUserName)
             }
         }
