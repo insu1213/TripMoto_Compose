@@ -22,7 +22,6 @@ class SplashViewModel @Inject constructor(
     logService: LogService
 ) : MyViewModel(logService){
     val showError = mutableStateOf(false)
-    val currentUser = accountService.currentUserId
 
     init {
         launchCatching { configurationService.fetchConfiguration() }

@@ -17,6 +17,7 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth
 ) : AccountService {
     override val currentUserId: String
         get() = auth.currentUser?.email!!.split("@")[0].orEmpty()
+        //get() = auth.currentUser?.uid.orEmpty()
 
     override val hasUser: Boolean
         get() = auth.currentUser != null
