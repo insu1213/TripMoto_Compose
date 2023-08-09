@@ -27,8 +27,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,10 +40,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.common.composable.MenuTitleText
 import com.insu.tripmoto_compose.common.ext.spacer
-import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.rememberAppState
 import com.insu.tripmoto_compose.screen.main.wishlist.WishListViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.string as AppText
 
@@ -56,15 +52,14 @@ fun ChatScreen(
 ) {
     val activity = LocalContext.current as ComponentActivity
     val chatListStorage = viewModel.chatListStorage.collectAsStateWithLifecycle(emptyList())
-
-    val chatList by viewModel.chatList
+    val chatList  by viewModel.chatList
 
     BackHandler {
         activity.finish()
     }
     Column(
         modifier = Modifier
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 120.dp)
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 88.dp)
             .fillMaxSize()
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
@@ -76,9 +71,9 @@ fun ChatScreen(
 
         Spacer(modifier = Modifier.padding(bottom = 8.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn() {
             itemsIndexed(
-                items = chatListStorage.value.sortedBy { it.uploadTime }, // 정렬된 리스트를 사용
+                items = chatListStorage.value,
                 key = { _, item ->
                     item.id
                 }
@@ -87,6 +82,7 @@ fun ChatScreen(
             }
         }
     }
+
 
     Box(
         modifier
@@ -101,7 +97,7 @@ fun ChatScreen(
                     IconButton(
                         onClick = {
                             viewModel.onSendClick {
-                                viewModel.clearText()
+
                             }
                         }
                     ) {
@@ -109,6 +105,7 @@ fun ChatScreen(
                     }
                 }
             )
+
         }
     }
 }

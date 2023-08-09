@@ -106,7 +106,7 @@ class StorageServiceImpl @Inject constructor(
         private const val SAVE_MARKER_TRACE = "saveMarker"
         private const val UPDATE_MARKER_TRACE = "updateMarker"
 
-        private const val CHAT_COLLECTION = "chatList"
+        private const val CHAT_COLLECTION = "marker"
         private const val SAVE_CHAT_TRACE = "saveMarker"
     }
 }
