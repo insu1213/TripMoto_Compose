@@ -20,7 +20,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
-import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.screen.fore.travel_expenses.TravelExpensesScreen
 import com.insu.tripmoto_compose.screen.fore.travel_members.TravelMembersScreen
 import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen
@@ -60,7 +59,6 @@ fun MyApp() {
                 },
                 scaffoldState = appState.scaffoldState
             ) { innerPaddingModifier ->
-
                 NavHost(
                     navController = appState.navController,
                     startDestination = "MainScreen",
