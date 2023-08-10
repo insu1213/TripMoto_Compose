@@ -7,6 +7,7 @@ import com.google.firebase.perf.ktx.trace
 import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.model.User
+import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.StorageService
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class StorageServiceImpl @Inject constructor(
     private val firestore: FirebaseFirestore, private val auth: AccountService
 ): StorageService {
+
 
     // WishList
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -80,6 +82,7 @@ class StorageServiceImpl @Inject constructor(
             auth.currentUser.flatMapLatest { user: User ->
                 firestore.collection(CHAT_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
             }
+
     override suspend fun getChatList(chatListId: String): ChatList? =
         firestore.collection(CHAT_COLLECTION).document(chatListId).get().await().toObject()
     override suspend fun saveChatList(chatList: ChatList): String =
@@ -95,6 +98,23 @@ class StorageServiceImpl @Inject constructor(
     }
 
 
+    // UserInfo
+    override suspend fun getUserInfo(uid: String): UserInfo? =
+        firestore.collection(USERINFO_COLLECTION).document(uid).get().await().toObject()
+    override suspend fun saveUserInfo(uid: String, userInfo: UserInfo) {
+        trace(SAVE_CHAT_TRACE) {
+            firestore.collection(USERINFO_COLLECTION).document(uid).set(userInfo).await()
+        }
+    }
+    override suspend fun updateUserInfo(uid: String, userInfo: UserInfo) {
+        trace(UPDATE_MARKER_TRACE) {
+            firestore.collection(USERINFO_COLLECTION).document(uid).set(userInfo).await()
+        }
+    }
+    override suspend fun deleteUserInfo(uid: String) {
+        TODO("Not yet implemented")
+    }
+
     companion object {
         private const val USER_ID_FIELD = "userId"
 
@@ -106,7 +126,11 @@ class StorageServiceImpl @Inject constructor(
         private const val SAVE_MARKER_TRACE = "saveMarker"
         private const val UPDATE_MARKER_TRACE = "updateMarker"
 
-        private const val CHAT_COLLECTION = "marker"
-        private const val SAVE_CHAT_TRACE = "saveMarker"
+        private const val CHAT_COLLECTION = "chatList"
+        private const val SAVE_CHAT_TRACE = "saveChatList"
+
+        private const val USERINFO_COLLECTION = "userInfo"
+        private const val SAVE_USERINFO_TRACE = "saveUserInfo"
+        private const val UPDATE_USERINFO_TRACE = "updateUserInfo"
     }
 }

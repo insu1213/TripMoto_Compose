@@ -2,6 +2,7 @@ package com.insu.tripmoto_compose.model.service
 
 import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.model.MapMarker
+import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.WishList
 import kotlinx.coroutines.flow.Flow
 
@@ -9,6 +10,11 @@ interface StorageService {
     val wishList: Flow<List<WishList>>
     val marker: Flow<List<MapMarker>>
     val chatList: Flow<List<ChatList>>
+
+    suspend fun getUserInfo(uid: String): UserInfo?
+    suspend fun saveUserInfo(uid: String, userInfo: UserInfo)
+    suspend fun updateUserInfo(uid: String, userInfo: UserInfo)
+    suspend fun deleteUserInfo(uid: String)
 
     suspend fun getWishList(wishListId: String): WishList?
     suspend fun saveWishList(wishList: WishList): String

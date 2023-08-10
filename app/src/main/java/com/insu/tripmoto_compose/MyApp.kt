@@ -26,9 +26,9 @@ import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen
 import com.insu.tripmoto_compose.screen.fore.travel_schedule.TravelScheduleScreen
 import com.insu.tripmoto_compose.screen.login.LoginScreen
 import com.insu.tripmoto_compose.screen.main.BottomNavItem
-import com.insu.tripmoto_compose.screen.main.chat.ChatScreen
 import com.insu.tripmoto_compose.screen.main.direction.DirectionScreen
 import com.insu.tripmoto_compose.screen.main.MainScreen
+import com.insu.tripmoto_compose.screen.main.chat.inner.ChatScreen
 import com.insu.tripmoto_compose.screen.main.map.MapScreen
 import com.insu.tripmoto_compose.screen.main.menu.MenuScreen
 import com.insu.tripmoto_compose.screen.main.wishlist.WishListScreen
