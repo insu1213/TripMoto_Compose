@@ -7,6 +7,7 @@
     <string name="done">Done</string>
     <string name="cancel">Cancel</string>
     <string name="dismiss">Dismiss</string>
+    <string name="nick_name">NickName</string>
 
     <!--Login-->
     <string name="try_again">Retry</string>
@@ -71,5 +72,11 @@
 
     <!--Main/Chat-->
     <string name="chat">Chat</string>
+
+    <!--Main/Menu-->
+    <string name="menu">Menu</string>
+    <string name="active_trip_management">Travel management</string>
+    <string name="past_trip_record">Past travel record</string>
+    <string name="participate_other_travel">Participate in other travel</string>
 
 </resources>

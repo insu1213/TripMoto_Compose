@@ -102,17 +102,17 @@ class StorageServiceImpl @Inject constructor(
     override suspend fun getUserInfo(uid: String): UserInfo? =
         firestore.collection(USERINFO_COLLECTION).document(uid).get().await().toObject()
     override suspend fun saveUserInfo(uid: String, userInfo: UserInfo) {
-        trace(SAVE_CHAT_TRACE) {
+        trace(SAVE_USERINFO_TRACE) {
             firestore.collection(USERINFO_COLLECTION).document(uid).set(userInfo).await()
         }
     }
     override suspend fun updateUserInfo(uid: String, userInfo: UserInfo) {
-        trace(UPDATE_MARKER_TRACE) {
+        trace(UPDATE_USERINFO_TRACE) {
             firestore.collection(USERINFO_COLLECTION).document(uid).set(userInfo).await()
         }
     }
     override suspend fun deleteUserInfo(uid: String) {
-        TODO("Not yet implemented")
+        firestore.collection(USERINFO_COLLECTION).document(uid).delete().await()
     }
 
     companion object {
