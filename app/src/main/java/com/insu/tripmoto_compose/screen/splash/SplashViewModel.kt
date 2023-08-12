@@ -27,20 +27,20 @@ class SplashViewModel @Inject constructor(
 
     fun onAppStart(openAndPopUp: (String, String) -> Unit) {
         showError.value = false
-        if(accountService.hasUser) openAndPopUp("LoginScreen", "SplashScreen")
-        else createAnonymousAccount(openAndPopUp)
+        if(accountService.hasUser) openAndPopUp("MainScreen", "SplashScreen")
+        else openAndPopUp("LoginScreen", "SplashScreen")
     }
 
-    private fun createAnonymousAccount(openAndPopUp: (String, String) -> Unit) {
-        launchCatching(snackbar = false) {
-            try {
-                accountService.createAnonymousAccount()
-            } catch (ex: FirebaseAuthException) {
-                showError.value = true
-                Log.d(TAG, "ex: $ex")
-                throw ex
-            }
-            openAndPopUp("LoginScreen", "SplashScreen")
-        }
-    }
+//    private fun createAnonymousAccount(openAndPopUp: (String, String) -> Unit) {
+//        launchCatching(snackbar = false) {
+//            try {
+//                accountService.createAnonymousAccount()
+//            } catch (ex: FirebaseAuthException) {
+//                showError.value = true
+//                Log.d(TAG, "ex: $ex")
+//                throw ex
+//            }
+//            openAndPopUp("LoginScreen", "SplashScreen")
+//        }
+//    }
 }

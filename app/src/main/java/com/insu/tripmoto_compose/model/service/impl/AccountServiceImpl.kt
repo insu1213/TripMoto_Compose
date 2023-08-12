@@ -39,9 +39,9 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth
         auth.sendPasswordResetEmail(email).await()
     }
 
-    override suspend fun createAnonymousAccount() {
-        auth.signInAnonymously().await()
-    }
+//    override suspend fun createAnonymousAccount() {
+//        auth.signInAnonymously().await()
+//    }
 
     override suspend fun linkAccount(email: String, password: String): Unit =
         trace(LINK_ACCOUNT_TRACE) {
@@ -59,7 +59,7 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth
         }
         auth.signOut()
 
-        createAnonymousAccount()
+        //createAnonymousAccount()
     }
 
     companion object {

@@ -37,19 +37,18 @@ import com.insu.tripmoto_compose.R.color as AppColor
 @Composable
 fun ChatListItem(
     chat: ChatList,
-    userId: String,
+    userId: String, // 현재 로그인된 사용자 UID
+    itemUserName: String // 아이템에 저장된 사용자 닉네임
 ) {
-    Log.d(TAG, "실행: chatUserId = ${chat.userId}")
-    Log.d(TAG, "실행: userId = $userId")
     if(chat.userId == userId) {
-        MyMessageCard(chat)
+        MyMessageCard(chat, itemUserName)
     } else {
-        MessageCard(chat)
+        MessageCard(chat, itemUserName)
     }
 }
 
 @Composable
-fun MessageCard(msg: ChatList) {
+fun MessageCard(msg: ChatList, nickName: String) {
     Row(modifier = Modifier.padding(all = 8.dp)) {
         Image(
             painter = painterResource(R.drawable.zoe),
@@ -63,7 +62,7 @@ fun MessageCard(msg: ChatList) {
 
         Column {
             Text(
-                text = msg.userId,
+                text = nickName,
                 color = MaterialTheme.colors.secondaryVariant,
                 style = MaterialTheme.typography.subtitle2
             )
@@ -100,14 +99,14 @@ fun MessageCard(msg: ChatList) {
 }
 
 @Composable
-fun MyMessageCard(msg: ChatList) {
+fun MyMessageCard(msg: ChatList, nickName: String) {
     Row(modifier = Modifier.padding(all = 8.dp).fillMaxWidth()) {
         Spacer(Modifier.weight(1f))
         Column(
             horizontalAlignment = Alignment.End
         ) {
             Text(
-                text = msg.userId,
+                text = nickName,
                 color = MaterialTheme.colors.secondaryVariant,
                 style = MaterialTheme.typography.subtitle2
             )
@@ -155,11 +154,11 @@ fun MyMessageCard(msg: ChatList) {
 @Preview
 @Composable
 fun MessageCardPreview() {
-    MessageCard(ChatList(text = "내 이름은 조이야~", userId = "조이, 여명의 성위", uploadTime = "12:25"))
+    MessageCard(ChatList(text = "내 이름은 조이야~", userId = "조이, 여명의 성위", uploadTime = "12:25"), "조이, 여명의 성위")
 }
 
 @Preview
 @Composable
 fun MyMessageCardPreview() {
-    MyMessageCard(ChatList(text = "내 이름은 조이야~", userId = "조이, 여명의 성위", uploadTime = "12:25"))
+    MyMessageCard(ChatList(text = "내 이름은 조이야~", userId = "조이, 여명의 성위", uploadTime = "12:25"), "조이, 여명의 성위")
 }

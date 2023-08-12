@@ -2,14 +2,20 @@ package com.insu.tripmoto_compose.screen.main.chat.inner
 
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
 import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.model.User
+import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,12 +45,21 @@ class ChatViewModel @Inject constructor(
         launchCatching {
             val editedChat = chatList.value
 
-            if(editedChat.id.isBlank()) {
-                storageService.saveChatList(editedChat)
-            } else {
-                storageService.saveChatList(editedChat)
-            }
+            storageService.saveChatList(editedChat)
+//            if(editedChat.id.isBlank()) {
+//                storageService.saveChatList(editedChat)
+//            } else {
+//                storageService.saveChatList(editedChat)
+//            }
             onSuccess()
+        }
+    }
+
+    fun uidToNickName(uid: String, callback: (String) -> Unit) {
+        viewModelScope.launch {
+            val userInfo = async { storageService.getUserInfo(uid) }
+            val nickName = userInfo.await()?.nickName ?: ""
+            callback(nickName)
         }
     }
 

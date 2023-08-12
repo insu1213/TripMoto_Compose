@@ -66,7 +66,17 @@ fun ChatScreen(
                     item.id
                 }
             ) { _, item ->
-                ChatListItem(item, auth.value.id)
+                var isCallback = false
+                var itemIdNickName = ""
+                viewModel.uidToNickName(item.id) { nickName ->
+                    itemIdNickName = nickName
+                    isCallback = true
+                }
+                if(isCallback) {
+                    ChatListItem(item, auth.value.id, itemIdNickName)
+                    isCallback = false
+                }
+
             }
         }
     }

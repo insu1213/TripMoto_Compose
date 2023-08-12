@@ -5,8 +5,10 @@ import com.insu.tripmoto_compose.common.ext.isValidEmail
 import com.insu.tripmoto_compose.common.ext.isValidPassword
 import com.insu.tripmoto_compose.common.ext.passwordMatches
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
+import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.LogService
+import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -15,6 +17,7 @@ import com.insu.tripmoto_compose.R.string as AppText
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
     private val accountService: AccountService,
+    private val storageService: StorageService,
     logService: LogService
 ): MyViewModel(logService) {
     var uiState = mutableStateOf(SignUpUiState())
@@ -24,6 +27,9 @@ class SignUpViewModel @Inject constructor(
         get() = uiState.value.email
     private val password
         get() = uiState.value.password
+
+    private val nickName
+        get() = uiState.value.nickName
 
     fun onNickNameChange(newValue: String) {
         uiState.value = uiState.value.copy(nickName = newValue)
@@ -42,6 +48,10 @@ class SignUpViewModel @Inject constructor(
     }
 
     fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
+        if(nickName.isBlank()) {
+            return
+        }
+
         if(!email.isValidEmail()) {
             SnackbarManager.showMessage(AppText.email_error)
             return
@@ -57,6 +67,8 @@ class SignUpViewModel @Inject constructor(
 
         launchCatching {
             accountService.linkAccount(email, password)
+            val userUid = accountService.currentUserId
+            storageService.saveUserInfo(userUid, UserInfo(nickName, email))
             openAndPopUp("LoginScreen", "SignUpScreen")
         }
     }
