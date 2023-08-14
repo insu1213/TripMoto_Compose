@@ -7,12 +7,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -116,42 +120,38 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
         TravelExpensesScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
 
-
     composable("MainScreen") {
         MainScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
 
+    composable(BottomNavItem.WishList.screen_route) {
+        WishListScreen(openScreen = { route -> appState.navigate(route) })
+    }
+    composable(BottomNavItem.Direction.screen_route) {
+        DirectionScreen()
+    }
+    composable(BottomNavItem.Map.screen_route) {
+        MapScreen()
+    }
+    composable(BottomNavItem.Chat.screen_route) {
+        ChatScreen()
+    }
+    composable(BottomNavItem.Menu.screen_route) {
+        MenuScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
+    }
 
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun NavigationGraph(appState: MyAppState) {
-    NavHost(appState.navController, startDestination = BottomNavItem.Map.screen_route) {
-        composable(BottomNavItem.WishList.screen_route) {
-            WishListScreen(openScreen = { route -> appState.navigate(route) })
-        }
-        composable(BottomNavItem.Direction.screen_route) {
-            DirectionScreen()
-        }
-        composable(BottomNavItem.Map.screen_route) {
-            MapScreen()
-        }
-        composable(BottomNavItem.Chat.screen_route) {
-            ChatScreen()
-        }
-        composable(BottomNavItem.Menu.screen_route) {
-            MenuScreen()
-        }
-
-        composable(
-            route = "WishListEditScreen$WISHLIST_ID_ARG",
-            arguments = listOf(navArgument(WISHLIST_ID) { defaultValue = WISHLIST_DEFAULT_ID })
-        ) {
-            WishListEditScreen(
-                popUpScreen = { appState.popUp() },
-                wishListId = it.arguments?.getString(WISHLIST_ID) ?: WISHLIST_DEFAULT_ID
-            )
-        }
+    composable(
+        route = "WishListEditScreen$WISHLIST_ID_ARG",
+        arguments = listOf(navArgument(WISHLIST_ID) { defaultValue = WISHLIST_DEFAULT_ID })
+    ) {
+        WishListEditScreen(
+            popUpScreen = { appState.popUp() },
+            wishListId = it.arguments?.getString(WISHLIST_ID) ?: WISHLIST_DEFAULT_ID
+        )
     }
 }
+
+@Composable
+@ExperimentalMaterialApi
+public fun NavController.currentBackStackEntryAsState(): State<NavBackStackEntry?> =
+    currentBackStackEntryFlow.collectAsState(null)

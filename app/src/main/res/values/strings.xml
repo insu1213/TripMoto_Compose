@@ -8,6 +8,7 @@
     <string name="cancel">Cancel</string>
     <string name="dismiss">Dismiss</string>
     <string name="nick_name">NickName</string>
+    <string name="logout">You have been logged out</string>
 
     <!--Login-->
     <string name="try_again">Retry</string>

@@ -3,6 +3,7 @@ package com.insu.tripmoto_compose.screen.main.menu
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.rememberAppState
@@ -35,7 +37,10 @@ import com.insu.tripmoto_compose.R.color as AppColor
 import com.insu.tripmoto_compose.R.string as AppText
 
 @Composable
-fun MenuScreen() {
+fun MenuScreen(
+    openAndPopUp: (String) -> Unit,
+    viewModel: MenuViewModel = hiltViewModel()
+) {
     val activity = LocalContext.current as ComponentActivity
     BackHandler {
         activity.finish()
@@ -127,5 +132,16 @@ fun MenuScreen() {
                 )
             }
         }
+        Text(
+            modifier = Modifier
+                .clickable {
+                    viewModel.onLogoutClick {
+                        openAndPopUp("LoginScreen")
+                    }
+                },
+            text = "Logout",
+            fontSize = 16.sp,
+            color = colorResource(AppColor.primary_800)
+        )
     }
 }
