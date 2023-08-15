@@ -55,6 +55,7 @@ fun SignUpScreen(
         MenuTitleText(modifier = Modifier.padding(top = 12.dp), text = AppText.register)
 
         LimitTextField(
+            modifier = Modifier.padding(top = 32.dp),
             maxLength = 10,
             text = AppText.nick_name,
             value = uiState.nickName,
@@ -66,7 +67,7 @@ fun SignUpScreen(
             viewModel::onEmailChange,
             Modifier
                 .fieldModifier()
-                .padding(top = 36.dp)
+                .padding(top = 40.dp)
         )
         PasswordField(
             uiState.password, viewModel::onPasswordChange, Modifier

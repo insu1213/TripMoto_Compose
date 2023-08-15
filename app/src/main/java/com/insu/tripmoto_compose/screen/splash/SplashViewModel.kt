@@ -27,6 +27,7 @@ class SplashViewModel @Inject constructor(
 
     fun onAppStart(openAndPopUp: (String, String) -> Unit) {
         showError.value = false
+        Log.d(TAG, "hasUser: ${accountService.hasUser}")
         if(accountService.hasUser) openAndPopUp("MainScreen", "SplashScreen")
         else openAndPopUp("LoginScreen", "SplashScreen")
     }

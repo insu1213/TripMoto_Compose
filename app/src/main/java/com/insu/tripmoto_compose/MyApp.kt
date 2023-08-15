@@ -65,7 +65,7 @@ fun MyApp() {
             ) { innerPaddingModifier ->
                 NavHost(
                     navController = appState.navController,
-                    startDestination = "MainScreen",
+                    startDestination = "SplashScreen",
                     modifier = Modifier.padding(innerPaddingModifier)
                 ) {
                     navGraph(appState)

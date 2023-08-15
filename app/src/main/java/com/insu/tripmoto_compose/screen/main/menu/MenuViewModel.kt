@@ -17,7 +17,7 @@ class MenuViewModel @Inject constructor(
 ): MyViewModel(logService) {
     fun onLogoutClick(callback: () -> Unit) {
         viewModelScope.launch {
-            //accountService.signOut()
+            accountService.signOut()
             SnackbarManager.showMessage(R.string.logout)
             callback()
         }
