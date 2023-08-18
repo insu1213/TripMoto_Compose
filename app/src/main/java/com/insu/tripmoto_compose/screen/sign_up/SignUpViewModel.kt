@@ -1,5 +1,7 @@
 package com.insu.tripmoto_compose.screen.sign_up
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import com.insu.tripmoto_compose.common.ext.isValidEmail
 import com.insu.tripmoto_compose.common.ext.isValidPassword
@@ -49,6 +51,7 @@ class SignUpViewModel @Inject constructor(
 
     fun onSignUpClick(openAndPopUp: (String, String) -> Unit) {
         if(nickName.isBlank()) {
+            SnackbarManager.showMessage(AppText.nickname_error)
             return
         }
 
@@ -66,9 +69,17 @@ class SignUpViewModel @Inject constructor(
         }
 
         launchCatching {
-            accountService.linkAccount(email, password)
+            Log.d(TAG, "실행됨1")
+            accountService.linkAccount(email, password) {
+
+            }
+
+            Log.d(TAG, "실행됨2")
             val userUid = accountService.currentUserId
+            Log.d(TAG, "userUid: $userUid")
+            Log.d(TAG, "실행됨3")
             storageService.saveUserInfo(userUid, UserInfo(nickName, email))
+            Log.d(TAG, "실행됨4")
             openAndPopUp("LoginScreen", "SignUpScreen")
         }
     }

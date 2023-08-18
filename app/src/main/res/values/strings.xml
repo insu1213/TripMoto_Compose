@@ -24,6 +24,7 @@
     <string name="repeat_password">Repeat password</string>
     <string name="create_account">Create account</string>
     <string name="register">Register</string>
+    <string name="nickname_error">NickName cannot be empty</string>
 
     <!--Title-->
     <string name="trip_moto">TripMoto</string>

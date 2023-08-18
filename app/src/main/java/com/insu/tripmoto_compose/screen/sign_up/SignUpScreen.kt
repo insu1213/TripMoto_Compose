@@ -59,7 +59,7 @@ fun SignUpScreen(
             maxLength = 10,
             text = AppText.nick_name,
             value = uiState.nickName,
-            onNewValue = viewModel::onEmailChange
+            onNewValue = viewModel::onNickNameChange
         )
 
         EmailField(
