@@ -6,6 +6,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.perf.ktx.trace
 import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.model.MapMarker
+import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.WishList
@@ -26,6 +27,27 @@ class StorageServiceImpl @Inject constructor(
     private val firestore: FirebaseFirestore, private val auth: AccountService
 ): StorageService {
 
+    override val tripCollection = firestore.collection(TRIP_COLLECTION)
+    override val tripDocument = tripCollection.document()
+
+    // Trip
+    override suspend fun getTrip(tripId: String): Trip? =
+        //firestore.collection(TRIP_COLLECTION).document(wishListId).get().await().toObject()
+        firestore.collection(TRIP_COLLECTION).document(tripId).get().await().toObject()
+    override suspend fun saveTrip(trip: Trip) {
+        trace(SAVE_TRIP_TRACE) {
+            firestore.collection(TRIP_COLLECTION).add(trip).await().id
+        }
+    }
+    override suspend fun updateTrip(trip: Trip) {
+        trace(UPDATE_TRIP_TRACE) {
+            firestore.collection(TRIP_COLLECTION).document(trip.id).set(wishList).await()
+        }
+    }
+    override suspend fun deleteTrip(tripId: String) {
+        firestore.collection(TRIP_COLLECTION).document(tripId).delete().await()
+    }
+
 
     // WishList
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -33,13 +55,16 @@ class StorageServiceImpl @Inject constructor(
         get() =
             auth.currentUser.flatMapLatest { user: User ->
                 firestore.collection(WISH_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
-        }
+            }
     override suspend fun getWishList(wishListId: String): WishList? =
         firestore.collection(WISH_COLLECTION).document(wishListId).get().await().toObject()
     override suspend fun saveWishList(wishList: WishList): String =
         trace(SAVE_WISH_TRACE) {
             val wishWithUserId = wishList.copy(userId = auth.currentUserId)
-            firestore.collection(WISH_COLLECTION).add(wishWithUserId).await().id
+            val data = hashMapOf(
+                "wishList" to wishWithUserId
+            )
+            firestore.collection(WISH_COLLECTION).add(data).await().id
         }
     override suspend fun updateWishList(wishList: WishList): Unit =
         trace(UPDATE_WISH_TRACE) {
@@ -48,8 +73,6 @@ class StorageServiceImpl @Inject constructor(
     override suspend fun deleteWishList(wishListId: String) {
         firestore.collection(WISH_COLLECTION).document(wishListId).delete().await()
     }
-
-
 
     // Google Map Marker
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -117,6 +140,10 @@ class StorageServiceImpl @Inject constructor(
 
     companion object {
         private const val USER_ID_FIELD = "userId"
+
+        private const val TRIP_COLLECTION = "trip"
+        private const val SAVE_TRIP_TRACE = "saveTrip"
+        private const val UPDATE_TRIP_TRACE = "updateTrip"
 
         private const val WISH_COLLECTION = "wishList"
         private const val SAVE_WISH_TRACE = "saveWishList"

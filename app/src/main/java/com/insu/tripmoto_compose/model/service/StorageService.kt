@@ -1,7 +1,10 @@
 package com.insu.tripmoto_compose.model.service
 
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.model.MapMarker
+import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.WishList
 import kotlinx.coroutines.flow.Flow
@@ -10,6 +13,14 @@ interface StorageService {
     val wishList: Flow<List<WishList>>
     val marker: Flow<List<MapMarker>>
     val chatList: Flow<List<ChatList>>
+
+    val tripCollection: CollectionReference
+    val tripDocument: DocumentReference
+
+    suspend fun getTrip(tripId: String): Trip?
+    suspend fun saveTrip(trip: Trip)
+    suspend fun updateTrip(trip: Trip)
+    suspend fun deleteTrip(tripId: String)
 
     suspend fun getUserInfo(uid: String): UserInfo?
     suspend fun saveUserInfo(uid: String, userInfo: UserInfo)
