@@ -1,5 +1,7 @@
 package com.insu.tripmoto_compose.model.service.impl
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.dataObjects
 import com.google.firebase.firestore.ktx.toObject
@@ -29,95 +31,114 @@ class StorageServiceImpl @Inject constructor(
 
     override val tripCollection = firestore.collection(TRIP_COLLECTION)
     override val tripDocument = tripCollection.document()
+    override val currentTripId = mutableStateOf("")
+
+    override val trip: Flow<List<Trip>>
+        get() =
+            tripCollection.dataObjects()
 
     // Trip
     override suspend fun getTrip(tripId: String): Trip? =
         //firestore.collection(TRIP_COLLECTION).document(wishListId).get().await().toObject()
-        firestore.collection(TRIP_COLLECTION).document(tripId).get().await().toObject()
+        tripCollection.document(tripId).get().await().toObject()
     override suspend fun saveTrip(trip: Trip) {
         trace(SAVE_TRIP_TRACE) {
-            firestore.collection(TRIP_COLLECTION).add(trip).await().id
+            val id = tripCollection.add(trip).await().id
+            currentTripId.value = id
         }
     }
+
     override suspend fun updateTrip(trip: Trip) {
         trace(UPDATE_TRIP_TRACE) {
-            firestore.collection(TRIP_COLLECTION).document(trip.id).set(wishList).await()
+            tripCollection.document(trip.id).set(wishList).await()
         }
     }
     override suspend fun deleteTrip(tripId: String) {
-        firestore.collection(TRIP_COLLECTION).document(tripId).delete().await()
+        tripCollection.document(tripId).delete().await()
     }
-
 
     // WishList
     @OptIn(ExperimentalCoroutinesApi::class)
     override val wishList: Flow<List<WishList>>
         get() =
-            auth.currentUser.flatMapLatest { user: User ->
-                firestore.collection(WISH_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
-            }
+//            auth.currentUser.flatMapLatest { user: User ->
+//                firestore.collection(WISH_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
+//            }
+            tripCollection.document(currentTripId.value).collection(WISH_COLLECTION).dataObjects()
+
     override suspend fun getWishList(wishListId: String): WishList? =
         firestore.collection(WISH_COLLECTION).document(wishListId).get().await().toObject()
     override suspend fun saveWishList(wishList: WishList): String =
         trace(SAVE_WISH_TRACE) {
             val wishWithUserId = wishList.copy(userId = auth.currentUserId)
-            val data = hashMapOf(
-                "wishList" to wishWithUserId
-            )
-            firestore.collection(WISH_COLLECTION).add(data).await().id
+            tripCollection.document(currentTripId.value).collection(WISH_COLLECTION).add(wishWithUserId).await().id
+//            val data = hashMapOf(
+//                "wishList" to wishWithUserId
+//            )
+//            firestore.collection(WISH_COLLECTION).add(data).await().id
         }
     override suspend fun updateWishList(wishList: WishList): Unit =
         trace(UPDATE_WISH_TRACE) {
-            firestore.collection(WISH_COLLECTION).document(wishList.id).set(wishList).await()
+            //firestore.collection(WISH_COLLECTION).document(wishList.id).set(wishList).await()
+            tripCollection.document(currentTripId.value).collection(WISH_COLLECTION).document(wishList.id).set(wishList).await()
         }
     override suspend fun deleteWishList(wishListId: String) {
-        firestore.collection(WISH_COLLECTION).document(wishListId).delete().await()
+        //firestore.collection(WISH_COLLECTION).document(wishListId).delete().await()
+        tripCollection.document(currentTripId.value).collection(WISH_COLLECTION).document(wishListId).delete().await()
     }
 
     // Google Map Marker
     @OptIn(ExperimentalCoroutinesApi::class)
     override val marker: Flow<List<MapMarker>>
         get() =
-            auth.currentUser.flatMapLatest { user: User ->
-                firestore.collection(MARKER_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
-            }
+//            auth.currentUser.flatMapLatest { user: User ->
+//                firestore.collection(MARKER_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
+//            }
+            tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).dataObjects()
     override suspend fun getMarker(markerId: String): MapMarker? =
-        firestore.collection(MARKER_COLLECTION).document(markerId).get().await().toObject()
+        //firestore.collection(MARKER_COLLECTION).document(markerId).get().await().toObject()
+        tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).document(markerId).get().await().toObject()
 
     override suspend fun saveMarker(marker: MapMarker): String =
         trace(SAVE_MARKER_TRACE) {
             val markerWithUserId = marker.copy(userId = auth.currentUserId)
-            firestore.collection(MARKER_COLLECTION).add(markerWithUserId).await().id
+            tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).add(markerWithUserId).await().id
+            //firestore.collection(MARKER_COLLECTION).add(markerWithUserId).await().id
         }
     override suspend fun updateMarker(marker: MapMarker): Unit =
         trace(UPDATE_MARKER_TRACE) {
-            firestore.collection(MARKER_COLLECTION).document(marker.id).set(marker).await()
+            tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).document(marker.id).set(marker).await()
+            //firestore.collection(MARKER_COLLECTION).document(marker.id).set(marker).await()
         }
     override suspend fun deleteMarker(markerId: String) {
-        firestore.collection(MARKER_COLLECTION).document(markerId).delete().await()
+        tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).document(markerId).delete().await()
+        //firestore.collection(MARKER_COLLECTION).document(markerId).delete().await()
     }
-
 
     // ChatList
     @OptIn(ExperimentalCoroutinesApi::class)
     override val chatList: Flow<List<ChatList>>
         get() =
-            auth.currentUser.flatMapLatest { user: User ->
-                firestore.collection(CHAT_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
-            }
+//            auth.currentUser.flatMapLatest { user: User ->
+//                firestore.collection(CHAT_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
+//            }
+            tripCollection.document(currentTripId.value).collection(CHAT_COLLECTION).dataObjects()
 
     override suspend fun getChatList(chatListId: String): ChatList? =
-        firestore.collection(CHAT_COLLECTION).document(chatListId).get().await().toObject()
+        //firestore.collection(CHAT_COLLECTION).document(chatListId).get().await().toObject()
+        tripCollection.document(currentTripId.value).collection(CHAT_COLLECTION).document(chatListId).get().await().toObject()
     override suspend fun saveChatList(chatList: ChatList): String =
         trace(SAVE_CHAT_TRACE) {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
             val currentTime = dateFormat.format(Date(System.currentTimeMillis()))
             val chatWithUserIdAndTime = chatList.copy(userId = auth.currentUserId, uploadTime = currentTime)
 
-            firestore.collection(CHAT_COLLECTION).add(chatWithUserIdAndTime).await().id
+            tripCollection.document(currentTripId.value).collection(CHAT_COLLECTION).add(chatWithUserIdAndTime).await().id
+            //firestore.collection(CHAT_COLLECTION).add(chatWithUserIdAndTime).await().id
         }
     override suspend fun deleteChatList(chatListId: String) {
-        firestore.collection(CHAT_COLLECTION).document(chatListId).delete().await()
+        //firestore.collection(CHAT_COLLECTION).document(chatListId).delete().await()
+        tripCollection.document(currentTripId.value).collection(CHAT_COLLECTION).document(chatListId).delete().await()
     }
 
 

@@ -1,5 +1,6 @@
 package com.insu.tripmoto_compose.model.service
 
+import androidx.compose.runtime.MutableState
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.insu.tripmoto_compose.model.ChatList
@@ -10,9 +11,11 @@ import com.insu.tripmoto_compose.model.WishList
 import kotlinx.coroutines.flow.Flow
 
 interface StorageService {
+    val trip: Flow<List<Trip>>
     val wishList: Flow<List<WishList>>
     val marker: Flow<List<MapMarker>>
     val chatList: Flow<List<ChatList>>
+    val currentTripId: MutableState<String>
 
     val tripCollection: CollectionReference
     val tripDocument: DocumentReference
