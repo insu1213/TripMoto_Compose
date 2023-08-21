@@ -43,7 +43,7 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth
 //        auth.signInAnonymously().await()
 //    }
 
-    override suspend fun linkAccount(email: String, password: String, onSuccess: () -> Unit): Unit =
+    override suspend fun linkAccount(email: String, password: String): Unit =
         trace(LINK_ACCOUNT_TRACE) {
             //val credential = EmailAuthProvider.getCredential(email, password)
             auth.createUserWithEmailAndPassword(email, password).await()

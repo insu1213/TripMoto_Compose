@@ -44,7 +44,7 @@ class LoginViewModel @Inject constructor(
 
         launchCatching {
             accountService.authenticate(email, password)
-            openAndPopUp("TravelPlaceScreen", "LoginScreen")
+            openAndPopUp("TripSelectionScreen", "LoginScreen")
         }
     }
 

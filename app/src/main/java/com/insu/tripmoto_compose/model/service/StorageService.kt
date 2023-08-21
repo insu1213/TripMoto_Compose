@@ -17,6 +17,7 @@ interface StorageService {
     val chatList: Flow<List<ChatList>>
     val currentTripId: MutableState<String>
 
+
     val tripCollection: CollectionReference
     val tripDocument: DocumentReference
 

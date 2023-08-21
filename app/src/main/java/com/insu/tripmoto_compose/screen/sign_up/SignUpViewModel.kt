@@ -70,16 +70,11 @@ class SignUpViewModel @Inject constructor(
 
         launchCatching {
             Log.d(TAG, "실행됨1")
-            accountService.linkAccount(email, password) {
+            accountService.linkAccount(email, password)
 
-            }
-
-            Log.d(TAG, "실행됨2")
             val userUid = accountService.currentUserId
-            Log.d(TAG, "userUid: $userUid")
-            Log.d(TAG, "실행됨3")
-            storageService.saveUserInfo(userUid, UserInfo(nickName, email))
-            Log.d(TAG, "실행됨4")
+            Log.d(TAG, "nickName: $nickName")
+            storageService.saveUserInfo(userUid, UserInfo(nickName = nickName, email = email))
             openAndPopUp("LoginScreen", "SignUpScreen")
         }
     }

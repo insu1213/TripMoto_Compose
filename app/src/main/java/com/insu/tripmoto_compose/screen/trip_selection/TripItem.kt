@@ -2,14 +2,17 @@ package com.insu.tripmoto_compose.screen.trip_selection
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,13 +26,18 @@ import com.insu.tripmoto_compose.R.color as AppColor
 
 @Composable
 fun TripItem(
-    trip: Trip
+    trip: Trip,
+    onClick: (tripId: String) -> Unit
 ) {
-    Row() {
+    Row(
+        modifier = Modifier.clickable { onClick(trip.id) }
+    ) {
         Image(
-            modifier = Modifier.size(46.dp),
+            modifier = Modifier
+                .size(46.dp)
+                .clip(shape = RoundedCornerShape(10.dp)),
             painter = painterResource(AppIcon.zoe),
-            contentDescription = ""
+            contentDescription = "",
         )
         Column(
             modifier = Modifier.padding(start = 4.dp)
@@ -55,5 +63,7 @@ fun TripItem(
 @Composable
 @Preview
 fun TripItemPreview() {
-    TripItem(Trip(id = "", title = "2023일본여행", region = "일본", city = "도쿄"))
+    TripItem(Trip(id = "", title = "2023일본여행", region = "일본", city = "도쿄")) {
+
+    }
 }

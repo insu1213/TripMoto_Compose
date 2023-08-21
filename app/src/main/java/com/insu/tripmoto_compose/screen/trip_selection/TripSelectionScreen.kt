@@ -18,7 +18,7 @@ import com.insu.tripmoto_compose.R.string as AppText
 
 @Composable
 fun TripSelectionScreen(
-    openAndPopUp: (String, String) -> Unit,
+    openAndPopUp: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TripSelectionViewModel = hiltViewModel()
 ) {
@@ -35,8 +35,10 @@ fun TripSelectionScreen(
         ) {
             itemsIndexed(
                 trip.value
-            ) { index, tripItem ->
-                TripItem(trip = tripItem)
+            ) { _, tripItem ->
+                TripItem(trip = tripItem) { tripId ->
+                    viewModel.goMain(openAndPopUp, tripId)
+                }
             }
         }
     }

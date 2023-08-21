@@ -8,8 +8,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TripSelectionViewModel @Inject constructor(
-        storageService: StorageService,
+        val storageService: StorageService,
         logService: LogService
 ): MyViewModel(logService) {
     val trip = storageService.trip
+
+    fun goMain(openAndPopUp: (String) -> Unit, tripId: String) {
+        storageService.currentTripId.value = tripId
+        openAndPopUp("MainScreen")
+    }
 }
