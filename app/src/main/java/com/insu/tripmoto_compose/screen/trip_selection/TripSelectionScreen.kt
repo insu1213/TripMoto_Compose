@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.common.composable.MenuTitleText
 import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.screen.splash.SplashViewModel
@@ -76,13 +77,18 @@ fun TripSelectionScreen(
 
 
     Column(
-        modifier = Modifier.padding(16.dp)
     ) {
-        MenuTitleText(text = AppText.trip)
+        Box(
+            modifier = Modifier
+                .padding(top = 12.dp, start = 12.dp, bottom = 8.dp),
+        ) {
+            MainTitleText(
+                text = AppText.trip
+            )
+        }
+
 
         LazyColumn(
-            contentPadding = PaddingValues(all = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             itemsIndexed(
                 trip.value
@@ -111,7 +117,7 @@ fun TripSelectionScreen(
             modifier = Modifier
                 .clip(CircleShape)
                 .align(Alignment.BottomEnd)
-                .padding(bottom = 16.dp, end = 16.dp),
+                .padding(bottom = 12.dp, end = 12.dp),
             elevation = FloatingActionButtonDefaults.elevation(
                 defaultElevation = 4.dp,
                 pressedElevation = 8.dp,

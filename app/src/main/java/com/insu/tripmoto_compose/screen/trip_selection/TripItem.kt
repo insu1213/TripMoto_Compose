@@ -3,6 +3,7 @@ package com.insu.tripmoto_compose.screen.trip_selection
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,15 +36,20 @@ fun TripItem(
             .fillMaxWidth()
             .clickable { onClick(trip.id) }
     ) {
-        Image(
-            modifier = Modifier
-                .size(46.dp)
-                .clip(shape = RoundedCornerShape(10.dp)),
-            painter = painterResource(AppIcon.zoe),
-            contentDescription = "",
-        )
+        Box(
+            modifier = Modifier.padding(start = 12.dp, bottom = 4.dp, top = 4.dp)
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(46.dp)
+                    .clip(shape = RoundedCornerShape(10.dp)),
+                painter = painterResource(AppIcon.zoe),
+                contentDescription = "",
+            )
+        }
+
         Column(
-            modifier = Modifier.padding(start = 4.dp)
+            modifier = Modifier.padding(start = 8.dp, top = 2.dp)
         ) {
             Text(
                 text = trip.title,
