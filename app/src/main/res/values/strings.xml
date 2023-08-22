@@ -10,6 +10,7 @@
     <string name="nick_name">NickName</string>
     <string name="logout">You have been logged out</string>
     <string name="trip">Trip</string>
+    <string name="trip_empty">The information does not exist.</string>
 
     <!--Login-->
     <string name="try_again">Retry</string>

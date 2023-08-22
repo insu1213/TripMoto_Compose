@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -64,7 +65,7 @@ fun TripSelectionScreen(
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
-                text = "The information does not exist.",
+                text = stringResource(AppText.trip_empty),
                 color = colorResource(AppColor.gray_5),
                 fontFamily = suitFamily,
                 fontWeight = FontWeight.Normal,
