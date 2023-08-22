@@ -54,7 +54,7 @@ fun TripSelectionScreen(
     LaunchedEffect(trip.value) {
         tripIsEmptyCheck = trip.value.isEmpty()
     }
-    tripIsEmptyCheck = trip.value.isEmpty()
+    //tripIsEmptyCheck = trip.value.isEmpty()
 
     if(tripIsEmptyCheck) {
         Box(
