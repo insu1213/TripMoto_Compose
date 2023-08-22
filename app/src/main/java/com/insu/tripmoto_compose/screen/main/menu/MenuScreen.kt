@@ -110,7 +110,10 @@ fun MenuScreen(
             Surface(
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .fillMaxHeight(),
+                    .fillMaxHeight()
+                    .clickable {
+                        viewModel.onOtherTripClick(openAndPopUp)
+                    },
                 color = colorResource(AppColor.white),
                 shape = RoundedCornerShape(12.dp),
                 elevation = 4.dp,

@@ -16,6 +16,7 @@ import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.StorageService
+import com.insu.tripmoto_compose.model.service.StorageService.Companion.currentTripId
 import com.insu.tripmoto_compose.screen.main.BottomNavItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -36,7 +37,15 @@ class StorageServiceImpl @Inject constructor(
     override val tripCollection = firestore.collection(TRIP_COLLECTION)
     override val tripDocument = tripCollection.document()
 
-    override val currentTripId: MutableState<String> = mutableStateOf("")
+    //override val currentTripId: MutableState<String> = mutableStateOf("")
+
+
+    override fun getCurrentTripId(): String = currentTripId.value
+
+    override fun updateCurrentTripId(tripId: String) {
+        currentTripId.value = tripId
+        Log.d(TAG, "current: ${currentTripId.value}")
+    }
 
     override val trip: Flow<List<Trip>>
         get() =
@@ -48,8 +57,7 @@ class StorageServiceImpl @Inject constructor(
         tripCollection.document(tripId).get().await().toObject()
     override suspend fun saveTrip(trip: Trip) {
         trace(SAVE_TRIP_TRACE) {
-            val id = tripCollection.add(trip).await().id
-            currentTripId.value = id
+            tripCollection.add(trip).await().id
         }
     }
 

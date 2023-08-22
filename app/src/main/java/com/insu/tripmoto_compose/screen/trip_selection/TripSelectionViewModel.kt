@@ -18,9 +18,10 @@ class TripSelectionViewModel @Inject constructor(
     fun goMain(openAndPopUp: (String) -> Unit, tripId: String) {
         Log.d(TAG, "tripId: $tripId")
         launchCatching {
-            storageService.currentTripId.value = tripId
+            storageService.updateCurrentTripId(tripId)
+            Log.d(TAG, "currentTrip: ${storageService.getCurrentTripId()}")
+            openAndPopUp("MainScreen")
         }
-        openAndPopUp("MainScreen")
     }
 
     fun goFore(openAndPopUp: (String) -> Unit) {

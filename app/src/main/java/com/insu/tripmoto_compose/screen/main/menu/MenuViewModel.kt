@@ -22,4 +22,8 @@ class MenuViewModel @Inject constructor(
             callback()
         }
     }
+
+    fun onOtherTripClick(openAndPopUp: (String) -> Unit) {
+        openAndPopUp("TripSelectionScreen")
+    }
 }

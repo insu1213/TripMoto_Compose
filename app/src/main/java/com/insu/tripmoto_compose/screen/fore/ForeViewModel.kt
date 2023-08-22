@@ -26,6 +26,11 @@ class ForeViewModel @Inject constructor(
     var uiState = mutableStateOf(ForeUiState())
         private set
 
+    companion object {
+        var uiData = Trip()
+    }
+
+
     private val nation
         get() = uiState.value.nation
     private val city
@@ -76,13 +81,13 @@ class ForeViewModel @Inject constructor(
         uiState.value = uiState.value.copy(expenses = newValue)
     }
 
-    fun titleOnNextClick(openAndPopUp: (String, String) -> Unit) {
+    fun titleOnNextClick(openAndPopUp: (String) -> Unit) {
         if(title.isBlank()) {
             SnackbarManager.showMessage(AppText.empty_title_error)
             return
         }
-
-        openAndPopUp("TravelPlaceScreen", "TravelTitleScreen")
+        uiData = uiData.copy(title = title)
+        openAndPopUp("TravelPlaceScreen")
     }
 
     fun placeOnNextClick(openAndPopUp: (String) -> Unit) {
@@ -95,6 +100,7 @@ class ForeViewModel @Inject constructor(
             SnackbarManager.showMessage(AppText.empty_city_error)
             return
         }
+        uiData = uiData.copy(region = nation, city = city)
 
         openAndPopUp("TravelScheduleScreen")
     }
@@ -108,7 +114,7 @@ class ForeViewModel @Inject constructor(
             SnackbarManager.showMessage(AppText.empty_enddate_error)
             return
         }
-
+        uiData = uiData.copy(startDate = schedule_start, endDate = schedule_end)
         openAndPopUp("TravelMembersScreen")
     }
 
@@ -120,7 +126,7 @@ class ForeViewModel @Inject constructor(
         if(kids.isBlank()) {
             onKidsChange("0")
         }
-
+        uiData = uiData.copy(adult = adult, kid = kids)
         openAndPopUp("TravelExpensesScreen")
     }
 
@@ -133,21 +139,12 @@ class ForeViewModel @Inject constructor(
             SnackbarManager.showMessage(AppText.low_expenses_error)
             return
         }
-
+        uiData = uiData.copy(expenses = expenses)
         val currentUserId = accountService.currentUserId
+        uiData = uiData.copy(administrator = currentUserId)
 
         launchCatching {
-            storageService.saveTrip(Trip(
-                title = uiState.value.title,
-                region = uiState.value.nation,
-                city = uiState.value.city,
-                startDate = uiState.value.schedule_start,
-                endDate = uiState.value.schedule_end,
-                adult = uiState.value.member_adult,
-                kid = uiState.value.member_kids,
-                expenses = uiState.value.expenses,
-                administrator = currentUserId,
-            ))
+            storageService.saveTrip(uiData)
         }
 
 

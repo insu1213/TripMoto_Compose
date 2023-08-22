@@ -52,24 +52,26 @@ fun TripSelectionScreen(
     var tripIsEmptyCheck by remember { mutableStateOf(false) }
 
     LaunchedEffect(trip.value) {
-        if (trip.value.isEmpty()) {
-            tripIsEmptyCheck = true
+        tripIsEmptyCheck = trip.value.isEmpty()
+    }
+    tripIsEmptyCheck = trip.value.isEmpty()
+
+    if(tripIsEmptyCheck) {
+        Box(
+            Modifier
+                .fillMaxHeight()
+                .fillMaxWidth()
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = "The information does not exist.",
+                color = colorResource(AppColor.gray_5),
+                fontFamily = suitFamily,
+                fontWeight = FontWeight.Normal,
+            )
         }
     }
 
-    Box(
-        Modifier
-            .fillMaxHeight()
-            .fillMaxWidth()
-    ) {
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = "The information does not exist.",
-            color = colorResource(AppColor.gray_5),
-            fontFamily = suitFamily,
-            fontWeight = FontWeight.Normal,
-        )
-    }
 
 
     Column(
