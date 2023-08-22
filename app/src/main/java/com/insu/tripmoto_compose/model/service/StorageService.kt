@@ -9,6 +9,7 @@ import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.WishList
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 interface StorageService {
     val trip: Flow<List<Trip>>

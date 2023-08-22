@@ -1,5 +1,7 @@
 package com.insu.tripmoto_compose.model.service.impl
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,8 +19,10 @@ import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.main.BottomNavItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -31,7 +35,8 @@ class StorageServiceImpl @Inject constructor(
 
     override val tripCollection = firestore.collection(TRIP_COLLECTION)
     override val tripDocument = tripCollection.document()
-    override val currentTripId = mutableStateOf("")
+
+    override val currentTripId: MutableState<String> = mutableStateOf("")
 
     override val trip: Flow<List<Trip>>
         get() =
@@ -90,11 +95,14 @@ class StorageServiceImpl @Inject constructor(
     // Google Map Marker
     @OptIn(ExperimentalCoroutinesApi::class)
     override val marker: Flow<List<MapMarker>>
-        get() =
+        get()
 //            auth.currentUser.flatMapLatest { user: User ->
 //                firestore.collection(MARKER_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
 //            }
-            tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).dataObjects()
+        {
+            Log.d(TAG, "currentTripId: ${currentTripId.value}")
+            return tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).dataObjects()
+        }
     override suspend fun getMarker(markerId: String): MapMarker? =
         //firestore.collection(MARKER_COLLECTION).document(markerId).get().await().toObject()
         tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).document(markerId).get().await().toObject()

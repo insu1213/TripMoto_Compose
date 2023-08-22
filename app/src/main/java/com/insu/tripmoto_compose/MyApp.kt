@@ -28,6 +28,7 @@ import com.insu.tripmoto_compose.screen.fore.travel_expenses.TravelExpensesScree
 import com.insu.tripmoto_compose.screen.fore.travel_members.TravelMembersScreen
 import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen
 import com.insu.tripmoto_compose.screen.fore.travel_schedule.TravelScheduleScreen
+import com.insu.tripmoto_compose.screen.fore.travel_title.TravelTitleScreen
 import com.insu.tripmoto_compose.screen.login.LoginScreen
 import com.insu.tripmoto_compose.screen.main.BottomNavItem
 import com.insu.tripmoto_compose.screen.main.direction.DirectionScreen
@@ -111,7 +112,9 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
         TripSelectionScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
 
-
+    composable("TravelTitleScreen") {
+        TravelTitleScreen(openAndPopUp = { route, popUp -> appState.navigateAndPopUp(route, popUp) })
+    }
     composable("TravelPlaceScreen") {
         TravelPlaceScreen(openAndPopUp = { route -> appState.navigate(route) })
     }

@@ -6,7 +6,10 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
+import com.insu.tripmoto_compose.model.Trip
+import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.LogService
+import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.selects.select
@@ -16,6 +19,8 @@ import com.insu.tripmoto_compose.R.string as AppText
 
 @HiltViewModel
 class ForeViewModel @Inject constructor(
+    val storageService: StorageService,
+    private val accountService: AccountService,
     logService: LogService
 ): MyViewModel(logService) {
     var uiState = mutableStateOf(ForeUiState())
@@ -37,7 +42,12 @@ class ForeViewModel @Inject constructor(
         get() = uiState.value.member_kids
     private val expenses
         get() = uiState.value.expenses
+    private val title
+        get() = uiState.value.title
 
+    fun onTitleChange(newValue: String) {
+        uiState.value = uiState.value.copy(title = newValue)
+    }
 
     fun onNationChange(newValue: String) {
         // nation의 값이 변경되면 city의 값도 기본값으로 초기화
@@ -64,6 +74,15 @@ class ForeViewModel @Inject constructor(
 
     fun onExpensesChange(newValue: String) {
         uiState.value = uiState.value.copy(expenses = newValue)
+    }
+
+    fun titleOnNextClick(openAndPopUp: (String, String) -> Unit) {
+        if(title.isBlank()) {
+            SnackbarManager.showMessage(AppText.empty_title_error)
+            return
+        }
+
+        openAndPopUp("TravelPlaceScreen", "TravelTitleScreen")
     }
 
     fun placeOnNextClick(openAndPopUp: (String) -> Unit) {
@@ -115,6 +134,23 @@ class ForeViewModel @Inject constructor(
             return
         }
 
-        openAndPopUp("MainScreen")
+        val currentUserId = accountService.currentUserId
+
+        launchCatching {
+            storageService.saveTrip(Trip(
+                title = uiState.value.title,
+                region = uiState.value.nation,
+                city = uiState.value.city,
+                startDate = uiState.value.schedule_start,
+                endDate = uiState.value.schedule_end,
+                adult = uiState.value.member_adult,
+                kid = uiState.value.member_kids,
+                expenses = uiState.value.expenses,
+                administrator = currentUserId,
+            ))
+        }
+
+
+        openAndPopUp("TripSelectionScreen")
     }
 }

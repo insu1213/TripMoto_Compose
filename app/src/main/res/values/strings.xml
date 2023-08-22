@@ -38,6 +38,10 @@
     <!--Fore-->
     <string name="next">Next</string>
 
+    <!--Fore/TravelTitle-->
+    <string name="travel_title">Travel Title</string>
+    <string name="empty_title_error">Title cannot be empty</string>
+
     <!--Fore/TravelPlace-->
     <string name="empty_nation_error">Nation cannot be empty</string>
     <string name="empty_city_error">City cannot be empty</string>

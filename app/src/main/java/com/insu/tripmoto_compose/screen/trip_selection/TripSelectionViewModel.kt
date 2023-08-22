@@ -1,5 +1,7 @@
 package com.insu.tripmoto_compose.screen.trip_selection
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
@@ -14,7 +16,14 @@ class TripSelectionViewModel @Inject constructor(
     val trip = storageService.trip
 
     fun goMain(openAndPopUp: (String) -> Unit, tripId: String) {
-        storageService.currentTripId.value = tripId
+        Log.d(TAG, "tripId: $tripId")
+        launchCatching {
+            storageService.currentTripId.value = tripId
+        }
         openAndPopUp("MainScreen")
+    }
+
+    fun goFore(openAndPopUp: (String) -> Unit) {
+        openAndPopUp("TravelTitleScreen")
     }
 }

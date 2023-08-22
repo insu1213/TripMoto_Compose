@@ -3,6 +3,7 @@ package com.insu.tripmoto_compose.screen.fore
 import java.util.*
 
 data class ForeUiState(
+    val title: String = "",
     val nation: String = "",
     val city: String = "",
 
