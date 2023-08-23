@@ -37,9 +37,6 @@ class StorageServiceImpl @Inject constructor(
     override val tripCollection = firestore.collection(TRIP_COLLECTION)
     override val tripDocument = tripCollection.document()
 
-    //override val currentTripId: MutableState<String> = mutableStateOf("")
-
-
     override fun getCurrentTripId(): String = currentTripId.value
 
     override fun updateCurrentTripId(tripId: String) {
@@ -47,9 +44,14 @@ class StorageServiceImpl @Inject constructor(
         Log.d(TAG, "current: ${currentTripId.value}")
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override val trip: Flow<List<Trip>>
         get() =
-            tripCollection.dataObjects()
+            auth.currentUser.flatMapLatest { user: User ->
+                //tripCollection.whereEqualTo(MEMBER_UID_FIELD, listOf(user.id)).dataObjects()
+                tripCollection.whereArrayContains(MEMBER_UID_FIELD, user.id).dataObjects()
+            }
+
 
     // Trip
     override suspend fun getTrip(tripId: String): Trip? =
@@ -177,6 +179,7 @@ class StorageServiceImpl @Inject constructor(
 
     companion object {
         private const val USER_ID_FIELD = "userId"
+        private const val MEMBER_UID_FIELD = "member"
 
         private const val TRIP_COLLECTION = "trip"
         private const val SAVE_TRIP_TRACE = "saveTrip"

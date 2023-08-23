@@ -142,6 +142,7 @@ class ForeViewModel @Inject constructor(
         uiData = uiData.copy(expenses = expenses)
         val currentUserId = accountService.currentUserId
         uiData = uiData.copy(administrator = currentUserId)
+        uiData = uiData.copy(member = listOf(currentUserId))
 
         launchCatching {
             storageService.saveTrip(uiData)

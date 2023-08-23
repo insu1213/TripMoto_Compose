@@ -150,7 +150,7 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
         ChatScreen()
     }
     composable(BottomNavItem.Menu.screen_route) {
-        MenuScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
+        MenuScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
 
     composable(

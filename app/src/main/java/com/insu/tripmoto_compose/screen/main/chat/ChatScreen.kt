@@ -1,5 +1,8 @@
 package com.insu.tripmoto_compose.screen.main.chat.inner
 
+import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
@@ -16,6 +19,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,9 +32,14 @@ import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.screen.main.chat.ChatListItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.string as AppText
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun ChatScreen(
     modifier: Modifier = Modifier,
@@ -62,21 +71,27 @@ fun ChatScreen(
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             itemsIndexed(
                 items = chatListStorage.value.sortedBy { it.uploadTime }, // 정렬
-                key = { _, item ->
-                    item.id
-                }
             ) { _, item ->
-                var isCallback = false
+
+                var isGetUserId = false
                 var itemIdNickName = ""
-                viewModel.uidToNickName(item.id) { nickName ->
-                    itemIdNickName = nickName
-                    isCallback = true
-                }
-                if(isCallback) {
-                    ChatListItem(item, auth.value.id, itemIdNickName)
-                    isCallback = false
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.uidToNickName(item.userId) { userInfo ->
+                        Log.d(TAG, "콜백됨2")
+                        itemIdNickName = userInfo.nickName
+                    }
+                    withContext(Dispatchers.Main) {
+                        isGetUserId = true
+                    }
                 }
 
+                LaunchedEffect(
+                    ChatListItem(item, auth.value.id, itemIdNickName),
+                    isGetUserId
+                ) {
+                    Log.d(TAG, "nickName: $itemIdNickName")
+                }
             }
         }
     }
