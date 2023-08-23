@@ -40,6 +40,7 @@ import com.insu.tripmoto_compose.screen.main.wishlist.WishListScreen
 import com.insu.tripmoto_compose.screen.main.wishlist.edit.WishListEditScreen
 import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
+import com.insu.tripmoto_compose.screen.travel_management.TravelManagementScreen
 import com.insu.tripmoto_compose.screen.trip_selection.TripSelectionScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
 import kotlinx.coroutines.CoroutineScope
@@ -130,6 +131,10 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
 
     composable("MainScreen") {
         MainScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
+    }
+
+    composable("TravelManagementScreen") {
+        TravelManagementScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
 
     composable(BottomNavItem.WishList.screen_route) {

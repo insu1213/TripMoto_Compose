@@ -47,7 +47,6 @@ import com.insu.tripmoto_compose.R.color as AppColor
 @Composable
 fun TripSelectionScreen(
     openAndPopUp: (String) -> Unit,
-    modifier: Modifier = Modifier,
     viewModel: TripSelectionViewModel = hiltViewModel()
 ) {
     val trip = viewModel.trip.collectAsStateWithLifecycle(emptyList())

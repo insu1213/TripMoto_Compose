@@ -55,7 +55,10 @@ fun MenuScreen(
             modifier = Modifier
                 .padding(top = 12.dp)
                 .fillMaxWidth()
-                .fillMaxHeight(0.2F),
+                .fillMaxHeight(0.2F)
+                .clickable {
+                    viewModel.onTripSettingClick(openAndPopUp)
+                },
             color = colorResource(AppColor.white),
             shape = RoundedCornerShape(12.dp),
             elevation = 4.dp,

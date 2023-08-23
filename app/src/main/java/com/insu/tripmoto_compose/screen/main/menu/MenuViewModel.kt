@@ -26,4 +26,8 @@ class MenuViewModel @Inject constructor(
     fun onOtherTripClick(openAndPopUp: (String) -> Unit) {
         openAndPopUp("TripSelectionScreen")
     }
+
+    fun onTripSettingClick(openAndPopUp: (String) -> Unit) {
+        openAndPopUp("TravelManagementScreen")
+    }
 }
