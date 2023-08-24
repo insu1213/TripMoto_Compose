@@ -42,6 +42,7 @@ fun MenuScreen(
     openAndPopUp: (String) -> Unit,
     viewModel: MenuViewModel = hiltViewModel()
 ) {
+    val activity = LocalContext.current as ComponentActivity
     BackOnPressed()
 
     Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
@@ -143,6 +144,15 @@ fun MenuScreen(
                     }
                 },
             text = "Logout",
+            fontSize = 16.sp,
+            color = colorResource(AppColor.primary_800)
+        )
+        Text(
+            modifier = Modifier
+                .clickable {
+                    viewModel.onTriggerNotification(activity)
+                },
+            text = "Notification",
             fontSize = 16.sp,
             color = colorResource(AppColor.primary_800)
         )

@@ -1,17 +1,23 @@
 package com.insu.tripmoto_compose
 
+import android.content.Context
 import android.content.res.Resources
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import android.Manifest
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -23,7 +29,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
+import com.insu.tripmoto_compose.model.service.NotificationService
 import com.insu.tripmoto_compose.screen.fore.travel_expenses.TravelExpensesScreen
 import com.insu.tripmoto_compose.screen.fore.travel_members.TravelMembersScreen
 import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen
@@ -47,10 +57,21 @@ import com.insu.tripmoto_compose.screen.trip_selection.TripSelectionScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
 import kotlinx.coroutines.CoroutineScope
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 @ExperimentalMaterialApi
 fun MyApp() {
     TripMotoTheme {
+
+        val postNotificationPermission =
+            rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+        LaunchedEffect(key1 = true ){
+            if (!postNotificationPermission.status.isGranted){
+                postNotificationPermission.launchPermissionRequest()
+            }
+        }
         Box(
             modifier = Modifier
                 .background(MaterialTheme.colors.background)
