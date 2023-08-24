@@ -9,6 +9,7 @@ import com.google.firebase.firestore.ktx.dataObjects
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.perf.ktx.trace
 import com.insu.tripmoto_compose.model.ChatList
+import com.insu.tripmoto_compose.model.InviteCode
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.model.User
@@ -44,6 +45,31 @@ class StorageServiceImpl @Inject constructor(
         Log.d(TAG, "current: ${currentTripId.value}")
     }
 
+    // InviteCode
+    override val inviteCode: Flow<List<InviteCode>>
+        get() =
+            firestore.collection(INVITE_CODE_COLLECTION).dataObjects()
+
+    override suspend fun findInviteCode(code: String): Flow<List<InviteCode>> =
+        firestore.collection(INVITE_CODE_COLLECTION).whereEqualTo("code", code).dataObjects()
+
+    override suspend fun getInviteCode(inviteCodeId: String): InviteCode? =
+        firestore.collection(INVITE_CODE_COLLECTION).document(inviteCodeId).get().await().toObject()
+
+    override suspend fun saveInviteCode(inviteCode: InviteCode) {
+        firestore.collection(INVITE_CODE_COLLECTION).add(inviteCode).await().id
+    }
+
+    override suspend fun updateInviteCode(inviteCode: InviteCode) {
+        firestore.collection(INVITE_CODE_COLLECTION).document(inviteCode.id).set(wishList).await()
+    }
+
+    override suspend fun deleteInviteCode(inviteCode: InviteCode) {
+        firestore.collection(INVITE_CODE_COLLECTION).document(inviteCode.id).delete().await()
+    }
+
+
+    // Trip
     @OptIn(ExperimentalCoroutinesApi::class)
     override val trip: Flow<List<Trip>>
         get() =
@@ -52,8 +78,6 @@ class StorageServiceImpl @Inject constructor(
                 tripCollection.whereArrayContains(MEMBER_UID_FIELD, user.id).dataObjects()
             }
 
-
-    // Trip
     override suspend fun getTrip(tripId: String): Trip? =
         //firestore.collection(TRIP_COLLECTION).document(wishListId).get().await().toObject()
         tripCollection.document(tripId).get().await().toObject()
@@ -180,6 +204,8 @@ class StorageServiceImpl @Inject constructor(
     companion object {
         private const val USER_ID_FIELD = "userId"
         private const val MEMBER_UID_FIELD = "member"
+
+        private const val INVITE_CODE_COLLECTION = "inviteCode"
 
         private const val TRIP_COLLECTION = "trip"
         private const val SAVE_TRIP_TRACE = "saveTrip"

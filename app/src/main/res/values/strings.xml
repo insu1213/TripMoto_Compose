@@ -11,6 +11,7 @@
     <string name="logout">You have been logged out</string>
     <string name="trip">Trip</string>
     <string name="trip_empty">The information does not exist.</string>
+    <string name="code">Code</string>
 
     <!--Login-->
     <string name="try_again">Retry</string>

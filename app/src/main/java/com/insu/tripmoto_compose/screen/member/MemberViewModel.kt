@@ -25,22 +25,24 @@ class MemberViewModel @Inject constructor(
 ): MyViewModel(logService) {
 
 
-    suspend fun getMember(): List<String> = coroutineScope {
+    fun getMember(member: (MutableList<String>) -> Unit) {
         val memberNickNameList = mutableListOf<String>()
 
-        val memberList = storageService.getTrip(storageService.getCurrentTripId())?.member
-        if (memberList != null) {
-            val deferredList = memberList.map { member ->
-                async {
-                    uidToNickName(member) { userInfo ->
-                        memberNickNameList.add(userInfo.nickName)
+        viewModelScope.launch {
+            val memberList = storageService.getTrip(storageService.getCurrentTripId())?.member
+            if (memberList != null) {
+                val deferredList = memberList.map { member ->
+                    async {
+                        uidToNickName(member) { userInfo ->
+                            memberNickNameList.add(userInfo.nickName)
+                        }
                     }
                 }
+                deferredList.awaitAll()
             }
-            deferredList.awaitAll()
+            member(memberNickNameList)
         }
 
-        memberNickNameList
     }
 
     private fun uidToNickName(uid: String, callback: (UserInfo) -> Unit) {

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.insu.tripmoto_compose.model.ChatList
+import com.insu.tripmoto_compose.model.InviteCode
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.model.UserInfo
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 
 interface StorageService {
     val trip: Flow<List<Trip>>
+    val inviteCode: Flow<List<InviteCode>>
     val wishList: Flow<List<WishList>>
     val marker: Flow<List<MapMarker>>
     val chatList: Flow<List<ChatList>>
@@ -21,12 +23,17 @@ interface StorageService {
         val currentTripId: MutableState<String> = mutableStateOf("")
     }
 
-
     val tripCollection: CollectionReference
     val tripDocument: DocumentReference
 
     fun getCurrentTripId(): String
     fun updateCurrentTripId(tripId: String)
+
+    suspend fun findInviteCode(code: String): Flow<List<InviteCode>>
+    suspend fun getInviteCode(inviteCodeId: String): InviteCode?
+    suspend fun saveInviteCode(inviteCode: InviteCode)
+    suspend fun updateInviteCode(inviteCode: InviteCode)
+    suspend fun deleteInviteCode(inviteCode: InviteCode)
 
     suspend fun getTrip(tripId: String): Trip?
     suspend fun saveTrip(trip: Trip)

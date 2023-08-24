@@ -107,7 +107,7 @@ fun ReadOnlyBasicField(
     @StringRes text: Int,
     value: String,
     onNewValue: (String) -> Unit,
-    icon: Int,
+    icon: Int? = null,
     modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
@@ -118,8 +118,10 @@ fun ReadOnlyBasicField(
         onValueChange = { onNewValue(it) },
         placeholder = { Text(stringResource(text)) },
         leadingIcon = {
-            Icon(painter = painterResource(icon),
-                contentDescription = "Icon")
+            if(icon != null) {
+                Icon(painter = painterResource(icon),
+                    contentDescription = "Icon")
+            }
         }
     )
 }
