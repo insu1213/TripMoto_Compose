@@ -38,6 +38,8 @@ import com.insu.tripmoto_compose.screen.main.map.MapScreen
 import com.insu.tripmoto_compose.screen.main.menu.MenuScreen
 import com.insu.tripmoto_compose.screen.main.wishlist.WishListScreen
 import com.insu.tripmoto_compose.screen.main.wishlist.edit.WishListEditScreen
+import com.insu.tripmoto_compose.screen.member.MemberScreen
+import com.insu.tripmoto_compose.screen.member.add.MemberAddScreen
 import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
 import com.insu.tripmoto_compose.screen.travel_management.TravelManagementScreen
@@ -132,9 +134,14 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
     composable("MainScreen") {
         MainScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
-
     composable("TravelManagementScreen") {
         TravelManagementScreen(openAndPopUp = { route -> appState.navigate(route) })
+    }
+    composable("MemberScreen") {
+        MemberScreen(openScreen = { route -> appState.navigate(route) })
+    }
+    composable("MemberAddScreen") {
+        MemberAddScreen(popUpScreen = { appState.popUp() })
     }
 
     composable(BottomNavItem.WishList.screen_route) {

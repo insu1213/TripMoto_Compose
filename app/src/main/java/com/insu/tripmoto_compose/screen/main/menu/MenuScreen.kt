@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.R
+import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.rememberAppState
 import com.insu.tripmoto_compose.suitFamily
@@ -41,11 +42,7 @@ fun MenuScreen(
     openAndPopUp: (String) -> Unit,
     viewModel: MenuViewModel = hiltViewModel()
 ) {
-    val activity = LocalContext.current as ComponentActivity
-    BackHandler {
-        activity.finish()
-    }
-
+    BackOnPressed()
 
     Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
         MainTitleText(

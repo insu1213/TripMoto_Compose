@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.model.service.AccountService
@@ -51,9 +52,8 @@ fun ChatScreen(
 
     val chatList by viewModel.chatList
 
-    BackHandler {
-        activity.finish()
-    }
+    BackOnPressed()
+
     Column(
         modifier = Modifier
             .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 120.dp)

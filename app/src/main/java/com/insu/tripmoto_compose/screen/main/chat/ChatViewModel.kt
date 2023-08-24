@@ -68,7 +68,7 @@ class ChatViewModel @Inject constructor(
 
     }
 
-    private fun uidToNickName(text:String, uid: String, callback: (UserInfo, String) -> Unit) {
+    private fun uidToNickName(text:String = "", uid: String, callback: (UserInfo, String) -> Unit) {
         viewModelScope.launch {
             val userInfo = storageService.getUserInfo(uid)
             Log.d(TAG, "userInfo: $userInfo")

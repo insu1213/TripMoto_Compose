@@ -5,13 +5,11 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.rememberAppState
 
 @Composable
 fun DirectionScreen() {
-    val activity = LocalContext.current as ComponentActivity
-    BackHandler {
-        activity.finish()
-    }
+    BackOnPressed()
     Text("DirectionScreen")
 }

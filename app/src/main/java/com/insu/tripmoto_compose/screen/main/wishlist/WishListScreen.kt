@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.R
+import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.rememberAppState
 import com.insu.tripmoto_compose.screen.fore.ForeViewModel
@@ -59,10 +60,7 @@ fun WishListScreen(
     modifier: Modifier = Modifier,
     viewModel: WishListViewModel = hiltViewModel()
 ) {
-    val activity = LocalContext.current as ComponentActivity
-    BackHandler {
-        activity.finish()
-    }
+    BackOnPressed()
 
     val listState = rememberLazyStaggeredGridState()
     //initialFirstVisibleItemIndex = 99 해당 위치가 마지막으로 보이도록 설정

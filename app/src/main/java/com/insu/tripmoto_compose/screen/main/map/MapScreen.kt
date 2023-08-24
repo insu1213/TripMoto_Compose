@@ -29,6 +29,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.screen.main.map.detail.DetailMarkerDialog
 import com.insu.tripmoto_compose.screen.main.map.edit.EditMarkerDialog
@@ -37,12 +38,10 @@ import com.insu.tripmoto_compose.R.color as AppColor
 
 @Composable
 fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
-    val activity = LocalContext.current as ComponentActivity
+    BackOnPressed()
+
     var markerAddState by remember { mutableStateOf(false) }
     var googleMapClickState by remember { mutableStateOf(false) }
-    BackHandler {
-        activity.finish()
-    }
     val singapore = LatLng(1.35, 103.87)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(singapore, 10f)
