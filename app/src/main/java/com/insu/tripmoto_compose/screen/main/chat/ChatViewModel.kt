@@ -47,28 +47,35 @@ class ChatViewModel @Inject constructor(
         if(chatList.value.text.isBlank()) {
             return
         }
+        Log.d(TAG, "text: ${chatList.value.text}")
+        val uid = auth.currentUserId
+        uidToNickName(chatList.value.text, uid) { userInfo, text ->
+            chatList.value = chatList.value.copy(nickName = userInfo.nickName, text = text)
+            launchCatching {
+                val editedChat = chatList.value
+                storageService.saveChatList(editedChat)
+            }
 
-        launchCatching {
-            val editedChat = chatList.value
+        }
 
-            storageService.saveChatList(editedChat)
+
 //            if(editedChat.id.isBlank()) {
 //                storageService.saveChatList(editedChat)
 //            } else {
 //                storageService.saveChatList(editedChat)
 //            }
-            onSuccess()
-        }
+        onSuccess()
+
     }
 
-    fun uidToNickName(uid: String, callback: (UserInfo) -> Unit) {
+    private fun uidToNickName(text:String, uid: String, callback: (UserInfo, String) -> Unit) {
         viewModelScope.launch {
             val userInfo = storageService.getUserInfo(uid)
             Log.d(TAG, "userInfo: $userInfo")
 
             withContext(Dispatchers.Main) {
                 Log.d(TAG, "콜백됨")
-                callback(userInfo?: UserInfo())
+                callback(userInfo?: UserInfo(), text)
             }
         }
     }

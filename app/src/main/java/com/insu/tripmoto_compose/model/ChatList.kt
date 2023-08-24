@@ -6,5 +6,6 @@ data class ChatList (
     @DocumentId val id: String = "",
     val text: String = "",
     val userId: String = "",
+    val nickName: String = "",
     val uploadTime: String = "",
 )

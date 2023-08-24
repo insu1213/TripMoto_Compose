@@ -72,26 +72,7 @@ fun ChatScreen(
             itemsIndexed(
                 items = chatListStorage.value.sortedBy { it.uploadTime }, // 정렬
             ) { _, item ->
-
-                var isGetUserId = false
-                var itemIdNickName = ""
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.uidToNickName(item.userId) { userInfo ->
-                        Log.d(TAG, "콜백됨2")
-                        itemIdNickName = userInfo.nickName
-                    }
-                    withContext(Dispatchers.Main) {
-                        isGetUserId = true
-                    }
-                }
-
-                LaunchedEffect(
-                    ChatListItem(item, auth.value.id, itemIdNickName),
-                    isGetUserId
-                ) {
-                    Log.d(TAG, "nickName: $itemIdNickName")
-                }
+                ChatListItem(item, auth.value.id, item.nickName)
             }
         }
     }
@@ -99,12 +80,13 @@ fun ChatScreen(
     Box(
         modifier
             .fillMaxSize()
-            .padding(68.dp), contentAlignment = Alignment.BottomCenter) {
+            .padding(68.dp), contentAlignment = Alignment.BottomCenter
+    ) {
         Row() {
             TextField(
                 value = chatList.text,
                 onValueChange = viewModel::onTextChange,
-                placeholder =  { Text("채팅을 입력하세요") },
+                placeholder = { Text("채팅을 입력하세요") },
                 trailingIcon = {
                     IconButton(
                         onClick = {
@@ -113,7 +95,7 @@ fun ChatScreen(
                             }
                         }
                     ) {
-                        Icon(painter = painterResource(AppIcon.ic_send), contentDescription = null,)
+                        Icon(painter = painterResource(AppIcon.ic_send), contentDescription = null)
                     }
                 }
             )
