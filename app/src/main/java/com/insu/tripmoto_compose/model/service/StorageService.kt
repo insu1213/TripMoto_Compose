@@ -29,7 +29,8 @@ interface StorageService {
     fun getCurrentTripId(): String
     fun updateCurrentTripId(tripId: String)
 
-    suspend fun findInviteCode(code: String): Flow<List<InviteCode>>
+    suspend fun findInviteCode(code: String): InviteCode?
+    suspend fun findTripUid(tripId: String): InviteCode?
     suspend fun getInviteCode(inviteCodeId: String): InviteCode?
     suspend fun saveInviteCode(inviteCode: InviteCode)
     suspend fun updateInviteCode(inviteCode: InviteCode)

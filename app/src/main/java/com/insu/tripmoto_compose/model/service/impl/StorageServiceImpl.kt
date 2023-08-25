@@ -50,8 +50,12 @@ class StorageServiceImpl @Inject constructor(
         get() =
             firestore.collection(INVITE_CODE_COLLECTION).dataObjects()
 
-    override suspend fun findInviteCode(code: String): Flow<List<InviteCode>> =
-        firestore.collection(INVITE_CODE_COLLECTION).whereEqualTo("code", code).dataObjects()
+    override suspend fun findInviteCode(code: String): InviteCode? =
+        firestore.collection(INVITE_CODE_COLLECTION).whereEqualTo("code", code).get().await().first().toObject()
+
+    override suspend fun findTripUid(tripId: String): InviteCode? =
+        firestore.collection(INVITE_CODE_COLLECTION).whereEqualTo("tripId", tripId).get().await().first().toObject()
+
 
     override suspend fun getInviteCode(inviteCodeId: String): InviteCode? =
         firestore.collection(INVITE_CODE_COLLECTION).document(inviteCodeId).get().await().toObject()
@@ -89,7 +93,7 @@ class StorageServiceImpl @Inject constructor(
 
     override suspend fun updateTrip(trip: Trip) {
         trace(UPDATE_TRIP_TRACE) {
-            tripCollection.document(trip.id).set(wishList).await()
+            tripCollection.document(trip.id).set(trip).await()
         }
     }
     override suspend fun deleteTrip(tripId: String) {

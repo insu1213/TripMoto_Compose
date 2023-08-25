@@ -40,6 +40,9 @@
     <!--Fore-->
     <string name="next">Next</string>
 
+    <!--Fore/TravelOption-->
+    <string name="enter_invite_code">Enter Invite Code</string>
+
     <!--Fore/TravelTitle-->
     <string name="travel_title">Travel Title</string>
     <string name="empty_title_error">Title cannot be empty</string>
@@ -87,5 +90,6 @@
     <string name="active_trip_management">Travel management</string>
     <string name="past_trip_record">Past travel record</string>
     <string name="participate_other_travel">Participate in other travel</string>
+    <string name="invite_code_generation">Invitation code has been generated!</string>
 
 </resources>

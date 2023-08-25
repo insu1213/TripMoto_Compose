@@ -46,7 +46,7 @@ fun ChatScreen(
     modifier: Modifier = Modifier,
     viewModel: ChatViewModel = hiltViewModel(),
 ) {
-    val activity = LocalContext.current as ComponentActivity
+
     val chatListStorage = viewModel.chatListStorage.collectAsStateWithLifecycle(emptyList())
     val auth = viewModel.currentUser.collectAsStateWithLifecycle(User())
 

@@ -1,16 +1,29 @@
 package com.insu.tripmoto_compose.screen.member.add
 
 import android.telecom.CallScreeningService
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ClipboardManager
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.ReadOnlyBasicField
+import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.string as AppText
 
 @Composable
@@ -18,6 +31,9 @@ fun MemberAddScreen(
     viewModel: MemberAddViewModel = hiltViewModel(),
     popUpScreen: () -> Unit,
 ) {
+    val activity = LocalContext.current as ComponentActivity
+    val clipboardManager: ClipboardManager = LocalClipboardManager.current
+
     Box(modifier = Modifier
         .fillMaxWidth()
         .fillMaxHeight()
@@ -25,8 +41,26 @@ fun MemberAddScreen(
         Column(modifier = Modifier
             .align(Alignment.Center)
         ) {
-            Text(text = "초대코드가 생성되었습니다!")
-            Text(text = viewModel.code)
+            Text(
+                text = stringResource(AppText.invite_code_generation),
+                color = colorResource(R.color.black),
+                fontSize = 20.sp,
+                fontFamily = suitFamily,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+            )
+
+            Row() {
+                Text(
+                    text = "code: " + viewModel.code.value,
+                    color = colorResource(R.color.black),
+                    fontSize = 16.sp,
+                    fontFamily = suitFamily,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Center,
+                )
+            }
+
         }
     }
 }

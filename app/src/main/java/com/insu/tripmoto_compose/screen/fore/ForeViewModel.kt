@@ -1,10 +1,8 @@
 package com.insu.tripmoto_compose.screen.fore
 
 import android.content.ContentValues.TAG
-import android.icu.util.Calendar
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.model.service.AccountService
@@ -12,7 +10,6 @@ import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.selects.select
 import java.text.SimpleDateFormat
 import javax.inject.Inject
 import com.insu.tripmoto_compose.R.string as AppText
@@ -142,7 +139,7 @@ class ForeViewModel @Inject constructor(
         uiData = uiData.copy(expenses = expenses)
         val currentUserId = accountService.currentUserId
         uiData = uiData.copy(administrator = currentUserId)
-        uiData = uiData.copy(member = listOf(currentUserId))
+        uiData = uiData.copy(member = mutableListOf(currentUserId))
 
         launchCatching {
             storageService.saveTrip(uiData)

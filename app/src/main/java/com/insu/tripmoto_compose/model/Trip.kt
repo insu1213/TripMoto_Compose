@@ -1,5 +1,7 @@
 package com.insu.tripmoto_compose.model
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.firestore.DocumentId
 
 
@@ -9,7 +11,7 @@ data class Trip(
     val region: String = "",
     val city: String = "",
     val administrator: String = "",
-    val member: List<String> = listOf(),
+    val member: List<String> = listOf(""),
     val startDate: String = "",
     val endDate: String = "",
     val expenses: String = "",

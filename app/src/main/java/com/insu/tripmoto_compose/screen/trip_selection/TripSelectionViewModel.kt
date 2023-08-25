@@ -25,6 +25,6 @@ class TripSelectionViewModel @Inject constructor(
     }
 
     fun goFore(openAndPopUp: (String) -> Unit) {
-        openAndPopUp("TravelTitleScreen")
+        openAndPopUp("TravelOptionScreen")
     }
 }

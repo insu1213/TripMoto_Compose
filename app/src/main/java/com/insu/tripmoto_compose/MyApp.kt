@@ -53,6 +53,7 @@ import com.insu.tripmoto_compose.screen.member.add.MemberAddScreen
 import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
 import com.insu.tripmoto_compose.screen.travel_management.TravelManagementScreen
+import com.insu.tripmoto_compose.screen.travel_option.TravelOptionScreen
 import com.insu.tripmoto_compose.screen.trip_selection.TripSelectionScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
 import kotlinx.coroutines.CoroutineScope
@@ -67,8 +68,8 @@ fun MyApp() {
         val postNotificationPermission =
             rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 
-        LaunchedEffect(key1 = true ){
-            if (!postNotificationPermission.status.isGranted){
+        LaunchedEffect(key1 = true) {
+            if (!postNotificationPermission.status.isGranted) {
                 postNotificationPermission.launchPermissionRequest()
             }
         }
@@ -136,6 +137,9 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
         TripSelectionScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
 
+    composable("TravelOptionScreen") {
+        TravelOptionScreen(openAndPopUp = { route -> appState.navigate(route) })
+    }
     composable("TravelTitleScreen") {
         TravelTitleScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
