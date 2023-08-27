@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.insu.tripmoto_compose.model.ChatList
+import kotlin.collections.remove
 import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.service.AccountService
@@ -47,18 +48,21 @@ class ChatViewModel @Inject constructor(
         if(chatList.value.text.isBlank()) {
             return
         }
-        Log.d(TAG, "text: ${chatList.value.text}")
         val uid = auth.currentUserId
         uidToNickName(chatList.value.text, uid) { userInfo, text ->
             chatList.value = chatList.value.copy(nickName = userInfo.nickName, text = text)
             launchCatching {
-                val editedChat = chatList.value
-                storageService.saveChatList(editedChat)
+                val tripId = storageService.getCurrentTripId()
+                val trip = storageService.getTrip(tripId)
+                val newTripMembers = trip!!.member.filter { it != auth.currentUserId }
+                chatList.value = chatList.value.copy(readMembers = newTripMembers)
+
+                withContext(Dispatchers.IO) {
+                    val editedChat = chatList.value
+                    storageService.saveChatList(editedChat)
+                }
             }
-
         }
-
-
 //            if(editedChat.id.isBlank()) {
 //                storageService.saveChatList(editedChat)
 //            } else {
@@ -71,10 +75,8 @@ class ChatViewModel @Inject constructor(
     private fun uidToNickName(text:String = "", uid: String, callback: (UserInfo, String) -> Unit) {
         viewModelScope.launch {
             val userInfo = storageService.getUserInfo(uid)
-            Log.d(TAG, "userInfo: $userInfo")
 
             withContext(Dispatchers.Main) {
-                Log.d(TAG, "콜백됨")
                 callback(userInfo?: UserInfo(), text)
             }
         }

@@ -8,4 +8,5 @@ data class ChatList (
     val userId: String = "",
     val nickName: String = "",
     val uploadTime: String = "",
+    val readMembers: List<String> = listOf("")
 )
