@@ -17,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import android.Manifest
 import android.os.Build
+import android.provider.Settings.Secure.getString
 import androidx.annotation.RequiresApi
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -56,6 +57,7 @@ import com.insu.tripmoto_compose.screen.travel_management.TravelManagementScreen
 import com.insu.tripmoto_compose.screen.travel_option.TravelOptionScreen
 import com.insu.tripmoto_compose.screen.trip_selection.TripSelectionScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
+import io.grpc.internal.JsonUtil.getString
 import kotlinx.coroutines.CoroutineScope
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -73,6 +75,7 @@ fun MyApp() {
                 postNotificationPermission.launchPermissionRequest()
             }
         }
+
         Box(
             modifier = Modifier
                 .background(MaterialTheme.colors.background)

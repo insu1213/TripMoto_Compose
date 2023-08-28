@@ -1,6 +1,9 @@
 package com.insu.tripmoto_compose.screen.main.chat.inner
 
+import android.Manifest
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.pm.PackageManager
 import android.nfc.Tag
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -8,7 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringResource
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.viewModelScope
+import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.model.ChatList
 import kotlin.collections.remove
 import com.insu.tripmoto_compose.model.User
@@ -82,6 +89,28 @@ class ChatViewModel @Inject constructor(
 //        onTextChange("")
         onSuccess()
     }
+
+//    fun sendBackgroundNotification(context: Context, chatList: ChatList) {
+//        val notificationManager = NotificationManagerCompat.from(context)
+//
+//        // 알림 생성 및 설정
+//        val notification = NotificationCompat.Builder(context, "channel_id")
+//            .setContentTitle(chatList.userId)
+//            .setContentText(chatList.text)
+//            .setSmallIcon(R.drawable.google)
+//            .setPriority(NotificationCompat.PRIORITY_HIGH)
+//            .build()
+//
+//        // 알림 표시
+//        if (ActivityCompat.checkSelfPermission(
+//                context,
+//                Manifest.permission.POST_NOTIFICATIONS
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            return
+//        }
+//        notificationManager.notify(0, notification)
+//    }
 
     fun chatAlert(activity: ComponentActivity, chatList: ChatList) {
         val uid = auth.currentUserId
