@@ -17,10 +17,17 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.rememberDismissState
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -50,9 +57,24 @@ fun ChatScreen(
     val chatListStorage = viewModel.chatListStorage.collectAsStateWithLifecycle(emptyList())
     val auth = viewModel.currentUser.collectAsStateWithLifecycle(User())
 
+    var chatSendState by remember { mutableStateOf(true) }
+
+    var currentTime by remember { mutableLongStateOf(System.currentTimeMillis() + 1500) }
+    var lastClickTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    var clickableState by remember { mutableStateOf(false) }
+
+    val activity = LocalContext.current as ComponentActivity
+
     val chatList by viewModel.chatList
 
     BackOnPressed()
+
+    LaunchedEffect(currentTime) {
+        currentTime = System.currentTimeMillis()
+        if(currentTime - lastClickTime > 1500) {
+            clickableState = true
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -72,6 +94,7 @@ fun ChatScreen(
             itemsIndexed(
                 items = chatListStorage.value.sortedBy { it.uploadTime }, // 정렬
             ) { _, item ->
+                viewModel.chatAlert(activity, item)
                 ChatListItem(item, auth.value.id, item.nickName)
             }
         }
@@ -90,8 +113,13 @@ fun ChatScreen(
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            viewModel.onSendClick {
-                                viewModel.clearText()
+                            if(clickableState) {
+                                Log.d(TAG, "실행됨")
+                                clickableState = false
+                                lastClickTime = currentTime
+                                viewModel.onSendClick {
+                                    viewModel.clearText()
+                                }
                             }
                         }
                     ) {

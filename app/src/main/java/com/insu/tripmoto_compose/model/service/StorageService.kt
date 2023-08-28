@@ -60,5 +60,6 @@ interface StorageService {
 
     suspend fun getChatList(chatListId: String): ChatList?
     suspend fun saveChatList(chatList: ChatList): String
+    suspend fun updateChatList(chatList: ChatList)
     suspend fun deleteChatList(chatListId: String)
 }

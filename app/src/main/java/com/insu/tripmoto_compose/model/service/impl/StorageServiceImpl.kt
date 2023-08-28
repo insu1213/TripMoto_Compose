@@ -182,6 +182,11 @@ class StorageServiceImpl @Inject constructor(
             tripCollection.document(currentTripId.value).collection(CHAT_COLLECTION).add(chatWithUserIdAndTime).await().id
             //firestore.collection(CHAT_COLLECTION).add(chatWithUserIdAndTime).await().id
         }
+
+    override suspend fun updateChatList(chatList: ChatList) {
+        tripCollection.document(currentTripId.value).collection(CHAT_COLLECTION).document(chatList.id).set(chatList).await()
+    }
+
     override suspend fun deleteChatList(chatListId: String) {
         //firestore.collection(CHAT_COLLECTION).document(chatListId).delete().await()
         tripCollection.document(currentTripId.value).collection(CHAT_COLLECTION).document(chatListId).delete().await()
