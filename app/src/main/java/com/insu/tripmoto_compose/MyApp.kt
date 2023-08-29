@@ -34,7 +34,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
-import com.insu.tripmoto_compose.model.service.NotificationService
 import com.insu.tripmoto_compose.screen.fore.travel_expenses.TravelExpensesScreen
 import com.insu.tripmoto_compose.screen.fore.travel_members.TravelMembersScreen
 import com.insu.tripmoto_compose.screen.fore.travel_place.TravelPlaceScreen

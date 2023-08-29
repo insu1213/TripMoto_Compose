@@ -55,6 +55,8 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
 
     val options by viewModel.options
 
+    val activity = LocalContext.current as ComponentActivity
+
     if(googleMapClickState) {
         EditMarker(clickPosition) {
             googleMapClickState = false
@@ -78,7 +80,7 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
             }
         }
     ) {
-        LoadMarker() {
+        LoadMarker(activity = activity) {
             markerClick = it
             markerClickState = true
         }

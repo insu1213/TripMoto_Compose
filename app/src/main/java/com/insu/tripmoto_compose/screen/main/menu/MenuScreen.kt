@@ -150,7 +150,7 @@ fun MenuScreen(
         Text(
             modifier = Modifier
                 .clickable {
-                    viewModel.onTriggerNotification(activity)
+                    //viewModel.onTriggerNotification(activity)
                 },
             text = "Notification",
             fontSize = 16.sp,
