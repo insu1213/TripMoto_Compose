@@ -15,6 +15,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.viewModelScope
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.model.ChatList
 import kotlin.collections.remove
@@ -26,6 +31,7 @@ import com.insu.tripmoto_compose.model.service.NotificationService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
 import com.insu.tripmoto_compose.screen.main.BottomNavItem
+import com.insu.tripmoto_compose.screen.main.chat.ChatNotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Delay
@@ -36,6 +42,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import com.insu.tripmoto_compose.R.string as AppText
 
@@ -115,11 +122,24 @@ class ChatViewModel @Inject constructor(
     fun chatAlert(activity: ComponentActivity, chatList: ChatList) {
         val uid = auth.currentUserId
         if(chatList.readMembers.contains(uid)) {
-            val notificationService = NotificationService(activity.applicationContext)
-            notificationService.showBasicNotification("TripMotoChat", "${chatList.nickName}: ${chatList.text}")
+            //val notificationService = NotificationService(activity.applicationContext)
+            //notificationService.showBasicNotification("TripMotoChat", "${chatList.nickName}: ${chatList.text}")
 
             val newMembers = chatList.readMembers.filter { it != auth.currentUserId }
             val newChatList = chatList.copy(readMembers = newMembers)
+
+            val request = PeriodicWorkRequestBuilder<ChatNotificationWorker>(
+                repeatInterval = 15, // Repeat every 15 minutes
+                repeatIntervalTimeUnit = TimeUnit.MINUTES
+            )
+                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+
+            val data = Data.Builder()
+            data.putString("title", "TripMoto")
+            data.putString("body", "${chatList.nickName}: ${chatList.text}")
+            request.setInputData(data.build())
+
+            WorkManager.getInstance().enqueue(request.build())
             launchCatching {
                 storageService.updateChatList(newChatList)
             }

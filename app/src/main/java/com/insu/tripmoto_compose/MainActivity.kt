@@ -13,7 +13,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.insu.tripmoto_compose.common.composable.BackPressCheck
 import com.insu.tripmoto_compose.model.service.NotificationService
-import com.insu.tripmoto_compose.model.service.ReceiverService
+//import com.insu.tripmoto_compose.model.service.ReceiverService
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initViews()
+//        initViews()
 
         setContent {
             MyApp()
@@ -31,14 +31,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        val intent = Intent(this@MainActivity, ReceiverService::class.java)
-        baseContext.startService(intent)
-    }
-
-    private fun initViews() {
-        val intent = Intent(this@MainActivity, ReceiverService::class.java)
-        baseContext.startService(intent)
-    }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        val intent = Intent(this@MainActivity, ReceiverService::class.java)
+//        baseContext.stopService(intent)
+//    }
+//
+//    private fun initViews() {
+//        val intent = Intent(this@MainActivity, ReceiverService::class.java)
+//        baseContext.startService(intent)
+//    }
 }

@@ -92,7 +92,7 @@ fun ChatScreen(
             itemsIndexed(
                 items = chatListStorage.value.sortedBy { it.uploadTime }, // 정렬
             ) { _, item ->
-                viewModel.chatAlert(activity, item)
+                //viewModel.chatAlert(activity, item)
                 ChatListItem(item, auth.value.id, item.nickName)
             }
         }
