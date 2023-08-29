@@ -27,11 +27,11 @@ import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.LogService
-import com.insu.tripmoto_compose.model.service.NotificationService
+//import com.insu.tripmoto_compose.model.service.NotificationService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
 import com.insu.tripmoto_compose.screen.main.BottomNavItem
-import com.insu.tripmoto_compose.screen.main.chat.ChatNotificationWorker
+//import com.insu.tripmoto_compose.screen.main.chat.ChatNotificationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Delay
@@ -128,18 +128,19 @@ class ChatViewModel @Inject constructor(
             val newMembers = chatList.readMembers.filter { it != auth.currentUserId }
             val newChatList = chatList.copy(readMembers = newMembers)
 
-            val request = PeriodicWorkRequestBuilder<ChatNotificationWorker>(
-                repeatInterval = 15, // Repeat every 15 minutes
-                repeatIntervalTimeUnit = TimeUnit.MINUTES
-            )
-                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+//            val request = PeriodicWorkRequestBuilder<ChatNotificationWorker>(
+//                repeatInterval = 15, // Repeat every 15 minutes
+//                repeatIntervalTimeUnit = TimeUnit.MINUTES
+//            )
+//                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+//
+//            val data = Data.Builder()
+//            data.putString("title", "TripMoto")
+//            data.putString("body", "${chatList.nickName}: ${chatList.text}")
+//            request.setInputData(data.build())
+//
+//            WorkManager.getInstance().enqueue(request.build())
 
-            val data = Data.Builder()
-            data.putString("title", "TripMoto")
-            data.putString("body", "${chatList.nickName}: ${chatList.text}")
-            request.setInputData(data.build())
-
-            WorkManager.getInstance().enqueue(request.build())
             launchCatching {
                 storageService.updateChatList(newChatList)
             }

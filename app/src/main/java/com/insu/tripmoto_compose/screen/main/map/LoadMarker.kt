@@ -29,7 +29,8 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), markerClick: (MapMarke
             snippet = it.description,
             onInfoWindowClick = {
                 markerClick(thisMarker)
-            }
+            },
+
         )
     }
 }
