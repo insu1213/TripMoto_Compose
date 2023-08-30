@@ -54,8 +54,11 @@ class StorageServiceImpl @Inject constructor(
         firestore.collection(INVITE_CODE_COLLECTION).whereEqualTo("code", code).get().await().first().toObject()
 
     override suspend fun findTripUid(tripId: String): InviteCode? =
-        firestore.collection(INVITE_CODE_COLLECTION).whereEqualTo("tripId", tripId).get().await().first().toObject()
-
+        try {
+            firestore.collection(INVITE_CODE_COLLECTION).whereEqualTo("tripId", tripId).get().await().first().toObject()
+        } catch(e: Exception) {
+            InviteCode()
+        }
 
     override suspend fun getInviteCode(inviteCodeId: String): InviteCode? =
         firestore.collection(INVITE_CODE_COLLECTION).document(inviteCodeId).get().await().toObject()

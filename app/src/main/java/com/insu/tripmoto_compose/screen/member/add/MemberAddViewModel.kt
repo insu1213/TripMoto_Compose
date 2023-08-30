@@ -12,12 +12,14 @@ import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.lifecycle.viewModelScope
 import com.insu.tripmoto_compose.model.InviteCode
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -41,7 +43,7 @@ class MemberAddViewModel @Inject constructor(
 
     private fun generateRandomString(callback: (String) -> Unit) { // 10자리 난수 생성 (같을 확를 0.00000000000000015%
         var code: String = ""
-        launchCatching {
+        viewModelScope.launch {
             val inviteCode = storageService.findTripUid(storageService.getCurrentTripId()) ?: InviteCode()
             if(inviteCode.tripId.isBlank()) {
                 val charPool: List<Char> = ('A'..'Z') + ('0'..'9')

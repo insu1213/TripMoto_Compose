@@ -78,7 +78,7 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
                 clickPosition = it
                 googleMapClickState = true
             }
-        }
+        },
     ) {
         LoadMarker(activity = activity) {
             markerClick = it
