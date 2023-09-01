@@ -1,13 +1,17 @@
 package com.insu.tripmoto_compose.screen.trip_selection
 
 import android.graphics.Paint.Align
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -73,20 +77,32 @@ fun TripSelectionScreen(
         }
     }
 
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(52.dp)
+            .padding(top = 12.dp, start = 12.dp, bottom = 8.dp),
+    ) {
+        MainTitleText(
+            modifier = Modifier.align(Alignment.CenterStart),
+            text = AppText.trip
+        )
+        Icon(
+            modifier = Modifier
+                .align(alignment = Alignment.CenterEnd)
+                .size(28.dp)
+                .clickable {
+                    viewModel.onSettingClick(openAndPopUp)
+                },
+            painter = painterResource(AppIcon.ic_settings),
+            contentDescription = ""
+        )
+    }
 
 
     Column(
+        modifier = Modifier.padding(top = 52.dp)
     ) {
-        Box(
-            modifier = Modifier
-                .padding(top = 12.dp, start = 12.dp, bottom = 8.dp),
-        ) {
-            MainTitleText(
-                text = AppText.trip
-            )
-        }
-
-
         LazyColumn(
         ) {
             itemsIndexed(

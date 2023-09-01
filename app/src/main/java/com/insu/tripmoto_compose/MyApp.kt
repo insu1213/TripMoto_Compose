@@ -55,6 +55,7 @@ import com.insu.tripmoto_compose.screen.splash.SplashScreen
 import com.insu.tripmoto_compose.screen.travel_management.TravelManagementScreen
 import com.insu.tripmoto_compose.screen.travel_option.TravelOptionScreen
 import com.insu.tripmoto_compose.screen.trip_selection.TripSelectionScreen
+import com.insu.tripmoto_compose.settings.SettingsScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
 import io.grpc.internal.JsonUtil.getString
 import kotlinx.coroutines.CoroutineScope
@@ -137,6 +138,9 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
 
     composable("TripSelectionScreen") {
         TripSelectionScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
+    }
+    composable("SettingsScreen") {
+        SettingsScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
 
     composable("TravelOptionScreen") {
