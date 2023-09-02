@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.insu.tripmoto_compose.suitFamily
 
@@ -26,10 +28,12 @@ fun SettingsItem(
             .height(IntrinsicSize.Min)
     ) {
          Text(
+             modifier = Modifier
+                 .padding(top = 8.dp, bottom = 8.dp, start = 12.dp),
              text = item,
-             fontSize = 20.sp,
+             fontSize = 16.sp,
              fontFamily = suitFamily,
-             fontWeight = FontWeight.Bold
+             fontWeight = FontWeight.SemiBold
          )
     }
 }

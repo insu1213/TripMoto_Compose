@@ -137,10 +137,10 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
     }
 
     composable("TripSelectionScreen") {
-        TripSelectionScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
+        TripSelectionScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
     composable("SettingsScreen") {
-        SettingsScreen(openAndPopUp = { route -> appState.navigate(route) })
+        SettingsScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
 
     composable("TravelOptionScreen") {

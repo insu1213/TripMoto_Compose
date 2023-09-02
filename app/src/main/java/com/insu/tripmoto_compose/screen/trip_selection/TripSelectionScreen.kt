@@ -89,6 +89,7 @@ fun TripSelectionScreen(
         )
         Icon(
             modifier = Modifier
+                .padding(end = 12.dp)
                 .align(alignment = Alignment.CenterEnd)
                 .size(28.dp)
                 .clickable {
