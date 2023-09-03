@@ -1,4 +1,4 @@
-package com.insu.tripmoto_compose.settings
+package com.insu.tripmoto_compose.screen.settings
 
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.LogService

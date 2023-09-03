@@ -1,4 +1,4 @@
-package com.insu.tripmoto_compose.settings
+package com.insu.tripmoto_compose.screen.settings
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,19 +20,31 @@ fun SettingsScreen(
     ) {
         itemsIndexed(
             listOf(
+                "계정",
                 "알림",
-                "로그아웃"
+                "언어",
+                "로그아웃",
+                "공지사항"
             )
         ) { _, item ->
             SettingsItem(item) { data ->
                 when(data) {
+                    "계정" -> {
+
+                    }
                     "알림" -> {
+
+                    }
+                    "언어" -> {
 
                     }
                     "로그아웃" -> {
                         viewModel.signOut {
                             openAndPopUp("LoginScreen")
                         }
+                    }
+                    "공지사항" -> {
+
                     }
                 }
             }

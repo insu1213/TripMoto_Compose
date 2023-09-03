@@ -18,6 +18,7 @@
     <color name="gray_6">#6F6F6F</color>
     <color name="gray_7">#4F4F4F</color>
     <color name="gray_8">#3D3D3D</color>
+    <color name="red">#FF0000</color>
 
 
 </resources>
