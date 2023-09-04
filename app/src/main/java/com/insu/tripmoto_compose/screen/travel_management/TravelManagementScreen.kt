@@ -42,9 +42,7 @@ fun TravelManagementScreen(
                 "제목",
                 "위치",
                 "일정",
-                "경비",
-                "멤버",
-                "고급 설정"
+                "멤버 관리",
             )
         ) { _, item ->
             TravelManageListItem(title = item, data = viewModel.trip.value) { route ->

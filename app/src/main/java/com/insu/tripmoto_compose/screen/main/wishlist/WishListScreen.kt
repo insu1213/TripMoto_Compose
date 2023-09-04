@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -68,51 +69,54 @@ fun WishListScreen(
     val wishList = viewModel.wishList.collectAsStateWithLifecycle(emptyList())
     val options by viewModel.options
 
-    Column(
-        modifier = Modifier
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 68.dp)
-    ) {
-        Box(modifier = modifier.fillMaxWidth()) {
-            MainTitleText(
-                modifier = modifier.align(Alignment.CenterStart),
-                text = AppText.wishlist
-            )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 68.dp)
+        ) {
+            Box(modifier = modifier.fillMaxWidth()) {
+                MainTitleText(
+                    modifier = modifier.align(Alignment.CenterStart),
+                    text = AppText.wishlist
+                )
 
-            Text(
-                modifier = modifier
-                    .align(Alignment.CenterEnd)
-                    .clickable {
-                        viewModel.onAddClick(openScreen)
-                    },
-                text = "추가하기",
-                color = colorResource(AppColor.primary_800)
+                Text(
+                    modifier = modifier
+                        .align(Alignment.CenterEnd)
+                        .clickable {
+                            viewModel.onAddClick(openScreen)
+                        },
+                    text = "추가하기",
+                    color = colorResource(AppColor.primary_800)
+                )
+            }
+
+            Spacer(modifier = Modifier.padding(bottom = 8.dp))
+
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Adaptive(150.dp),
+                state = listState,
+                verticalItemSpacing = 2.dp,
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                content = {
+                    items(wishList.value, key = { it.id }) { wishListItem ->
+                        WishListItem(
+                            wishList = wishListItem,
+                            options = options,
+                            onCheckChange = { viewModel.onWishListCheckChange(wishListItem) },
+                            onActionClick = { action ->
+                                viewModel.onWishListActionClick(
+                                    openScreen,
+                                    wishListItem,
+                                    action
+                                )
+                            }
+                        )
+                    }
+                }
             )
         }
-
-        Spacer(modifier = Modifier.padding(bottom = 8.dp))
-
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Adaptive(150.dp),
-            state = listState,
-            verticalItemSpacing = 2.dp,
-            horizontalArrangement = Arrangement.spacedBy(2.dp),
-            content = {
-                items(wishList.value, key = { it.id }) { wishListItem ->
-                    WishListItem(
-                        wishList = wishListItem,
-                        options = options,
-                        onCheckChange = { viewModel.onWishListCheckChange(wishListItem) },
-                        onActionClick = { action ->
-                            viewModel.onWishListActionClick(
-                                openScreen,
-                                wishListItem,
-                                action
-                            )
-                        }
-                    )
-                }
-            }
-        )
     }
+
     LaunchedEffect(viewModel) { viewModel.loadWishListOptions() }
 }

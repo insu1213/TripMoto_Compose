@@ -9,11 +9,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -22,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,6 +42,7 @@ import com.insu.tripmoto_compose.rememberAppState
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.color as AppColor
 import com.insu.tripmoto_compose.R.string as AppText
+import com.insu.tripmoto_compose.R.drawable as AppIcon
 
 @Composable
 fun MenuScreen(
@@ -45,116 +52,130 @@ fun MenuScreen(
     val activity = LocalContext.current as ComponentActivity
     BackOnPressed()
 
-    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
-        MainTitleText(
-            text = R.string.menu,
-        )
-        Surface(
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-                .fillMaxHeight(0.2F)
-                .clickable {
-                    viewModel.onTripSettingClick(openAndPopUp)
-                },
-            color = colorResource(AppColor.white),
-            shape = RoundedCornerShape(12.dp),
-            elevation = 4.dp,
-            border = BorderStroke(3.dp, colorResource(AppColor.primary_800))
-        ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
+            MainTitleText(
+                modifier = Modifier.padding(bottom = 24.dp),
+                text = R.string.menu,
+            )
+            LazyRow(userScrollEnabled = false) {
+                itemsIndexed(
+                    listOf(
+                        Menu(paint = AppIcon.ic_panel, text = "여행 설정"),
+                        Menu(paint = AppIcon.ic_air, text = "항공권"),
+                        Menu(paint = AppIcon.ic_room, text = "숙박"),
+                        Menu(paint = AppIcon.ic_tag, text = "지출 내역"),
+                    )
+                ) { _, item ->
+                    MenuList(menu = item) {
+                        when(it) {
+                            "여행 설정" -> viewModel.onTripSettingClick(openAndPopUp)
+                            "항공권" -> {}
+                            "숙박" -> {}
+                            "지출 내역" -> {}
+                        }
+                    }
+                }
+            }
+
+
+//            Surface(
+//                modifier = Modifier
+//                    .padding(top = 12.dp)
+//                    .fillMaxWidth()
+//                    .fillMaxHeight(0.2F)
+//                    .clickable {
+//                        viewModel.onTripSettingClick(openAndPopUp)
+//                    },
+//                color = colorResource(AppColor.white),
+//                shape = RoundedCornerShape(12.dp),
+//                elevation = 4.dp,
+//                border = BorderStroke(3.dp, colorResource(AppColor.primary_800))
+//            ) {
+//                Text(
+//                    modifier = Modifier
+//                        .padding(all = 8.dp)
+//                        .fillMaxWidth()
+//                        .fillMaxHeight()
+//                        .wrapContentHeight(),
+//                    text = stringResource(AppText.active_trip_management),
+//                    style = MaterialTheme.typography.body2,
+//                    color = colorResource(R.color.black),
+//                    textAlign = TextAlign.Center,
+//                    fontSize = 18.sp,
+//                    fontFamily = suitFamily,
+//                    fontWeight = FontWeight.Bold
+//                )
+//            }
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxHeight(0.14F)
+//                    .padding(top = 16.dp),
+//                horizontalArrangement = Arrangement.SpaceBetween
+//            ) {
+//                Surface(
+//                    modifier = Modifier
+//                        .padding(end = 8.dp)
+//                        .fillMaxWidth(0.5F)
+//                        .fillMaxHeight(),
+//                    color = colorResource(AppColor.white),
+//                    shape = RoundedCornerShape(12.dp),
+//                    elevation = 4.dp,
+//                    border = BorderStroke(3.dp, colorResource(AppColor.gray_4))
+//                ) {
+//                    Text(
+//                        modifier = Modifier
+//                            .padding(all = 8.dp)
+//                            .fillMaxWidth()
+//                            .fillMaxHeight()
+//                            .wrapContentHeight(),
+//                        text = stringResource(AppText.past_trip_record),
+//                        style = MaterialTheme.typography.body2,
+//                        color = colorResource(R.color.black),
+//                        textAlign = TextAlign.Center,
+//                        fontSize = 14.sp,
+//                        fontFamily = suitFamily,
+//                        fontWeight = FontWeight.SemiBold
+//                    )
+//                }
+//                Surface(
+//                    modifier = Modifier
+//                        .padding(start = 8.dp)
+//                        .fillMaxHeight()
+//                        .clickable {
+//                            viewModel.onOtherTripClick(openAndPopUp)
+//                        },
+//                    color = colorResource(AppColor.white),
+//                    shape = RoundedCornerShape(12.dp),
+//                    elevation = 4.dp,
+//                    border = BorderStroke(3.dp, colorResource(AppColor.gray_4))
+//                ) {
+//                    Text(
+//                        modifier = Modifier
+//                            .padding(all = 8.dp)
+//                            .fillMaxWidth()
+//                            .fillMaxHeight()
+//                            .wrapContentHeight(),
+//                        text = stringResource(AppText.participate_other_travel),
+//                        style = MaterialTheme.typography.body2,
+//                        color = colorResource(R.color.black),
+//                        textAlign = TextAlign.Center,
+//                        fontSize = 14.sp,
+//                        fontFamily = suitFamily,
+//                        fontWeight = FontWeight.SemiBold
+//                    )
+//                }
+//            }
             Text(
                 modifier = Modifier
-                    .padding(all = 8.dp)
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .wrapContentHeight(),
-                text = stringResource(AppText.active_trip_management),
-                style = MaterialTheme.typography.body2,
-                color = colorResource(R.color.black),
-                textAlign = TextAlign.Center,
-                fontSize = 18.sp,
-                fontFamily = suitFamily,
-                fontWeight = FontWeight.Bold
+                    .clickable {
+                        //viewModel.onTriggerNotification(activity)
+                    },
+                text = "Notification",
+                fontSize = 16.sp,
+                color = colorResource(AppColor.primary_800)
             )
         }
-        Row(
-            modifier = Modifier
-                .fillMaxHeight(0.14F)
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Surface(
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .fillMaxWidth(0.5F)
-                    .fillMaxHeight(),
-                color = colorResource(AppColor.white),
-                shape = RoundedCornerShape(12.dp),
-                elevation = 4.dp,
-                border = BorderStroke(3.dp, colorResource(AppColor.gray_4))
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(all = 8.dp)
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .wrapContentHeight(),
-                    text = stringResource(AppText.past_trip_record),
-                    style = MaterialTheme.typography.body2,
-                    color = colorResource(R.color.black),
-                    textAlign = TextAlign.Center,
-                    fontSize = 14.sp,
-                    fontFamily = suitFamily,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-            Surface(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .fillMaxHeight()
-                    .clickable {
-                        viewModel.onOtherTripClick(openAndPopUp)
-                    },
-                color = colorResource(AppColor.white),
-                shape = RoundedCornerShape(12.dp),
-                elevation = 4.dp,
-                border = BorderStroke(3.dp, colorResource(AppColor.gray_4))
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(all = 8.dp)
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .wrapContentHeight(),
-                    text = stringResource(AppText.participate_other_travel),
-                    style = MaterialTheme.typography.body2,
-                    color = colorResource(R.color.black),
-                    textAlign = TextAlign.Center,
-                    fontSize = 14.sp,
-                    fontFamily = suitFamily,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
-        }
-        Text(
-            modifier = Modifier
-                .clickable {
-                    viewModel.onLogoutClick {
-                        openAndPopUp("LoginScreen")
-                    }
-                },
-            text = "Logout",
-            fontSize = 16.sp,
-            color = colorResource(AppColor.primary_800)
-        )
-        Text(
-            modifier = Modifier
-                .clickable {
-                    //viewModel.onTriggerNotification(activity)
-                },
-            text = "Notification",
-            fontSize = 16.sp,
-            color = colorResource(AppColor.primary_800)
-        )
     }
+
 }

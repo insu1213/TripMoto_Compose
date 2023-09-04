@@ -1,5 +1,6 @@
 package com.insu.tripmoto_compose.screen.main.menu
 
+import android.location.LocationListener
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.LogService
 //import com.insu.tripmoto_compose.model.service.NotificationService
 import com.insu.tripmoto_compose.screen.MyViewModel
+import com.loopj.android.http.RequestParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,14 +20,6 @@ class MenuViewModel @Inject constructor(
     logService: LogService,
     private val accountService: AccountService
 ): MyViewModel(logService) {
-    fun onLogoutClick(callback: () -> Unit) {
-        viewModelScope.launch {
-            accountService.signOut()
-            SnackbarManager.showMessage(R.string.logout)
-            callback()
-        }
-    }
-
     fun onOtherTripClick(openAndPopUp: (String) -> Unit) {
         openAndPopUp("TripSelectionScreen")
     }

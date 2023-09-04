@@ -41,6 +41,7 @@ fun SettingsScreen(
                     "로그아웃" -> {
                         viewModel.signOut {
                             openAndPopUp("LoginScreen")
+
                         }
                     }
                     "공지사항" -> {

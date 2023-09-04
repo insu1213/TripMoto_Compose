@@ -19,6 +19,9 @@ import android.Manifest
 import android.os.Build
 import android.provider.Settings.Secure.getString
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -140,8 +143,9 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
         TripSelectionScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
     composable("SettingsScreen") {
-        SettingsScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
+        SettingsScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
+
 
     composable("TravelOptionScreen") {
         TravelOptionScreen(openAndPopUp = { route -> appState.navigate(route) })
@@ -175,19 +179,29 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
         MemberAddScreen(popUpScreen = { appState.popUp() })
     }
 
-    composable(BottomNavItem.WishList.screen_route) {
+    composable(
+        route = BottomNavItem.WishList.screen_route,
+    ) {
         WishListScreen(openScreen = { route -> appState.navigate(route) })
     }
-    composable(BottomNavItem.Direction.screen_route) {
+    composable(
+        route = BottomNavItem.Direction.screen_route,
+    ) {
         DirectionScreen()
     }
-    composable(BottomNavItem.Map.screen_route) {
+    composable(
+        route = BottomNavItem.Map.screen_route,
+    ) {
         MapScreen()
     }
-    composable(BottomNavItem.Chat.screen_route) {
+    composable(
+        route = BottomNavItem.Chat.screen_route,
+    ) {
         ChatScreen()
     }
-    composable(BottomNavItem.Menu.screen_route) {
+    composable(
+        route = BottomNavItem.Menu.screen_route,
+    ) {
         MenuScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
 
@@ -201,6 +215,8 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
         )
     }
 }
+
+
 
 @Composable
 @ExperimentalMaterialApi

@@ -32,12 +32,9 @@ fun TravelManageListItem(title: String, data: Trip, onClick: (String) -> Unit) {
                     "제목" -> {}
                     "위치" -> {}
                     "일정" -> {}
-                    "멤버" -> {
+                    "멤버 관리" -> {
                         onClick("MemberScreen")
                     }
-
-                    "경비" -> {}
-                    "고급 설정" -> {}
                 }
             }
     ) {
@@ -63,9 +60,7 @@ fun TravelManageListItem(title: String, data: Trip, onClick: (String) -> Unit) {
                         "제목" -> data.title
                         "위치" -> data.region + " / " + data.city
                         "일정" -> data.startDate + " ~ " + data.endDate
-                        "멤버" -> ""
-                        "경비" -> data.expenses
-                        "고급 설정" -> ""
+                        "멤버 설정" -> ""
                         else -> ""
                     },
                     fontFamily = suitFamily,
