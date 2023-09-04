@@ -68,7 +68,7 @@ fun MenuScreen(
                     )
                 ) { _, item ->
                     MenuList(menu = item) {
-                        when(it) {
+                        when (it) {
                             "여행 설정" -> viewModel.onTripSettingClick(openAndPopUp)
                             "항공권" -> {}
                             "숙박" -> {}
@@ -166,16 +166,17 @@ fun MenuScreen(
 //                    )
 //                }
 //            }
-            Text(
-                modifier = Modifier
-                    .clickable {
-                        //viewModel.onTriggerNotification(activity)
-                    },
-                text = "Notification",
-                fontSize = 16.sp,
-                color = colorResource(AppColor.primary_800)
-            )
+
+//// 2023.09.04
+//            Text(
+//                modifier = Modifier
+//                    .clickable {
+//                        //viewModel.onTriggerNotification(activity)
+//                    },
+//                text = "Notification",
+//                fontSize = 16.sp,
+//                color = colorResource(AppColor.primary_800)
+//            )
         }
     }
-
 }

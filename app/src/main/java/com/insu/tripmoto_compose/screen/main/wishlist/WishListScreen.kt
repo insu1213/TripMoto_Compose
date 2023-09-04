@@ -61,6 +61,12 @@ fun WishListScreen(
     modifier: Modifier = Modifier,
     viewModel: WishListViewModel = hiltViewModel()
 ) {
+    /*
+    * 1. Delay Loading 창 만들기: 지연시간 때문에 앱 State가 모두 멈추게 되는 현상 발생.
+    *
+    * */
+
+
     BackOnPressed()
 
     val listState = rememberLazyStaggeredGridState()

@@ -55,7 +55,7 @@ import com.insu.tripmoto_compose.screen.member.MemberScreen
 import com.insu.tripmoto_compose.screen.member.add.MemberAddScreen
 import com.insu.tripmoto_compose.screen.sign_up.SignUpScreen
 import com.insu.tripmoto_compose.screen.splash.SplashScreen
-import com.insu.tripmoto_compose.screen.travel_management.TravelManagementScreen
+import com.insu.tripmoto_compose.screen.main.menu.travel_management.TravelManagementScreen
 import com.insu.tripmoto_compose.screen.travel_option.TravelOptionScreen
 import com.insu.tripmoto_compose.screen.trip_selection.TripSelectionScreen
 import com.insu.tripmoto_compose.screen.settings.SettingsScreen
@@ -169,13 +169,31 @@ fun NavGraphBuilder.navGraph(appState: MyAppState) {
     composable("MainScreen") {
         MainScreen(openAndPopUp = { route -> appState.clearAndNavigate(route) })
     }
-    composable("TravelManagementScreen") {
+    composable(
+        route = "TravelManagementScreen",
+    ) {
         TravelManagementScreen(openAndPopUp = { route -> appState.navigate(route) })
     }
-    composable("MemberScreen") {
+    composable(
+        route = "MemberScreen",
+    ) {
         MemberScreen(openScreen = { route -> appState.navigate(route) })
     }
-    composable("MemberAddScreen") {
+    composable(
+        route = "MemberAddScreen",
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                animationSpec = tween(700)
+            )
+        },
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                animationSpec = tween(700)
+            )
+        },
+    ) {
         MemberAddScreen(popUpScreen = { appState.popUp() })
     }
 

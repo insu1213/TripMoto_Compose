@@ -3,6 +3,7 @@ package com.insu.tripmoto_compose.screen.member
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,29 +38,31 @@ fun MemberScreen(
         members = it
     }
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(top = 12.dp, start = 12.dp, end = 12.dp)
-    ) {
-        MainTitleText(
-            modifier = Modifier.align(Alignment.CenterStart),
-            text = R.string.travel_members
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp, start = 12.dp, end = 12.dp)
+        ) {
+            MainTitleText(
+                modifier = Modifier.align(Alignment.CenterStart),
+                text = R.string.travel_members
+            )
 
-        Text(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .clickable {
-                    viewModel.onAddClick(openScreen)
-                },
-            text = "초대하기",
-            color = colorResource(R.color.primary_800)
-        )
-    }
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .clickable {
+                        viewModel.onAddClick(openScreen)
+                    },
+                text = "초대하기",
+                color = colorResource(R.color.primary_800)
+            )
+        }
 
-    LazyColumn() {
-        itemsIndexed(members) { _, item ->
-            MemberList(item)
+        LazyColumn() {
+            itemsIndexed(members) { _, item ->
+                MemberList(item)
+            }
         }
     }
 }

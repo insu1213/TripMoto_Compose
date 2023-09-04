@@ -1,4 +1,4 @@
-package com.insu.tripmoto_compose.screen.travel_management
+package com.insu.tripmoto_compose.screen.main.menu.travel_management
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
