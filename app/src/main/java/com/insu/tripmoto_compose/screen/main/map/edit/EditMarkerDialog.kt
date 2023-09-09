@@ -2,8 +2,10 @@ package com.insu.tripmoto_compose.screen.main.map.edit
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -20,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.insu.tripmoto_compose.common.composable.BasicButton
 import com.insu.tripmoto_compose.common.composable.BasicColoringButton
+import com.insu.tripmoto_compose.common.composable.DropdownSelector
 import com.insu.tripmoto_compose.common.composable.LimitTextField
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.R.string as AppText
@@ -53,10 +56,19 @@ fun EditMarkerDialog(
                     .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                MainTitleText(
-                    text = AppText.edit_marker,
-                    modifier = Modifier.padding(24.dp),
-                )
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp)
+                ) {
+                    MainTitleText(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart),
+                        text = AppText.edit_marker,
+                    )
+
+                }
+
+
 
                 LimitTextField(
                     maxLength = 15,
