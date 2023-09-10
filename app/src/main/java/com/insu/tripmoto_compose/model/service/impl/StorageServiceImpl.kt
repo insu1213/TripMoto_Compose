@@ -29,6 +29,7 @@ import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import javax.inject.Inject
 
 class StorageServiceImpl @Inject constructor(
@@ -178,9 +179,13 @@ class StorageServiceImpl @Inject constructor(
         tripCollection.document(currentTripId.value).collection(CHAT_COLLECTION).document(chatListId).get().await().toObject()
     override suspend fun saveChatList(chatList: ChatList): String =
         trace(SAVE_CHAT_TRACE) {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
-            val currentTime = dateFormat.format(Date(System.currentTimeMillis()))
-            val chatWithUserIdAndTime = chatList.copy(userId = auth.currentUserId, uploadTime = currentTime)
+            val utcTimeZone = TimeZone.getTimeZone("Asia/Seoul")
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            dateFormat.timeZone = utcTimeZone
+            val currentDate = Date()
+            val formattedDate = dateFormat.format(currentDate)
+
+            val chatWithUserIdAndTime = chatList.copy(userId = auth.currentUserId, uploadTime = formattedDate)
 
             tripCollection.document(currentTripId.value).collection(CHAT_COLLECTION).add(chatWithUserIdAndTime).await().id
             //firestore.collection(CHAT_COLLECTION).add(chatWithUserIdAndTime).await().id

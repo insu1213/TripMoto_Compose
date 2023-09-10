@@ -1,21 +1,33 @@
 package com.insu.tripmoto_compose.screen.main.map.edit
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.ShapeDrawable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,15 +51,27 @@ fun EditMarkerDialog(
     val marker by viewModel.marker
     position?.let { viewModel.onPositionChange(it) }
 
+    var colorDialogState by remember { mutableStateOf(false) }
+    //var color by remember { mutableStateOf("#000000") }
+
     LaunchedEffect(Unit) { viewModel.initialize(markerId = markerId) }
+
+    if(colorDialogState) {
+        ColorPickerDialog(
+            initialColor = "1164CD",
+            colors = listOf("FF0000", "00FF00", "0000FF"),
+            onChoice = {
+                viewModel.onColorChange(it)
+                colorDialogState = false
+            }
+        )
+    }
 
     Dialog(onDismissRequest = {
         onDismiss()
-
     }) {
         Card(
             shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.padding(8.dp),
             elevation = 8.dp
         ) {
             Column(
@@ -58,7 +82,7 @@ fun EditMarkerDialog(
             ) {
                 Box(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp)
+                    .padding(12.dp)
                 ) {
                     MainTitleText(
                         modifier = Modifier
@@ -66,9 +90,18 @@ fun EditMarkerDialog(
                         text = AppText.edit_marker,
                     )
 
+                    Box(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(30.dp)
+                            .align(Alignment.CenterEnd)
+                            .background(marker.color.toColor(Color.White))
+                            .clickable {
+                                colorDialogState = true
+                            }
+                    )
+                    //ColorPickerDialog(initialColor = , colors = , onChoice = )
                 }
-
-
 
                 LimitTextField(
                     maxLength = 15,

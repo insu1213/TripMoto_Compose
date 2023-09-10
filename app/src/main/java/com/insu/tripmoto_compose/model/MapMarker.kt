@@ -10,6 +10,7 @@ data class MapMarker(
     val lat: Double = 0.0,
     val lng: Double = 0.0,
     val completed: Boolean = false,
+    val color: String = "#1164CD",
     val options: Int = 0,
     val iterator: Int = 0,
 )

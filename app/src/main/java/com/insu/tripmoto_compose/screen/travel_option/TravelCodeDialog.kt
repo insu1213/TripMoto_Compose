@@ -35,7 +35,7 @@ fun TravelCodeDialog(
     }) {
         Card(
             shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(12.dp),
             elevation = 8.dp
         ) {
             Column(
@@ -46,16 +46,21 @@ fun TravelCodeDialog(
             ) {
                 MainTitleText(
                     text = R.string.enter_invite_code,
-                    modifier = Modifier.padding(24.dp),
+                    modifier = Modifier.padding(8.dp),
                 )
 
-                LimitTextField(
-                    maxLength = 10,
-                    text = R.string.code,
-                    value = viewModel.code.value,
-                    onNewValue = viewModel::onChangeCode,
-                    modifier = Modifier
-                        .padding(top = 8.dp)
+//                LimitTextField(
+//                    maxLength = 10,
+//                    text = R.string.code,
+//                    value = viewModel.code.value,
+//                    onNewValue = viewModel::onChangeCode,
+//                    modifier = Modifier
+//                        .padding(top = 8.dp)
+//                )
+                CodeTextField(
+                    modifier = Modifier.padding(top = 8.dp),
+                    text = viewModel.code.value,
+                    onTextChanged = viewModel::onChangeCode
                 )
 
                 Row(

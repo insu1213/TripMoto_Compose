@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
@@ -45,10 +47,14 @@ fun DetailMarkerDialog(
     onDismiss: () -> Unit,
 ) {
 
-    Dialog(onDismissRequest = { onDismiss() }) {
+    Dialog(
+        onDismissRequest = { onDismiss() }
+    ) {
         Card(
             shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .width(260.dp),
             elevation = 8.dp
         ) {
             Column(
@@ -60,9 +66,13 @@ fun DetailMarkerDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    MainTitleText(
-                        text = R.string.detail_marker,
-                        modifier = Modifier.padding(24.dp),
+                    Text(
+                        text = marker.title,
+                        color = colorResource(R.color.black),
+                        fontSize = 18.sp,
+                        fontFamily = suitFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Start,
                     )
                     DropdownContextMenu(
                         options,
@@ -74,17 +84,7 @@ fun DetailMarkerDialog(
                 }
 
 
-                Text(
-                    text = marker.title,
-                    modifier = Modifier
-                        .padding(top = 4.dp, start = 4.dp)
-                        .fillMaxWidth(),
-                    color = colorResource(R.color.black),
-                    fontSize = 14.sp,
-                    fontFamily = suitFamily,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Start,
-                )
+
 
                 Text(
                     text = marker.description,
@@ -102,7 +102,6 @@ fun DetailMarkerDialog(
                     text = R.string.dismiss,
                     color = AppColor.gray_3,
                     modifier = Modifier
-                        .padding(top = 12.dp, start = 8.dp, end = 8.dp, bottom = 8.dp)
                 ) {
                     onDismiss()
                 }

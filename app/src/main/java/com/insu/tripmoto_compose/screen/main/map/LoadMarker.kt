@@ -27,6 +27,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,6 +40,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.maps.android.compose.MarkerComposable
+import com.insu.tripmoto_compose.screen.main.map.edit.toColor
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.color as AppColor
@@ -48,8 +50,6 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
     val marker = viewModel.marker.collectAsStateWithLifecycle(emptyList())
 
     var i = 0
-
-
 
     marker.value.forEach {
         i += 1
@@ -77,13 +77,14 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
             keys = arrayOf("singapore4"),
             state = MarkerState(position = position),
             onClick = markerClickEvent,
+            draggable = true
         ) {
             Box(
                 modifier = Modifier
-                    .width(44.dp)
-                    .height(44.dp)
+                    .width(36.dp)
+                    .height(36.dp)
                     .clip(CircleShape)
-                    .background(colorResource(AppColor.primary_800))
+                    .background(it.color.toColor(Color.White))
                     .border(width = 2.dp, colorResource(AppColor.white), shape = CircleShape),
                 contentAlignment = Alignment.Center,
             ) {
@@ -92,25 +93,24 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
                     textAlign = TextAlign.Center,
                     color = colorResource(AppColor.white),
                     fontFamily = suitFamily,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp
                 )
             }
         }
-           //icon = BitmapDescriptorFactory.fromBitmap(createDrawableFromView(box))
-            // icon 대신 composable을 넣을 수 있는지도 확인.
     }
 }
 
 
 
-private fun bitMapFromVector(activity: ComponentActivity, vectorResID:Int): BitmapDescriptor {
-    val vectorDrawable= ContextCompat.getDrawable(activity,vectorResID)
-    vectorDrawable!!.setBounds(0,0, 120, 120)
-    val bitmap=Bitmap.createBitmap(120,120,Bitmap.Config.ARGB_8888)
-    val canvas=Canvas(bitmap)
-    vectorDrawable.draw(canvas)
-    return BitmapDescriptorFactory.fromBitmap(bitmap)
-}
+//private fun bitMapFromVector(activity: ComponentActivity, vectorResID:Int): BitmapDescriptor {
+//    val vectorDrawable= ContextCompat.getDrawable(activity,vectorResID)
+//    vectorDrawable!!.setBounds(0,0, 120, 120)
+//    val bitmap=Bitmap.createBitmap(120,120,Bitmap.Config.ARGB_8888)
+//    val canvas=Canvas(bitmap)
+//    vectorDrawable.draw(canvas)
+//    return BitmapDescriptorFactory.fromBitmap(bitmap)
+//}
 
 
 //private fun createDrawableFromView(view: View, activity: ComponentActivity): Bitmap {

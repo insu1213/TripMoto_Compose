@@ -42,6 +42,12 @@ class EditMarkerViewModel @Inject constructor(
         }
     }
 
+    fun onColorChange(newValue: String) {
+        launchCatching {
+            marker.value = marker.value.copy(color = newValue)
+        }
+    }
+
     fun onDoneClick(onDismiss: () -> Unit) {
         if(marker.value.title.isBlank()) {
             Log.d(TAG, "Error: Title cannot empty")
