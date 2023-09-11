@@ -11,7 +11,7 @@
     <color name="primary_500">#0095FF</color>
     <color name="primary_300">#5DB5FF</color>
     <color name="gray_1">#F1F6F7</color>
-    <color name="gray_2">#DDDDDD</color>
+    <color name="gray_2">#DDDDDD</color>l
     <color name="gray_3">#D5D5D5</color>
     <color name="gray_4">#8A8A8A</color>
     <color name="gray_5">#888888</color>
@@ -19,6 +19,8 @@
     <color name="gray_7">#4F4F4F</color>
     <color name="gray_8">#3D3D3D</color>
     <color name="red">#FF0000</color>
+    <color name="network_green">#3FFF3F</color>
+    <color name="network_red">#FF4141</color>
 
 
 </resources>

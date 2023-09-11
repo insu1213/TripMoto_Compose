@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -30,12 +31,15 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
+import com.insu.tripmoto_compose.common.network.ConnectivityStatus
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.screen.main.map.detail.DetailMarkerDialog
 import com.insu.tripmoto_compose.screen.main.map.edit.EditMarkerDialog
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.color as AppColor
 
+@OptIn(ExperimentalAnimationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
     BackOnPressed()
@@ -121,6 +125,8 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
         contentDescription = "addMarker",
     )
     LaunchedEffect(viewModel) { viewModel.loadMarkerOptions() }
+
+    ConnectivityStatus()
 }
 
 @Composable
