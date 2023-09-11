@@ -66,7 +66,7 @@ fun ConnectivityStatusBox(isConnected: Boolean) {
         else
             colorResource(AppColor.network_red)
     )
-    val message = if (isConnected) "Back Online!" else "No Internet Connection!"
+    val message = if (isConnected) "네트워크가 연결되었습니다." else "오프라인 상태"
     val iconResource = if (isConnected) {
         AppIcon.ic_connectivity_available
     } else {
