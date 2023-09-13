@@ -32,8 +32,12 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
+import com.insu.tripmoto_compose.common.network.ConnectionState
 import com.insu.tripmoto_compose.common.network.ConnectivityStatus
+import com.insu.tripmoto_compose.common.network.connectivityState
+import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.screen.main.map.detail.DetailMarkerDialog
 import com.insu.tripmoto_compose.screen.main.map.edit.EditMarkerDialog
@@ -130,18 +134,23 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
         contentDescription = "addMarker",
     )
     LaunchedEffect(viewModel) { viewModel.loadMarkerOptions() }
-
-    ConnectivityStatus()
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun EditMarker(clickPosition: LatLng, markerId: String = "-1", onFinish: () -> Unit) {
-    EditMarkerDialog(
-        position = clickPosition,
-        markerId = markerId,
-        onDismiss = {
-            onFinish()
-        })
+    val connection by connectivityState()
+    val isConnected = connection === ConnectionState.Available
+    if(isConnected) {
+        EditMarkerDialog(
+            position = clickPosition,
+            markerId = markerId,
+            onDismiss = {
+                onFinish()
+            })
+    } else {
+        SnackbarManager.showMessage(R.string.network_error)
+    }
 }
 
 

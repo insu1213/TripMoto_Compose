@@ -20,6 +20,7 @@ import android.os.Build
 import android.provider.Settings.Secure.getString
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.ui.platform.LocalConfiguration
@@ -36,6 +37,7 @@ import androidx.navigation.navArgument
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.insu.tripmoto_compose.common.network.ConnectivityStatus
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.screen.fore.travel_expenses.TravelExpensesScreen
 import com.insu.tripmoto_compose.screen.fore.travel_members.TravelMembersScreen
@@ -62,9 +64,12 @@ import com.insu.tripmoto_compose.screen.settings.SettingsScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
 import io.grpc.internal.JsonUtil.getString
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalAnimationApi::class,
+    ExperimentalCoroutinesApi::class
+)
 @Composable
 @ExperimentalMaterialApi
 fun MyApp() {
@@ -111,6 +116,7 @@ fun MyApp() {
                 }
             }
         }
+        ConnectivityStatus()
     }
 }
 

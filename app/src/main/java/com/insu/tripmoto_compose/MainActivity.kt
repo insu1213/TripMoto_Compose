@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.insu.tripmoto_compose.common.composable.BackPressCheck
+import com.insu.tripmoto_compose.common.network.ConnectivityStatus
 //import com.insu.tripmoto_compose.model.service.NotificationService
 //import com.insu.tripmoto_compose.model.service.ReceiverService
 import dagger.hilt.android.AndroidEntryPoint

@@ -77,7 +77,8 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
             keys = arrayOf("singapore4"),
             state = MarkerState(position = position),
             onClick = markerClickEvent,
-            draggable = true
+            draggable = true,
+
         ) {
             Box(
                 modifier = Modifier
