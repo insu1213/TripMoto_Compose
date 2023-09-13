@@ -73,9 +73,15 @@ fun MyApp() {
         val postNotificationPermission =
             rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 
+        val locationPermission =
+            rememberPermissionState(permission = Manifest.permission.ACCESS_FINE_LOCATION)
+
         LaunchedEffect(key1 = true) {
             if (!postNotificationPermission.status.isGranted) {
                 postNotificationPermission.launchPermissionRequest()
+            }
+            if (!locationPermission.status.isGranted) {
+                locationPermission.launchPermissionRequest()
             }
         }
 

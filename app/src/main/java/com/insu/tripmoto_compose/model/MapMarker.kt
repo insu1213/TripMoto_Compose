@@ -13,4 +13,5 @@ data class MapMarker(
     val color: String = "#1164CD",
     val options: Int = 0,
     val iterator: Int = 0,
+    val uploadTime: String = ""
 )

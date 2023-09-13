@@ -151,8 +151,17 @@ class StorageServiceImpl @Inject constructor(
 
     override suspend fun saveMarker(marker: MapMarker): String =
         trace(SAVE_MARKER_TRACE) {
-            val markerWithUserId = marker.copy(userId = auth.currentUserId)
-            tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).add(markerWithUserId).await().id
+
+
+            val utcTimeZone = TimeZone.getTimeZone("Asia/Seoul")
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            dateFormat.timeZone = utcTimeZone
+            val currentDate = Date()
+            val formattedDate = dateFormat.format(currentDate)
+
+            val markerWithUserIdAndDate = marker.copy(userId = auth.currentUserId)
+
+            tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).add(markerWithUserIdAndDate).await().id
             //firestore.collection(MARKER_COLLECTION).add(markerWithUserId).await().id
         }
     override suspend fun updateMarker(marker: MapMarker): Unit =

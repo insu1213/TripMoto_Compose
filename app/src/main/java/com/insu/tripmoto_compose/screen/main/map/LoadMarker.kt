@@ -51,11 +51,10 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
 
     var i = 0
 
-    marker.value.forEach {
+    marker.value.sortedByDescending { it.uploadTime }.forEach {
         i += 1
         val thisMarker = it
         val position = LatLng(it.lat, it.lng)
-
 
 //        Marker(
 //            state = MarkerState(position = position),
@@ -66,6 +65,7 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
 //            },
 //            icon = bitMapFromVector(activity, AppIcon.zoe)
 //        )
+
         val markerClickEvent: (Marker) -> Boolean = { marker ->
             Log.d(TAG, "${marker.title} was clicked")
             markerClick(thisMarker)
