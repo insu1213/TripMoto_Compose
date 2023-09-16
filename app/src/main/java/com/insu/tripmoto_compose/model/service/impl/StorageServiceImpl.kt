@@ -159,7 +159,7 @@ class StorageServiceImpl @Inject constructor(
             val currentDate = Date()
             val formattedDate = dateFormat.format(currentDate)
 
-            val markerWithUserIdAndDate = marker.copy(userId = auth.currentUserId)
+            val markerWithUserIdAndDate = marker.copy(userId = auth.currentUserId, uploadTime = formattedDate)
 
             tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).add(markerWithUserIdAndDate).await().id
             //firestore.collection(MARKER_COLLECTION).add(markerWithUserId).await().id

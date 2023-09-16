@@ -6,9 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -62,6 +66,7 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
     var markerClick by remember { mutableStateOf(MapMarker()) }
 
     var editState by remember { mutableStateOf(false) }
+    var mapLoaded by remember { mutableStateOf(false) }
 
     val options by viewModel.options
 
@@ -80,6 +85,15 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
         }
     }
 
+    if(!mapLoaded) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center),
+                color = colorResource(R.color.primary_800),
+            )
+        }
+    }
+
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState,
@@ -90,8 +104,8 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
             }
         },
         uiSettings = MapUiSettings(zoomControlsEnabled = false),
-        properties = MapProperties(isMyLocationEnabled = true)
-
+        properties = MapProperties(isMyLocationEnabled = true),
+        onMapLoaded = { mapLoaded = true }
     ) {
         LoadMarker(activity = activity) {
             markerClick = it

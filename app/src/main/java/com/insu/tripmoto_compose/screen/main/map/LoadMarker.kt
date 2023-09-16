@@ -17,6 +17,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,41 +56,31 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
 
     var i = 0
 
-    marker.value.sortedByDescending { it.uploadTime }.forEach {
+    marker.value.sortedBy { it.uploadTime }.forEach { marker ->
         i += 1
-        val thisMarker = it
-        val position = LatLng(it.lat, it.lng)
-
-//        Marker(
-//            state = MarkerState(position = position),
-//            title = it.title,
-//            snippet = it.description,
-//            onInfoWindowClick = {
-//                markerClick(thisMarker)
-//            },
-//            icon = bitMapFromVector(activity, AppIcon.zoe)
-//        )
-
-        val markerClickEvent: (Marker) -> Boolean = { marker ->
+        val thisMarker = marker
+        val position = LatLng(marker.lat, marker.lng)
+        val markerClickEvent: (Marker) -> Boolean = { _ ->
             Log.d(TAG, "${marker.title} was clicked")
             markerClick(thisMarker)
             true
         }
+
         //https://issuetracker.google.com/issues/220892485
         MarkerComposable(
-            title = it.title,
+            title = marker.title,
             keys = arrayOf("singapore4"),
             state = MarkerState(position = position),
             onClick = markerClickEvent,
             draggable = true,
-
+            alpha = 0.7f
         ) {
             Box(
                 modifier = Modifier
                     .width(36.dp)
                     .height(36.dp)
                     .clip(CircleShape)
-                    .background(it.color.toColor(Color.White))
+                    .background(marker.color.toColor(Color.White))
                     .border(width = 2.dp, colorResource(AppColor.white), shape = CircleShape),
                 contentAlignment = Alignment.Center,
             ) {
