@@ -27,11 +27,10 @@ fun MenuList(
     callback: (String) -> Unit
 ) {
     val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
 
     Box(
         modifier = Modifier
-            .width((screenWidth-32.dp)/5)
+            .width(40.dp)
             .clickable {
                 callback(menu.text)
             }

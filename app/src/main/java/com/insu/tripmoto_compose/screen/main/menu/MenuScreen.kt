@@ -1,55 +1,70 @@
 package com.insu.tripmoto_compose.screen.main.menu
 
+import android.annotation.SuppressLint
+import android.graphics.drawable.ShapeDrawable
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Shapes
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.composable.MainTitleText
-import com.insu.tripmoto_compose.rememberAppState
+import com.insu.tripmoto_compose.common.network.ConnectionState
+import com.insu.tripmoto_compose.common.network.connectivityState
+import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.suitFamily
-import com.insu.tripmoto_compose.R.color as AppColor
-import com.insu.tripmoto_compose.R.string as AppText
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.insu.tripmoto_compose.R.drawable as AppIcon
+import com.insu.tripmoto_compose.R.color as AppColor
 
+@SuppressLint("StateFlowValueCalledInComposition")
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun MenuScreen(
     openAndPopUp: (String) -> Unit,
     viewModel: MenuViewModel = hiltViewModel()
 ) {
     val activity = LocalContext.current as ComponentActivity
+    val connection by connectivityState()
+    val isConnected = connection === ConnectionState.Available
+
+    val nickNameState by viewModel.nickName.collectAsState() // nickName을 collectAsState로 감지
+    val emailState by viewModel.email.collectAsState() // email을 collectAsState로 감지
+
+
+
+//    LaunchedEffect(viewModel.nickName, viewModel.email) {
+//        nickname = viewModel.nickName
+//        email = viewModel.email
+//    }
+
+
     BackOnPressed()
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -58,7 +73,36 @@ fun MenuScreen(
                 modifier = Modifier.padding(bottom = 24.dp),
                 text = R.string.menu,
             )
-            LazyRow(userScrollEnabled = false) {
+
+            Surface(
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp),
+                color = colorResource(AppColor.gray_1)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = nickNameState,
+                        fontFamily = suitFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp
+                    )
+                    Text(
+                        modifier = Modifier.padding(4.dp),
+                        text = emailState,
+                        fontFamily = suitFamily,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 12.sp
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.padding(6.dp))
+
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(60.dp)
+            ) {
                 itemsIndexed(
                     listOf(
                         Menu(paint = AppIcon.ic_panel, text = "여행 설정"),
