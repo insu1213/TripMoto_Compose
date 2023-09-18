@@ -32,9 +32,9 @@ class MenuViewModel @Inject constructor(
 ): MyViewModel(logService) {
 
     val currentUserId = accountService.currentUserId
-    private val _nickName = MutableStateFlow("")
+    private val _nickName = MutableStateFlow("닉네임 정보를 불러오는 중...")
     var nickName: StateFlow<String> = _nickName.asStateFlow()
-    private val _email = MutableStateFlow("")
+    private val _email = MutableStateFlow("이메일 정보를 불러오는 중...")
     var email: StateFlow<String> = _email.asStateFlow()
 
     init {
