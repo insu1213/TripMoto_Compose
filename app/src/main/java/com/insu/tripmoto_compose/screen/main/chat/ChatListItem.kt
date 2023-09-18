@@ -84,9 +84,13 @@ fun MessageCard(msg: ChatList, nickName: String) {
                 Box(
                     contentAlignment = Alignment.BottomStart
                 ) {
+                    val uploadTimeDeci =
+                        msg.uploadTime.split(" ")[1].split(":")[0] + ":" +
+                            msg.uploadTime.split(" ")[1].split(":")[1]
+
                     Text(
                         modifier = Modifier.padding(start = 4.dp),
-                        text = msg.uploadTime,
+                        text = uploadTimeDeci,
                         fontFamily = suitFamily,
                         fontWeight = FontWeight.Light,
                         fontSize = 8.sp,
@@ -118,9 +122,13 @@ fun MyMessageCard(msg: ChatList, nickName: String) {
                     modifier = Modifier.height(IntrinsicSize.Max), // Box가 남은 공간을 차지하도록 weight 설정
                     contentAlignment = Alignment.BottomEnd
                 ) {
+                    val uploadTimeDeci =
+                        msg.uploadTime.split(" ")[1].split(":")[0] + ":" +
+                            msg.uploadTime.split(" ")[1].split(":")[1]
+
                     Text(
                         modifier = Modifier.padding(end = 4.dp),
-                        text = msg.uploadTime,
+                        text = uploadTimeDeci,
                         fontFamily = suitFamily,
                         fontWeight = FontWeight.Light,
                         textAlign = TextAlign.End,

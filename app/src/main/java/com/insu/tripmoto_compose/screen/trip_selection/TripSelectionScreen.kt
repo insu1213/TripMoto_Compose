@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.common.composable.MenuTitleText
 import com.insu.tripmoto_compose.model.Trip
@@ -55,6 +56,8 @@ fun TripSelectionScreen(
 ) {
     val trip = viewModel.trip.collectAsStateWithLifecycle(emptyList())
     var tripIsEmptyCheck by remember { mutableStateOf(false) }
+
+    BackOnPressed()
 
     LaunchedEffect(trip.value) {
         tripIsEmptyCheck = trip.value.isEmpty()

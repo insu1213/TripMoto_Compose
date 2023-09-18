@@ -1,9 +1,6 @@
 package com.insu.tripmoto_compose.screen.main.map
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -27,29 +24,24 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.network.ConnectionState
-import com.insu.tripmoto_compose.common.network.ConnectivityStatus
 import com.insu.tripmoto_compose.common.network.connectivityState
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.screen.main.map.detail.DetailMarkerDialog
 import com.insu.tripmoto_compose.screen.main.map.edit.EditMarkerDialog
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.color as AppColor
+import com.insu.tripmoto_compose.R.drawable as AppIcon
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
     BackOnPressed()
@@ -95,7 +87,9 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
     }
 
     GoogleMap(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = 80.dp),
         cameraPositionState = cameraPositionState,
         onMapClick = {
             if(markerAddState) {

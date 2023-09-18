@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
+import com.insu.tripmoto_compose.MyAppState
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.network.ConnectionState
 import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
@@ -42,7 +43,6 @@ class MenuViewModel @Inject constructor(
             _email.value = email
         }
     }
-
 
     fun onOtherTripClick(openAndPopUp: (String) -> Unit) {
         openAndPopUp("TripSelectionScreen")

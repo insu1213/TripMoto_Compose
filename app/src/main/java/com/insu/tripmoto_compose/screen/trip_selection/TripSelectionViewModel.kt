@@ -2,6 +2,7 @@ package com.insu.tripmoto_compose.screen.trip_selection
 
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.insu.tripmoto_compose.MyAppState
 import com.insu.tripmoto_compose.model.service.LogService
 import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.screen.MyViewModel
@@ -14,6 +15,11 @@ class TripSelectionViewModel @Inject constructor(
         logService: LogService
 ): MyViewModel(logService) {
     val trip = storageService.trip
+
+
+//    fun clearNavigate(appState: MyAppState) {
+//
+//    }
 
     fun goMain(openAndPopUp: (String) -> Unit, tripId: String) {
         Log.d(TAG, "tripId: $tripId")

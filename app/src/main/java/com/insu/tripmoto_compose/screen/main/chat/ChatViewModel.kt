@@ -57,12 +57,16 @@ class ChatViewModel @Inject constructor(
     private val _chatListStorage = MutableStateFlow<List<ChatList>>(emptyList())
     val chatListStorage = storageService.chatList
 
+    val maxChar = 200
+
     fun updateChatListStorage(newList: List<ChatList>) {
         _chatListStorage.value = newList
     }
 
     fun onTextChange(newValue: String) {
-        launchCatching { chatList.value = chatList.value.copy(text = newValue) }
+        if(newValue.length <= maxChar) {
+            launchCatching { chatList.value = chatList.value.copy(text = newValue) }
+        }
     }
 
     fun onSendClick(onSuccess: () -> Unit) {

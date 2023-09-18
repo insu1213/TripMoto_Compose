@@ -38,6 +38,7 @@ import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.common.network.ConnectionState
 import com.insu.tripmoto_compose.common.network.connectivityState
 import com.insu.tripmoto_compose.model.User
+import com.insu.tripmoto_compose.rememberAppState
 import com.insu.tripmoto_compose.suitFamily
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import com.insu.tripmoto_compose.R.drawable as AppIcon
@@ -57,7 +58,7 @@ fun MenuScreen(
     val nickNameState by viewModel.nickName.collectAsState() // nickName을 collectAsState로 감지
     val emailState by viewModel.email.collectAsState() // email을 collectAsState로 감지
 
-
+    val appState = rememberAppState()
 
 //    LaunchedEffect(viewModel.nickName, viewModel.email) {
 //        nickname = viewModel.nickName
@@ -109,6 +110,7 @@ fun MenuScreen(
                         Menu(paint = AppIcon.ic_air, text = "항공권"),
                         Menu(paint = AppIcon.ic_room, text = "숙박"),
                         Menu(paint = AppIcon.ic_tag, text = "지출 내역"),
+                        Menu(paint = AppIcon.ic_menu, text = "여행 목록")
                     )
                 ) { _, item ->
                     MenuList(menu = item) {
@@ -117,6 +119,7 @@ fun MenuScreen(
                             "항공권" -> {}
                             "숙박" -> {}
                             "지출 내역" -> {}
+                            "여행 목록" -> viewModel.onOtherTripClick(openAndPopUp)
                         }
                     }
                 }
