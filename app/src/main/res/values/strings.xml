@@ -13,6 +13,7 @@
     <string name="trip_empty">The information does not exist.</string>
     <string name="code">Code</string>
     <string name="network_error">인터넷 연결을 확인하세요.</string>
+    <string name="already_part">You\'re already participating.</string>
 
     <!--First/HelloScreen-->
     <string name="start">Start</string>

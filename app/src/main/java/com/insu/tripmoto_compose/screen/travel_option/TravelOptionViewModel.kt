@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.model.InviteCode
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.LogService
@@ -15,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import com.insu.tripmoto_compose.R.string as AppText
 
 @HiltViewModel
 class TravelOptionViewModel @Inject constructor(
@@ -39,7 +41,8 @@ class TravelOptionViewModel @Inject constructor(
                 var trip = storageService.getTrip(inviteCode.tripId)
                 if (trip != null) {
                     val userId = accountService.currentUserId
-                    if(trip.member.contains(userId)) {
+                    if(trip.member.contains(userId)) { // 이미 참가 상태인 경우
+                        SnackbarManager.showMessage(AppText.already_part)
                         dismiss(false)
                     }
                     val memberList = trip.member.plus(userId)
