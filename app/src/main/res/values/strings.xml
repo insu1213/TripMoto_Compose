@@ -14,6 +14,7 @@
     <string name="code">Code</string>
     <string name="network_error">인터넷 연결을 확인하세요.</string>
     <string name="already_part">You\'re already participating.</string>
+    <string name="copied">초대코드가 복사되었습니다.</string>
 
     <!--First/HelloScreen-->
     <string name="start">Start</string>

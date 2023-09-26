@@ -37,8 +37,8 @@ class MemberAddViewModel @Inject constructor(
         }
     }
 
-    fun copyText(text: String, clipManager: ClipboardManager) {
-        clipManager.setText(AnnotatedString(text))
+    fun copyText(clipManager: ClipboardManager) {
+        clipManager.setText(AnnotatedString(code.value))
     }
 
     private fun generateRandomString(callback: (String) -> Unit) { // 10자리 난수 생성 (같을 확를 0.00000000000000015%
@@ -60,4 +60,6 @@ class MemberAddViewModel @Inject constructor(
         }
 
     }
+
+
 }

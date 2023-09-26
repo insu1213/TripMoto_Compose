@@ -37,7 +37,7 @@ import com.insu.tripmoto_compose.R.drawable as AppIcon
 fun BottomNavigation(appState: MyAppState) {
     val items = listOf(
         BottomNavItem.WishList,
-        BottomNavItem.Direction,
+        //BottomNavItem.Direction,
         BottomNavItem.Map,
         BottomNavItem.Chat,
         BottomNavItem.Menu
