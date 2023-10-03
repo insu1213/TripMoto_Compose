@@ -9,12 +9,12 @@
     <string name="dismiss">Dismiss</string>
     <string name="nick_name">NickName</string>
     <string name="logout">You have been logged out</string>
-    <string name="trip">Trip</string>
+    <string name="trip" translatable="false">Trip</string>
     <string name="trip_empty">The information does not exist.</string>
     <string name="code">Code</string>
-    <string name="network_error">인터넷 연결을 확인하세요.</string>
+    <string name="network_error">Disconnected</string>
     <string name="already_part">You\'re already participating.</string>
-    <string name="copied">초대코드가 복사되었습니다.</string>
+    <string name="copied">Invite code is copied</string>
 
     <!--First/HelloScreen-->
     <string name="start">Start</string>
@@ -23,21 +23,21 @@
     <string name="try_again">Retry</string>
     <string name="email_error">Invalid Email</string>
     <string name="empty_password_error">Password cannot be empty.</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="password" translatable="false">Password</string>
     <string name="sign_in">Sign in</string>
 
     <!--SignUp-->
     <string name="password_error">Your password should have at least six digits and include one digit, one lower case letter and one upper case letter.</string>
     <string name="password_match_error">Passwords do not match.</string>
-    <string name="repeat_password">Repeat password</string>
+    <string name="repeat_password" translatable="false">Repeat password</string>
     <string name="create_account">Create account</string>
     <string name="register">Register</string>
     <string name="nickname_error">NickName cannot be empty</string>
 
     <!--Title-->
-    <string name="trip_moto">TripMoto</string>
-    <string name="new_guide_of_trip">새로운 여행 가이드</string>
+    <string name="trip_moto" translatable="false">TripMoto</string>
+    <string name="new_guide_of_trip">Trip Guide</string>
 
     <!--MenuTitle-->
     <string name="login">Login</string>
@@ -73,7 +73,7 @@
     <string name="kids">Kids</string>
     <string name="number_of_rooms">Number of rooms</string>
     <string name="rooms">Rooms</string>
-    <string name="empty_adult_error">Adult cannot be empty</string>
+    <string name="empty_adult_error">Member cannot be empty</string>
 
     <!--Fore/TravelExpenses-->
     <string name="travel_expenses">Travel Expenses</string>

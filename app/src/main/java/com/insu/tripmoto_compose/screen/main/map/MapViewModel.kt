@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import com.google.android.gms.maps.model.LatLng
 import com.insu.tripmoto_compose.model.MapMarker
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.model.service.ConfigurationService
@@ -42,6 +43,14 @@ class MapViewModel @Inject constructor(
     private fun onDeleteMarkerClick(marker: MapMarker) {
         launchCatching {
             storageService.deleteMarker(marker.id)
+        }
+    }
+
+    fun newMarkerPosition(marker: MapMarker, position: LatLng) {
+        launchCatching {
+            storageService.updateMarker(
+                marker.copy(lat = position.latitude, lng = position.longitude)
+            )
         }
     }
 }

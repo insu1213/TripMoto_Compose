@@ -24,22 +24,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        initViews()
-
         setContent {
             MyApp()
             BackPressCheck()
         }
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        val intent = Intent(this@MainActivity, ReceiverService::class.java)
-//        baseContext.stopService(intent)
-//    }
-//
-//    private fun initViews() {
-//        val intent = Intent(this@MainActivity, ReceiverService::class.java)
-//        baseContext.startService(intent)
-//    }
 }

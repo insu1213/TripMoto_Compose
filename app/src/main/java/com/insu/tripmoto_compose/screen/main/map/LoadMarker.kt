@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +46,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.maps.android.compose.MarkerComposable
+import com.google.maps.android.compose.rememberMarkerState
 import com.insu.tripmoto_compose.screen.main.map.edit.toColor
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.drawable as AppIcon
@@ -60,6 +62,11 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
         i += 1
         val thisMarker = marker
         val position = LatLng(marker.lat, marker.lng)
+
+        val markerState = rememberMarkerState(
+            position = position
+        )
+
         val markerClickEvent: (Marker) -> Boolean = { _ ->
             Log.d(TAG, "${marker.title} was clicked")
             markerClick(thisMarker)
@@ -70,9 +77,10 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
         MarkerComposable(
             title = marker.title,
             keys = arrayOf("singapore4"),
-            state = MarkerState(position = position),
+            state = markerState,
             onClick = markerClickEvent,
-            alpha = 0.7f
+            alpha = 0.7f,
+            draggable = true,
         ) {
             Box(
                 modifier = Modifier
@@ -92,6 +100,10 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
                     fontSize = 12.sp
                 )
             }
+        }
+        LaunchedEffect(markerState.position) {
+            Log.d(TAG, "마커이동")
+            viewModel.newMarkerPosition(marker, markerState.position)
         }
     }
 }
