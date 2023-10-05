@@ -59,7 +59,7 @@ fun MemberAddScreen(
 
             Row() {
                 Text(
-                    text = "Invite Code: " + viewModel.code.value,
+                    text = stringResource(AppText.invite_code) + ": " + viewModel.code.value,
                     color = colorResource(R.color.black),
                     fontSize = 16.sp,
                     fontFamily = suitFamily,

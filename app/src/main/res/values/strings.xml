@@ -23,17 +23,20 @@
     <string name="try_again">Retry</string>
     <string name="email_error">Invalid Email</string>
     <string name="empty_password_error">Password cannot be empty.</string>
-    <string name="email" translatable="false">Email</string>
-    <string name="password" translatable="false">Password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="goto_sign_up">Sign up to TripMoto?</string>
 
     <!--SignUp-->
     <string name="password_error">Your password should have at least six digits and include one digit, one lower case letter and one upper case letter.</string>
     <string name="password_match_error">Passwords do not match.</string>
-    <string name="repeat_password" translatable="false">Repeat password</string>
+    <string name="repeat_password">Repeat password</string>
     <string name="create_account">Create account</string>
     <string name="register">Register</string>
     <string name="nickname_error">NickName cannot be empty</string>
+    <string name="goto_sign_in">Did you sign up before?</string>
 
     <!--Title-->
     <string name="trip_moto" translatable="false">TripMoto</string>
@@ -97,5 +100,6 @@
     <string name="past_trip_record">Past travel record</string>
     <string name="participate_other_travel">Participate in other travel</string>
     <string name="invite_code_generation">Invitation code has been generated!</string>
+    <string name="invite_code">Invite Code</string>
 
 </resources>

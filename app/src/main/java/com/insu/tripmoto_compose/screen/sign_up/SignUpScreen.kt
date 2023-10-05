@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -96,7 +97,7 @@ fun SignUpScreen(
                 .padding(top = 8.dp)
         ) {
             Text(
-                "Did you sign up before?",
+                stringResource(AppText.goto_sign_in),
                 fontFamily = suitFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.gray_6),
@@ -109,7 +110,7 @@ fun SignUpScreen(
                     .clickable(enabled = true) {
                         viewModel.goSignIn(openAndPopUp)
                     },
-                text = "Sign in",
+                text = stringResource(AppText.sign_in),
                 fontFamily = suitFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.primary_800),

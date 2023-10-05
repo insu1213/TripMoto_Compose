@@ -80,7 +80,7 @@ fun LoginScreen(
                 .padding(top = 8.dp)
         ) {
             Text(
-                "Sign in to TripMoto?",
+                stringResource(AppText.goto_sign_up),
                 fontFamily = suitFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.gray_6),
@@ -93,7 +93,7 @@ fun LoginScreen(
                     .clickable(enabled = true) {
                         viewModel.goSignUp(openAndPopUp)
                     },
-                text = "Sign up",
+                text = stringResource(AppText.sign_up),
                 fontFamily = suitFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = colorResource(R.color.primary_800),
