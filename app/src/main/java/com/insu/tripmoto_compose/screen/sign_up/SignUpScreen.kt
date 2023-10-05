@@ -33,6 +33,8 @@ fun SignUpScreen(
     val uiState by viewModel.uiState
     val fieldModifier = Modifier.fieldModifier()
 
+    BackOnPressed()
+
     Column(
         modifier = modifier
             .padding(24.dp)

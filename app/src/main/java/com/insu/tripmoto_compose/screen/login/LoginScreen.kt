@@ -36,6 +36,8 @@ fun LoginScreen(
 ) {
     val uiState by viewModel.uiState
 
+    BackOnPressed()
+
     Column(
         modifier = modifier
             .padding(24.dp)

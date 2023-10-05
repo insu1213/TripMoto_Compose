@@ -19,7 +19,7 @@ sealed class SnackbarMessage {
         fun Throwable.toSnackbarMessage(): SnackbarMessage {
             val message = this.message.orEmpty()
             return if (message.isNotBlank()) StringSnackbar(message)
-            else StringSnackbar("에러가 발생하였습니다. $message")
+            else StringSnackbar("에러가 발생하였습니다. 앱을 재실행 해주세요. $message")
         }
     }
 }
