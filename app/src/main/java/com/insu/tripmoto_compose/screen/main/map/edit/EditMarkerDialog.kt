@@ -56,6 +56,7 @@ fun EditMarkerDialog(
     var colorDialogState by remember { mutableStateOf(false) }
     //var color by remember { mutableStateOf("#000000") }
 
+
     LaunchedEffect(Unit) { viewModel.initialize(markerId = markerId) }
 
     if(colorDialogState) {

@@ -118,7 +118,6 @@ fun LoadMarker(
 
     var i = 0
 
-    // 최신 데이터를 기반으로 Composable을 그립니다.
     markerFlow.sortedBy { it.uploadTime }.forEach { marker ->
         i += 1
 

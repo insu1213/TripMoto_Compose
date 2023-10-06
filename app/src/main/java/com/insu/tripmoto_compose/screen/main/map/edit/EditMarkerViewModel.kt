@@ -23,6 +23,8 @@ class EditMarkerViewModel @Inject constructor(
         launchCatching {
             if(markerId != "-1") {
                 marker.value = storageService.getMarker(markerId) ?: MapMarker()
+            } else {
+                marker.value = MapMarker()
             }
         }
     }
