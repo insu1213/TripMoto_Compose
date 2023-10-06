@@ -1,12 +1,7 @@
 package com.insu.tripmoto_compose.screen.main.wishlist.edit
 
-import android.content.ContentValues.TAG
 import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
-import android.provider.MediaStore
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -21,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +32,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.common.composable.BasicButton
-import com.insu.tripmoto_compose.common.composable.BasicField
 import com.insu.tripmoto_compose.common.composable.CardSelector
 import com.insu.tripmoto_compose.common.composable.LimitTextField
 import com.insu.tripmoto_compose.common.composable.MainTitleText
@@ -58,6 +53,7 @@ fun WishListEditScreen(
 ) {
     val wishList by viewModel.wishList
     val contentResolver = LocalContext.current.contentResolver
+    var addBtnState by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) { viewModel.initialize(wishListId) }
 
@@ -96,15 +92,29 @@ fun WishListEditScreen(
 
         CardSelectors(wishList, viewModel::onFlagToggle)
 
-//        RequestContentPermission() { uri ->
-//            viewModel.onImageResourceChange(uri)
-//        }
+        RequestContentPermission(viewModel) { uri ->
+            viewModel.onImageResourceChange(uri)
+        }
 
-        BasicButton(AppText.done,
-            Modifier
+        Button(
+            modifier = Modifier
                 .basicButton()
-                .padding(top = 44.dp)) {
-            viewModel.onDoneClick(popUpScreen)
+                .padding(top = 44.dp),
+            onClick = {
+                if(addBtnState) {
+                    addBtnState = false
+                    viewModel.onDoneClick() {
+                        addBtnState = true
+                        popUpScreen()
+                    }
+                }
+            }
+        ) {
+            if(addBtnState) {
+                Text("Post")
+            } else {
+                CircularProgressIndicator()
+            }
         }
     }
 }
@@ -129,10 +139,11 @@ private fun CardSelectors(
 
 
 @Composable
-fun RequestContentPermission(uri: (Uri) -> Unit) {
+fun RequestContentPermission(viewModel: WishListEditViewModel, uri: (Uri) -> Unit) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     val bitmapRemember = remember { mutableStateOf<Bitmap?>(null) }
+
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -156,21 +167,14 @@ fun RequestContentPermission(uri: (Uri) -> Unit) {
         Spacer(modifier = Modifier.height(12.dp))
 
         if (imageUri != null) {
-            if (Build.VERSION.SDK_INT < 28) {
-                bitmapRemember.value = MediaStore.Images
-                    .Media.getBitmap(context.contentResolver, imageUri!!)
-
-            } else {
-                val source = ImageDecoder
-                    .createSource(context.contentResolver, imageUri!!)
-                bitmapRemember.value = ImageDecoder.decodeBitmap(source)
-            }
-
             bitmapRemember.value?.let { btm ->
+                viewModel.uploadImage(context) { bitmap ->
+                    bitmapRemember.value = bitmap
+                }
                 Image(
                     bitmap = btm.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier.size(400.dp)
+                    modifier = Modifier.size(200.dp)
                 )
             }
         }

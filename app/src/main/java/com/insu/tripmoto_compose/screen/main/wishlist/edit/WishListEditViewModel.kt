@@ -1,9 +1,16 @@
 package com.insu.tripmoto_compose.screen.main.wishlist.edit
 
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.viewModelScope
 import com.insu.tripmoto_compose.common.ext.idFromParameter
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.model.service.LogService
@@ -11,6 +18,8 @@ import com.insu.tripmoto_compose.model.service.StorageService
 import com.insu.tripmoto_compose.model.service.uploadImageToFirebaseStorage
 import com.insu.tripmoto_compose.screen.MyViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ActivityContext
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,6 +56,35 @@ class WishListEditViewModel @Inject constructor(
     fun onFlagToggle(newValue: String) {
         val newFlagOption = EditFlagOption.getBooleanValue(newValue)
         wishList.value = wishList.value.copy(flag = newFlagOption)
+    }
+
+    fun uploadImage(context: Context, bitmap: (Bitmap) -> Unit) {
+//        viewModelScope.launch {
+//            val loadedBitmap = if (Build.VERSION.SDK_INT < 28) {
+//                MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri!!)
+//            } else {
+//                val source = ImageDecoder.createSource(context.contentResolver, imageUri!!)
+//                ImageDecoder.decodeBitmap(source)
+//            }
+//
+//            bitmap(loadedBitmap)
+//        }
+        viewModelScope.launch {
+            try {
+                val inputStream = context.contentResolver.openInputStream(imageUri!!)
+                val options = BitmapFactory.Options()
+                options.inSampleSize = 6 // 이미지 크기를 줄이기 위한 샘플링 비율 설정
+                val loadedBitmap = BitmapFactory.decodeStream(inputStream, null, options)
+                inputStream?.close()
+
+                // 압축된 이미지를 비트맵 콜백으로 전달
+                if (loadedBitmap != null) {
+                    bitmap(loadedBitmap)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun onDoneClick(popUpScreen: () -> Unit) {

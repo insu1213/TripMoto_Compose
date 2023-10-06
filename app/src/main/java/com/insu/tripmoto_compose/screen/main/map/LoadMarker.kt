@@ -52,28 +52,90 @@ import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.color as AppColor
 
+//@Composable
+//fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentActivity, markerClick: (MapMarker) -> Unit) {
+//    val marker = viewModel.marker.collectAsStateWithLifecycle(emptyList())
+//
+//    var i = 0
+//
+//    marker.value.sortedBy { it.uploadTime }.forEach { marker ->
+//        i += 1
+//        val thisMarker = marker
+//        val position = LatLng(marker.lat, marker.lng)
+//
+//        val markerState = rememberMarkerState(
+//            position = position
+//        )
+//
+//        val markerClickEvent: (Marker) -> Boolean = { _ ->
+//            Log.d(TAG, "${marker.title} was clicked")
+//            markerClick(thisMarker)
+//            true
+//        }
+//
+//        //https://issuetracker.google.com/issues/220892485
+//        MarkerComposable(
+//            title = marker.title,
+//            keys = arrayOf("singapore4"),
+//            state = markerState,
+//            onClick = markerClickEvent,
+//            alpha = 0.7f,
+//            draggable = true,
+//        ) {
+//            Box(
+//                modifier = Modifier
+//                    .width(36.dp)
+//                    .height(36.dp)
+//                    .clip(CircleShape)
+//                    .background(marker.color.toColor(Color.White))
+//                    .border(width = 2.dp, colorResource(AppColor.white), shape = CircleShape),
+//                contentAlignment = Alignment.Center,
+//            ) {
+//                Text(
+//                    text = "$i",
+//                    textAlign = TextAlign.Center,
+//                    color = colorResource(AppColor.white),
+//                    fontFamily = suitFamily,
+//                    fontWeight = FontWeight.SemiBold,
+//                    fontSize = 12.sp
+//                )
+//            }
+//        }
+//        LaunchedEffect(markerState.position) {
+//            Log.d(TAG, "마커이동")
+//            viewModel.newMarkerPosition(marker, markerState.position)
+//        }
+//    }
+//}
+
 @Composable
-fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentActivity, markerClick: (MapMarker) -> Unit) {
-    val marker = viewModel.marker.collectAsStateWithLifecycle(emptyList())
+fun LoadMarker(
+    viewModel: MapViewModel = hiltViewModel(),
+    activity: ComponentActivity,
+    markerClick: (MapMarker) -> Unit
+) {
+    val markerFlow by viewModel.marker.collectAsStateWithLifecycle(emptyList())
 
     var i = 0
 
-    marker.value.sortedBy { it.uploadTime }.forEach { marker ->
+    // 최신 데이터를 기반으로 Composable을 그립니다.
+    markerFlow.sortedBy { it.uploadTime }.forEach { marker ->
         i += 1
-        val thisMarker = marker
+
+        Log.d(TAG, "markerFlow: $marker")
+
         val position = LatLng(marker.lat, marker.lng)
 
-        val markerState = rememberMarkerState(
+        val markerState = MarkerState(
             position = position
         )
 
         val markerClickEvent: (Marker) -> Boolean = { _ ->
             Log.d(TAG, "${marker.title} was clicked")
-            markerClick(thisMarker)
+            markerClick(marker)
             true
         }
 
-        //https://issuetracker.google.com/issues/220892485
         MarkerComposable(
             title = marker.title,
             keys = arrayOf("singapore4"),
@@ -102,7 +164,7 @@ fun LoadMarker(viewModel: MapViewModel = hiltViewModel(), activity: ComponentAct
             }
         }
         LaunchedEffect(markerState.position) {
-            Log.d(TAG, "마커이동")
+            Log.d(TAG, "마커 이동")
             viewModel.newMarkerPosition(marker, markerState.position)
         }
     }

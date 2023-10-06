@@ -75,6 +75,7 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
         EditMarker(LatLng(markerClick.lat, markerClick.lng), markerClick.id) {
             editState = false
         }
+        markerClick = MapMarker()
     }
 
     if(!mapLoaded) {

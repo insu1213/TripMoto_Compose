@@ -69,7 +69,7 @@ class EditMarkerViewModel @Inject constructor(
                 storageService.updateMarker(editedMarker)
             }
             marker = mutableStateOf(MapMarker())
-            onDismiss()
         }
+        onDismiss()
     }
 }

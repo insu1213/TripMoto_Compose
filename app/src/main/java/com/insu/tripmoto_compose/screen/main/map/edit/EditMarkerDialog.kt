@@ -1,7 +1,9 @@
 package com.insu.tripmoto_compose.screen.main.map.edit
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.graphics.drawable.ShapeDrawable
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -68,6 +70,7 @@ fun EditMarkerDialog(
     }
 
     Dialog(onDismissRequest = {
+       // Log.d(TAG, "디버그")
         onDismiss()
     }) {
         Card(

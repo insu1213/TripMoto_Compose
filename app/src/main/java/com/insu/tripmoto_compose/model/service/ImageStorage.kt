@@ -1,8 +1,10 @@
 package com.insu.tripmoto_compose.model.service
 
+import android.content.ContentValues.TAG
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -38,7 +40,8 @@ suspend fun downloadImageFromFirebaseStorage(imageName: String): Bitmap? {
             val imageUrl = imageRef.downloadUrl.await()
             val inputStream = URL(imageUrl.toString()).openStream()
             BitmapFactory.decodeStream(inputStream)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
+            Log.d("[Error]", "이미지를 불러올 수 없습니다.")
             e.printStackTrace()
             null
         }
