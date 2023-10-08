@@ -18,14 +18,18 @@ class EditMarkerViewModel @Inject constructor(
     private val storageService: StorageService
 ): MyViewModel(logService) {
     var marker = mutableStateOf(MapMarker())
+    var loading = false
 
     fun initialize(markerId: String) {
+        loading = false
         launchCatching {
             if(markerId != "-1") {
                 marker.value = storageService.getMarker(markerId) ?: MapMarker()
             } else {
                 marker.value = MapMarker()
             }
+            loading = true
+            Log.d(TAG, "실행실행")
         }
     }
 

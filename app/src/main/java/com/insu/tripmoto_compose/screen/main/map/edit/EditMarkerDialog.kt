@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.LatLng
+import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.BasicButton
 import com.insu.tripmoto_compose.common.composable.BasicColoringButton
 import com.insu.tripmoto_compose.common.composable.DropdownSelector
@@ -55,6 +58,8 @@ fun EditMarkerDialog(
 
     var colorDialogState by remember { mutableStateOf(false) }
     //var color by remember { mutableStateOf("#000000") }
+
+
 
 
     LaunchedEffect(Unit) { viewModel.initialize(markerId = markerId) }
@@ -84,71 +89,78 @@ fun EditMarkerDialog(
                     .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)
-                ) {
-                    MainTitleText(
-                        modifier = Modifier
-                            .align(Alignment.CenterStart),
-                        text = AppText.edit_marker,
-                    )
-
-                    Box(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .size(30.dp)
-                            .align(Alignment.CenterEnd)
-                            .background(marker.color.toColor(Color.White))
-                            .clickable {
-                                colorDialogState = true
-                            }
-                    )
-                    //ColorPickerDialog(initialColor = , colors = , onChoice = )
-                }
-
-                LimitTextField(
-                    maxLength = 15,
-                    text = AppText.title,
-                    value = marker.title,
-                    onNewValue = viewModel::onTitleChange,
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                )
-
-                LimitTextField(
-                    maxLength = 100,
-                    text = AppText.description,
-                    value = marker.description,
-                    onNewValue = viewModel::onDescriptionChange,
-                    modifier = Modifier
-                        .padding(top = 8.dp)
-                )
-
-                Row(
-                    modifier = Modifier.padding(top = 4.dp)
-                ) {
-                    BasicColoringButton(
-                        text = AppText.cancel,
-                        color = AppColor.gray_3,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .weight(1F)
+                if(viewModel.loading) {
+                    Log.d(TAG, "실행됨")
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp)
                     ) {
-                        onDismiss()
+                        MainTitleText(
+                            modifier = Modifier
+                                .align(Alignment.CenterStart),
+                            text = AppText.edit_marker,
+                        )
+
+                        Box(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(30.dp)
+                                .align(Alignment.CenterEnd)
+                                .background(marker.color.toColor(Color.White))
+                                .clickable {
+                                    colorDialogState = true
+                                }
+                        )
+                        //ColorPickerDialog(initialColor = , colors = , onChoice = )
                     }
 
-                    BasicButton(
-                        text = AppText.done,
+                    LimitTextField(
+                        maxLength = 15,
+                        text = AppText.title,
+                        value = marker.title,
+                        onNewValue = viewModel::onTitleChange,
                         modifier = Modifier
+                            .padding(top = 8.dp)
+                    )
 
-                            .padding(8.dp)
-                            .weight(1F)
+                    LimitTextField(
+                        maxLength = 100,
+                        text = AppText.description,
+                        value = marker.description,
+                        onNewValue = viewModel::onDescriptionChange,
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier.padding(top = 4.dp)
                     ) {
-                        viewModel.onDoneClick() {
+                        BasicColoringButton(
+                            text = AppText.cancel,
+                            color = AppColor.gray_3,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .weight(1F)
+                        ) {
                             onDismiss()
                         }
+
+                        BasicButton(
+                            text = AppText.done,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .weight(1F)
+                        ) {
+                            viewModel.onDoneClick() {
+                                onDismiss()
+                            }
+                        }
                     }
+                } else {
+                    Log.d(TAG, "실행중")
+                    CircularProgressIndicator(
+                        color = colorResource(R.color.primary_800),
+                    )
                 }
             }
         }
