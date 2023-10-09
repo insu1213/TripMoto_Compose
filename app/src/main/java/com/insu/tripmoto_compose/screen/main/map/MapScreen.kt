@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.InputHandler
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -106,7 +107,7 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
         },
         uiSettings = MapUiSettings(zoomControlsEnabled = false),
         properties = MapProperties(isMyLocationEnabled = true),
-        onMapLoaded = { mapLoaded = true }
+        onMapLoaded = { mapLoaded = true },
     ) {
         LoadMarker(activity = activity) {
             markerClick = it

@@ -91,7 +91,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
 
     // Google Map
-    implementation 'com.google.maps.android:maps-compose:2.14.0'
+    implementation 'com.google.maps.android:maps-compose:3.1.0'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
     // Room Database

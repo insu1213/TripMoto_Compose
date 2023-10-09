@@ -60,16 +60,19 @@ import androidx.work.WorkManager
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.composable.CustomTextField
 import com.insu.tripmoto_compose.common.composable.MainTitleText
+import com.insu.tripmoto_compose.common.network.ConnectionState
+import com.insu.tripmoto_compose.common.network.connectivityState
 import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.screen.main.chat.ChatListItem
 import com.insu.tripmoto_compose.suitFamily
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.string as AppText
 import com.insu.tripmoto_compose.R.color as AppColor
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun ChatScreen(
     modifier: Modifier = Modifier,
@@ -88,6 +91,9 @@ fun ChatScreen(
     val activity = LocalContext.current as ComponentActivity
 
     val chatList by viewModel.chatList
+
+    val connection by connectivityState()
+    val isConnected = connection === ConnectionState.Available
 
 
 
@@ -150,9 +156,6 @@ fun ChatScreen(
                     ChatListItem(item, auth.value.id, item.nickName)
                 }
             }
-
-
-
         }
     }
 
@@ -162,27 +165,6 @@ fun ChatScreen(
             .padding(68.dp), contentAlignment = Alignment.BottomCenter
     ) {
         Row() {
-//            TextField(
-//                value = chatList.text,
-//                onValueChange = viewModel::onTextChange,
-//                placeholder = { Text("채팅을 입력하세요") },
-//                trailingIcon = {
-//                    IconButton(
-//                        onClick = {
-//                            if(clickableState) {
-//                                Log.d(TAG, "실행됨")
-//                                clickableState = false
-//                                lastClickTime = currentTime
-//                                viewModel.onSendClick {
-//                                    viewModel.clearText()
-//                                }
-//                            }
-//                        }
-//                    ) {
-//                        Icon(painter = painterResource(AppIcon.ic_send), contentDescription = null)
-//                    }
-//                }
-//            )
             Column(modifier = Modifier.padding(bottom = 8.dp)) {
                 Surface(
                     shape = RoundedCornerShape(12.dp),
@@ -219,10 +201,12 @@ fun ChatScreen(
                                 .padding(end = 12.dp)
                                 .clickable {
                                     if(clickableState) {
-                                        clickableState = false
-                                        lastClickTime = currentTime
-                                        viewModel.onSendClick {
-                                            viewModel.clearText()
+                                        if(isConnected) {
+                                            clickableState = false
+                                            lastClickTime = currentTime
+                                            viewModel.onSendClick {
+                                                viewModel.clearText()
+                                            }
                                         }
                                     }
                                 },
