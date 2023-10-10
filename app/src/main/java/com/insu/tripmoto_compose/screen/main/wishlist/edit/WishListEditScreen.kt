@@ -1,7 +1,9 @@
 package com.insu.tripmoto_compose.screen.main.wishlist.edit
 
+import android.content.ContentValues.TAG
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -142,20 +144,28 @@ private fun CardSelectors(
 fun RequestContentPermission(viewModel: WishListEditViewModel, uri: (Uri) -> Unit) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
-    val bitmapRemember = remember { mutableStateOf<Bitmap?>(null) }
+    var bitmapRemember by remember { mutableStateOf<Bitmap?>(null) }
 
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         imageUri = uri
+        Log.d(TAG, "갱신: $imageUri")
     }
 
     LaunchedEffect(imageUri) {
+        Log.d(TAG, "갱신2: $imageUri")
         if (imageUri != null) {
             uri(imageUri!!)
+            Log.d(TAG, "갱신3")
+            viewModel.formatImage(context) { bitmap ->
+                bitmapRemember = bitmap
+
+            }
         }
     }
+
 
     Column() {
         Button(onClick = {
@@ -166,17 +176,12 @@ fun RequestContentPermission(viewModel: WishListEditViewModel, uri: (Uri) -> Uni
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        if (imageUri != null) {
-            bitmapRemember.value?.let { btm ->
-                viewModel.uploadImage(context) { bitmap ->
-                    bitmapRemember.value = bitmap
-                }
-                Image(
-                    bitmap = btm.asImageBitmap(),
-                    contentDescription = null,
-                    modifier = Modifier.size(200.dp)
-                )
-            }
+        if(bitmapRemember != null) {
+            Image(
+                bitmap = bitmapRemember!!.asImageBitmap(),
+                contentDescription = null,
+                modifier = Modifier.size(400.dp)
+            )
         }
     }
 }

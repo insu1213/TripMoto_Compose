@@ -13,11 +13,8 @@
 
 
 @구현 해야 하는 기능 (필수)
-1. 지도 마커 Drag 후 Position 재 정의
-2. Google Map의 Google로고를 가리지 않도록 표시하는 방안에 대해
-Bottom Navigation을 선택적으로 보이는 기능 토글을 구현하는 방법.
-Google Map 자체를 Padding을 주어 올리는 방법. (채택)
-
+---> 1. 지도 마커 Drag 후 Position 재 정의 (일부 완료)
+checked -> 2. Google Map의 Google로고를 가리지 않도록 표시하는 방안에 대해 (완료)
 3. WishList나 지도에 사진을 표현하기 위해서는 Firebase Storage 사용이 필수적이지만,
 LazyColumn을 ItemIndexed로 변경하였음에도 불구하고 Recomposition 시점을 고려하지 않으면 만들기 힘들 듯.
 Recompositon을 적절히 관리하고 아니면, Screen이 표시되는 동안은 한번만 띄우는 것도 고려될 만 한듯.

@@ -108,13 +108,10 @@ class StorageServiceImpl @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     override val wishList: Flow<List<WishList>>
         get() =
-//            auth.currentUser.flatMapLatest { user: User ->
-//                firestore.collection(WISH_COLLECTION).whereEqualTo(USER_ID_FIELD, user.id).dataObjects()
-//            }
             tripCollection.document(currentTripId.value).collection(WISH_COLLECTION).dataObjects()
 
     override suspend fun getWishList(wishListId: String): WishList? =
-        firestore.collection(WISH_COLLECTION).document(wishListId).get().await().toObject()
+        tripCollection.document(currentTripId.value).collection(WISH_COLLECTION).document(wishListId).get().await().toObject()
     override suspend fun saveWishList(wishList: WishList): String =
         trace(SAVE_WISH_TRACE) {
             val wishWithUserId = wishList.copy(userId = auth.currentUserId)

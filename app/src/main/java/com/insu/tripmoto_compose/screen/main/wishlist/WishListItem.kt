@@ -2,6 +2,7 @@ package com.insu.tripmoto_compose.screen.main.wishlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -33,6 +35,7 @@ import com.insu.tripmoto_compose.common.ext.contextMenu
 import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.drawable as AppIcon
+import com.insu.tripmoto_compose.R.color as AppColor
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -54,7 +57,7 @@ fun WishListItem(
         elevation = 2.dp
     ) {
         Column() {
-            if(wishList.isImage) {
+            if (wishList.isImage) {
                 if (imageBitmapState != null) {
                     imageBitmapState.value?.let { imageBitmap ->
                         Image(
@@ -65,17 +68,21 @@ fun WishListItem(
                                 .height(100.dp),
                             contentScale = ContentScale.FillWidth
                         )
-                    } ?: Image(
-                        painter = painterResource(R.drawable.zoe),
-                        contentDescription = null,
+                    } ?: Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(100.dp),
-                        contentScale = ContentScale.FillWidth
-                    )
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center), color = colorResource(
+                                id = AppColor.primary_800
+                            )
+                        )
+                    }
                 }
             }
-            Row(modifier = Modifier.fillMaxWidth(),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
