@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -123,18 +125,27 @@ fun ChatScreen(
 
         Spacer(modifier = Modifier.padding(bottom = 8.dp))
 
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            reverseLayout = true
+        ) {
 
-            val groupItems = chatListStorage.value.sortedBy { it.uploadTime }.groupBy {
+            val groupItems = chatListStorage.value.sortedByDescending { it.uploadTime }.groupBy {
                 it.uploadTime.substringBefore(" ")
             }
             groupItems.forEach { (header, models) ->
+                itemsIndexed(
+                    items = models
+                ) { _, item ->
+                    //viewModel.chatAlert(activity, item)
+                    ChatListItem(item, auth.value.id, item.nickName)
+                }
                 stickyHeader {
                     Box(modifier = Modifier.fillMaxWidth()) {
                         Text(
                             text = header.split("-")[0] + "년 " +
-                                header.split("-")[1] + "월 " +
-                                header.split("-")[2] + "일",
+                                    header.split("-")[1] + "월 " +
+                                    header.split("-")[2] + "일",
                             color = Color.White,
                             modifier = Modifier
                                 .clip(shape = RoundedCornerShape(12.dp))
@@ -148,12 +159,6 @@ fun ChatScreen(
                             fontSize = 12.sp,
                         )
                     }
-                }
-                itemsIndexed(
-                    items = models
-                ) { _, item ->
-                    //viewModel.chatAlert(activity, item)
-                    ChatListItem(item, auth.value.id, item.nickName)
                 }
             }
         }

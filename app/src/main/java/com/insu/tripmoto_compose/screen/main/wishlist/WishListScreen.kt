@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +26,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -69,12 +74,12 @@ fun WishListScreen(
     * 1. Delay Loading 창 만들기: 지연시간 때문에 앱 State가 모두 멈추게 되는 현상 발생.
     *
     * */
-
-
     BackOnPressed()
 
-    val listState = rememberLazyStaggeredGridState()
-    //initialFirstVisibleItemIndex = 99 해당 위치가 마지막으로 보이도록 설정
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = viewModel.state.value.isLoading,
+        onRefresh = viewModel::loadWishList
+    )
 
     val wishList = viewModel.wishList.collectAsStateWithLifecycle(emptyList())
     val options by viewModel.options
@@ -100,7 +105,10 @@ fun WishListScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Column(
             modifier = Modifier
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 68.dp)
@@ -124,28 +132,38 @@ fun WishListScreen(
 
             Spacer(modifier = Modifier.padding(bottom = 8.dp))
 
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Adaptive(150.dp),
-                state = listState,
-                verticalItemSpacing = 2.dp,
-                horizontalArrangement = Arrangement.spacedBy(2.dp),
-                content = {
-                    items(wishList.value, key = { it.id }) { wishListItem ->
-                        WishListItem(
-                            wishList = wishListItem,
-                            options = options,
-                            onCheckChange = { viewModel.onWishListCheckChange(wishListItem) },
-                            onActionClick = { action ->
-                                viewModel.onWishListActionClick(
-                                    openScreen,
-                                    wishListItem,
-                                    action
-                                )
-                            }
-                        )
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .pullRefresh(pullRefreshState)
+            ) {
+                LazyVerticalStaggeredGrid(
+                    columns = StaggeredGridCells.Adaptive(150.dp),
+                    verticalItemSpacing = 2.dp,
+                    horizontalArrangement = Arrangement.spacedBy(2.dp),
+                    content = {
+                        items(wishList.value, key = { it.id }) { wishListItem ->
+                            WishListItem(
+                                wishList = wishListItem,
+                                options = options,
+                                onCheckChange = { viewModel.onWishListCheckChange(wishListItem) },
+                                onActionClick = { action ->
+                                    viewModel.onWishListActionClick(
+                                        openScreen,
+                                        wishListItem,
+                                        action
+                                    )
+                                }
+                            )
+                        }
                     }
-                }
-            )
+                )
+                PullRefreshIndicator(
+                    refreshing = viewModel.state.value.isLoading,
+                    state = pullRefreshState,
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    //backgroundColor = if (viewModel.isLoading) Color.Red else Color.Green,
+                )
+            }
         }
     }
 
