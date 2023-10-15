@@ -1,6 +1,7 @@
 package com.insu.tripmoto_compose.screen.member
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.insu.tripmoto_compose.model.UserInfo
@@ -13,8 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.Flow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,34 +28,26 @@ class MemberViewModel @Inject constructor(
     logService: LogService
 ): MyViewModel(logService) {
 
+    private val memberNickNameList = mutableListOf<String>()
 
-    fun getMember(member: (MutableList<String>) -> Unit) {
-        val memberNickNameList = mutableListOf<String>()
-
+    fun getMember(callback: (List<String>) -> Unit) {
         viewModelScope.launch {
             val memberList = storageService.getTrip(storageService.getCurrentTripId())?.member
-            if (memberList != null) {
-                val deferredList = memberList.map { member ->
-                    async {
-                        uidToNickName(member) { userInfo ->
-                            memberNickNameList.add(userInfo.nickName)
-                        }
-                    }
-                }
-                deferredList.awaitAll()
+            memberList?.forEach { member ->
+                val userInfo = uidToNickName(member)
+                memberNickNameList.add(userInfo.nickName)
             }
-            member(memberNickNameList)
+            Log.d(TAG, "member2: $memberNickNameList")
+            callback(memberNickNameList)
         }
-
     }
 
-    private fun uidToNickName(uid: String, callback: (UserInfo) -> Unit) {
-        viewModelScope.launch {
-            val userInfo = storageService.getUserInfo(uid)
-            withContext(Dispatchers.Main) {
-                callback(userInfo?: UserInfo())
-            }
-        }
+    fun getMemberNickNameList(): List<String> {
+        return memberNickNameList
+    }
+
+    private suspend fun uidToNickName(uid: String): UserInfo {
+        return storageService.getUserInfo(uid) ?: UserInfo()
     }
 
     fun onAddClick(openScreen: (String) -> Unit) {
