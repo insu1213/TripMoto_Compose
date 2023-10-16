@@ -37,7 +37,7 @@ fun MemberScreen(
     viewModel: MemberViewModel = hiltViewModel(),
     openScreen: (String) -> Unit
 ) {
-    var members by remember { mutableStateOf<List<String>>(mutableListOf("")) }
+    var members by remember { mutableStateOf<List<String>>(mutableListOf()) }
 
     viewModel.getMember() {
         members = it
@@ -70,7 +70,6 @@ fun MemberScreen(
                 .fillMaxSize()
                 .padding(top = 12.dp)
         ) {
-            Log.d(TAG, "member3: d")
             itemsIndexed(members) { _, item ->
                 MemberList(item)
             }

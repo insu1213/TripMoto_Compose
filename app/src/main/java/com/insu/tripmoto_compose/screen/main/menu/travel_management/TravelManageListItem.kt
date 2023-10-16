@@ -41,6 +41,9 @@ fun TravelManageListItem(title: String, data: Trip, onClick: (String) -> Unit) {
                     "멤버 관리" -> {
                         onClick("MemberScreen")
                     }
+                    "여행 나가기" -> {
+                        //onClick("")
+                    }
                 }
             },
         //horizontalArrangement = Arrangement.SpaceBetween
@@ -59,7 +62,14 @@ fun TravelManageListItem(title: String, data: Trip, onClick: (String) -> Unit) {
                 text = title,
                 fontFamily = suitFamily,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                color = colorResource(
+                    if(title == "여행 나가기") {
+                        AppColor.red
+                    } else {
+                        AppColor.black
+                    }
+                )
             )
 
             Text(
@@ -71,7 +81,8 @@ fun TravelManageListItem(title: String, data: Trip, onClick: (String) -> Unit) {
                     "제목" -> data.title
                     "위치" -> data.region + " / " + data.city
                     "일정" -> data.startDate + " ~ " + data.endDate
-                    "멤버 설정" -> ""
+                    "멤버 관리" -> ""
+                    "여행 나가기" -> ""
                     else -> ""
                 },
                 fontFamily = suitFamily,

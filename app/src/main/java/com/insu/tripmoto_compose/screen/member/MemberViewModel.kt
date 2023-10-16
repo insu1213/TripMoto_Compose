@@ -28,9 +28,10 @@ class MemberViewModel @Inject constructor(
     logService: LogService
 ): MyViewModel(logService) {
 
-    private val memberNickNameList = mutableListOf<String>()
+    private var memberNickNameList = mutableListOf<String>()
 
     fun getMember(callback: (List<String>) -> Unit) {
+        memberNickNameList = mutableListOf()
         viewModelScope.launch {
             val memberList = storageService.getTrip(storageService.getCurrentTripId())?.member
             memberList?.forEach { member ->
