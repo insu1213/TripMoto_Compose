@@ -126,7 +126,7 @@ fun LoadMarker(
 
         val position = LatLng(marker.lat, marker.lng)
 
-        val markerState = MarkerState(
+        val markerState = rememberMarkerState(
             position = position
         )
 
@@ -142,7 +142,8 @@ fun LoadMarker(
             state = markerState,
             onClick = markerClickEvent,
             alpha = 0.7f,
-            draggable = true,
+            //draggable = true,
+
         ) {
             Box(
                 modifier = Modifier
@@ -163,10 +164,10 @@ fun LoadMarker(
                 )
             }
         }
-        LaunchedEffect(markerState.position) {
-            Log.d(TAG, "마커 이동")
-            viewModel.newMarkerPosition(marker, markerState.position)
-        }
+//        LaunchedEffect(markerState.position) {
+//            Log.d(TAG, "마커 이동")
+//            viewModel.newMarkerPosition(marker, markerState.position)
+//        }
     }
 }
 

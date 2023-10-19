@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.MainTitleText
+import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.screen.trip_selection.TripItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +38,7 @@ fun MemberScreen(
     viewModel: MemberViewModel = hiltViewModel(),
     openScreen: (String) -> Unit
 ) {
-    var members by remember { mutableStateOf<List<String>>(mutableListOf()) }
+    var members by remember { mutableStateOf<List<UserInfo>>(mutableListOf()) }
 
     viewModel.getMember() {
         members = it
@@ -71,7 +72,7 @@ fun MemberScreen(
                 .padding(top = 12.dp)
         ) {
             itemsIndexed(members) { _, item ->
-                MemberList(item)
+                MemberList(item.nickName, item.email)
             }
         }
     }

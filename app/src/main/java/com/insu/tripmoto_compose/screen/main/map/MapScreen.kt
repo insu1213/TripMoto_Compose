@@ -69,7 +69,6 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
 
     if(googleMapClickState) {
         EditMarker(clickPosition) {
-            Log.d(TAG, "실행2")
             googleMapClickState = false
             markerAddState = false
         }
@@ -77,7 +76,6 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
 
     if(editState) {
         EditMarker(LatLng(markerClick.lat, markerClick.lng), markerClick.id) {
-            Log.d(TAG, "실행1")
             editState = false
             markerClick = MapMarker()
         }
