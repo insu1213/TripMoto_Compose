@@ -15,6 +15,7 @@ import com.insu.tripmoto_compose.screen.MyViewModel
 import com.insu.tripmoto_compose.screen.main.map.edit.EditMarkerViewModel
 import com.insu.tripmoto_compose.screen.main.wishlist.WishListActionOption
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +27,11 @@ class MapViewModel @Inject constructor(
 
     val options = mutableStateOf<List<String>>(listOf())
 
-    val marker = storageService.marker
+    var markers: Flow<List<MapMarker>>
+
+    init {
+        markers = storageService.marker
+    }
 
     fun loadMarkerOptions() {
         val hasEditOption = configurationService.isShowMarkerEditButtonConfig
@@ -38,6 +43,10 @@ class MapViewModel @Inject constructor(
             MarkerActionOption.EditMarker -> editMarker()
             MarkerActionOption.DeleteMarker -> onDeleteMarkerClick(marker)
         }
+    }
+
+    fun onMarkerUpdated() {
+        markers = storageService.marker
     }
 
     private fun onDeleteMarkerClick(marker: MapMarker) {

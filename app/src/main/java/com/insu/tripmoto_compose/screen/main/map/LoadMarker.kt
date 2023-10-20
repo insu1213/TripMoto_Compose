@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -24,11 +26,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,6 +41,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -109,17 +117,32 @@ import com.insu.tripmoto_compose.R.color as AppColor
 //    }
 //}
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoadMarker(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     viewModel: MapViewModel = hiltViewModel(),
     activity: ComponentActivity,
     markerClick: (MapMarker) -> Unit
 ) {
-    val markerFlow by viewModel.marker.collectAsStateWithLifecycle(emptyList())
+    var markerFlow = viewModel.markers.collectAsStateWithLifecycle(emptyList())
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                markerFlow = mutableStateOf(emptyList())
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 
     var i = 0
 
-    markerFlow.sortedBy { it.uploadTime }.forEach { marker ->
+    markerFlow.value.sortedBy { it.uploadTime }.forEach { marker ->
         i += 1
 
         Log.d(TAG, "markerFlow: $marker")
@@ -130,6 +153,8 @@ fun LoadMarker(
             position = position
         )
 
+        //var touchState by remember { mutableStateOf(false) }
+
         val markerClickEvent: (Marker) -> Boolean = { _ ->
             Log.d(TAG, "${marker.title} was clicked")
             markerClick(marker)
@@ -138,11 +163,11 @@ fun LoadMarker(
 
         MarkerComposable(
             title = marker.title,
-            keys = arrayOf("singapore4"),
+            keys = arrayOf("marker"),
             state = markerState,
             onClick = markerClickEvent,
             alpha = 0.7f,
-            //draggable = true,
+            draggable = true,
 
         ) {
             Box(
@@ -164,10 +189,11 @@ fun LoadMarker(
                 )
             }
         }
-//        LaunchedEffect(markerState.position) {
-//            Log.d(TAG, "마커 이동")
-//            viewModel.newMarkerPosition(marker, markerState.position)
-//        }
+
+        LaunchedEffect(markerState.position) {
+            Log.d(TAG, "마커 이동 완료됨")
+            viewModel.newMarkerPosition(marker, markerState.position)
+        }
     }
 }
 
