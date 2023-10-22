@@ -66,11 +66,10 @@ class EditMarkerViewModel @Inject constructor(
 
         launchCatching {
             val editedMarker = marker.value
-            var markerId: String? = null
             Log.d(TAG, "markerId: ${editedMarker.id}")
 
             if(editedMarker.id.isBlank()) {
-                markerId = storageService.saveMarker(editedMarker)
+                storageService.saveMarker(editedMarker)
             } else {
                 storageService.updateMarker(editedMarker)
             }

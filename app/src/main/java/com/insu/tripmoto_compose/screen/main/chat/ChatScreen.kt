@@ -39,6 +39,7 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -61,19 +62,24 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.composable.CustomTextField
+import com.insu.tripmoto_compose.common.composable.Keyboard
 import com.insu.tripmoto_compose.common.composable.MainTitleText
+import com.insu.tripmoto_compose.common.composable.keyboardAsState
 import com.insu.tripmoto_compose.common.network.ConnectionState
 import com.insu.tripmoto_compose.common.network.connectivityState
+import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.model.User
 import com.insu.tripmoto_compose.screen.main.chat.ChatListItem
 import com.insu.tripmoto_compose.suitFamily
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.string as AppText
 import com.insu.tripmoto_compose.R.color as AppColor
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun ChatScreen(
@@ -97,6 +103,13 @@ fun ChatScreen(
     val connection by connectivityState()
     val isConnected = connection === ConnectionState.Available
 
+    //var previousChat by remember { mutableStateOf(listOf<ChatList>()) }
+    //var previodusChat by remember { mutableMapOf<String, List<ChatList>>() }
+    var previousChat: Map<String, List<ChatList>> by remember { mutableMapOf() }
+
+    val listState = rememberLazyListState()
+    val isKeyboardOpen by keyboardAsState()
+    val coroutineScope = rememberCoroutineScope()
 
 
     BackOnPressed()
@@ -105,6 +118,16 @@ fun ChatScreen(
         currentTime = System.currentTimeMillis()
         if (currentTime - lastClickTime > 1500) {
             clickableState = true
+        }
+    }
+
+    val groupItems = chatListStorage.value.sortedBy { it.uploadTime }.groupBy {
+        it.uploadTime.substringBefore(" ")
+    }
+
+    LaunchedEffect(groupItems) {
+        coroutineScope.launch {
+            listState.scrollToItem(chatListStorage.value.size+6)
         }
     }
 
@@ -125,21 +148,12 @@ fun ChatScreen(
 
         Spacer(modifier = Modifier.padding(bottom = 8.dp))
 
+
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
-            reverseLayout = true
+            state = listState
         ) {
-
-            val groupItems = chatListStorage.value.sortedByDescending { it.uploadTime }.groupBy {
-                it.uploadTime.substringBefore(" ")
-            }
             groupItems.forEach { (header, models) ->
-                itemsIndexed(
-                    items = models
-                ) { _, item ->
-                    //viewModel.chatAlert(activity, item)
-                    ChatListItem(item, auth.value.id, item.nickName)
-                }
                 stickyHeader {
                     Box(modifier = Modifier.fillMaxWidth()) {
                         Text(
@@ -160,9 +174,22 @@ fun ChatScreen(
                         )
                     }
                 }
+
+                itemsIndexed(
+                    items = models
+                ) { _, item ->
+                    //viewModel.chatAlert(activity, item)
+                    ChatListItem(item, auth.value.id, item.nickName)
+                }
+
+//                if(isKeyboardOpen == Keyboard.Opened || previousChat.size != groupItems.size) {
+//
+//                }
             }
+            //previousChat = groupItems
         }
     }
+
 
     Box(
         modifier
@@ -205,8 +232,8 @@ fun ChatScreen(
                                 .align(Alignment.CenterEnd)
                                 .padding(end = 12.dp)
                                 .clickable {
-                                    if(clickableState) {
-                                        if(isConnected) {
+                                    if (clickableState) {
+                                        if (isConnected) {
                                             clickableState = false
                                             lastClickTime = currentTime
                                             viewModel.onSendClick {
