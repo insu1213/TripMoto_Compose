@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,10 +24,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -46,7 +52,10 @@ import com.insu.tripmoto_compose.R.color as AppColor
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 
 @Composable
-fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
+fun MapScreen(
+
+    viewModel: MapViewModel = hiltViewModel()
+) {
     BackOnPressed()
 
     var markerAddState by remember { mutableStateOf(false) }
@@ -71,6 +80,7 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
         EditMarker(clickPosition) {
             googleMapClickState = false
             markerAddState = false
+            viewModel.onMarkerUpdated()
         }
     }
 
@@ -78,6 +88,7 @@ fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
         EditMarker(LatLng(markerClick.lat, markerClick.lng), markerClick.id) {
             editState = false
             markerClick = MapMarker()
+            viewModel.onMarkerUpdated()
         }
 
     }
