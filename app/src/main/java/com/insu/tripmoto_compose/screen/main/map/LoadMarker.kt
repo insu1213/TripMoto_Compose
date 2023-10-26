@@ -53,9 +53,12 @@ import com.insu.tripmoto_compose.model.MapMarker
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.compose.DragState
 import com.google.maps.android.compose.InputHandler
 import com.google.maps.android.compose.MarkerComposable
 import com.google.maps.android.compose.rememberMarkerState
+import com.insu.tripmoto_compose.common.listener.MyMarkerDragListener
 import com.insu.tripmoto_compose.screen.main.map.edit.toColor
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.drawable as AppIcon
@@ -190,9 +193,16 @@ fun LoadMarker(
             }
         }
 
+
+//        LaunchedEffect(marker.color) {
+//
+//        }
+
         LaunchedEffect(markerState.position) {
-            Log.d(TAG, "마커 이동 완료됨")
-            viewModel.newMarkerPosition(marker, markerState.position)
+            if(markerState.dragState == DragState.END) {
+                Log.d(TAG, "마커 이동 완료됨")
+                viewModel.newMarkerPosition(marker, markerState.position)
+            }
         }
     }
 }
