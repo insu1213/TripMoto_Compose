@@ -8,6 +8,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,6 +58,7 @@ import com.insu.tripmoto_compose.model.WishList
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.string as AppText
 import com.insu.tripmoto_compose.R.color as AppColor
+import com.insu.tripmoto_compose.R.drawable as AppIcon
 
 
 @Composable
@@ -214,9 +216,12 @@ fun RequestContentPermission(viewModel: WishListEditViewModel, uri: (Uri) -> Uni
     }
 
     LaunchedEffect(imageUri) {
+        Log.d(TAG, "실행0")
         if (imageUri != null) {
+            Log.d(TAG, "실행")
             uri(imageUri!!)
             viewModel.formatImage(context) { bitmap ->
+                Log.d(TAG, "실행2")
                 bitmapRemember = bitmap
 
             }
@@ -224,21 +229,76 @@ fun RequestContentPermission(viewModel: WishListEditViewModel, uri: (Uri) -> Uni
     }
 
 
-    Column() {
-        Button(onClick = {
-            launcher.launch("image/*")
-        }) {
-            Text(text = "Pick image")
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 12.dp, top = 8.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = if(bitmapRemember == null) {
+                "이미지 없음"
+            } else {
+                "이미지 업로드 됨"
+            }
+            ,
+            fontSize = 13.sp,
+            fontFamily = suitFamily,
+            fontWeight = FontWeight.SemiBold,
+            color = if(bitmapRemember == null) {
+                colorResource(AppColor.black)
+            } else {
+                colorResource(AppColor.green)
+            }
+        )
+
+        if(bitmapRemember != null) {
+            Icon(
+                painter = painterResource(AppIcon.ic_check),
+                contentDescription = null,
+                tint = colorResource(id = AppColor.green)
+            )
         }
+
+        Text(
+            modifier = Modifier
+                .padding(start = 4.dp)
+                .clickable {
+                    imageUri = null
+                    launcher.launch("image/*")
+                },
+            text = stringResource(AppText.upload_image),
+            color = colorResource(id = AppColor.primary_800),
+            fontSize = 14.sp,
+            fontFamily = suitFamily,
+            fontWeight = FontWeight.SemiBold,
+        )
+
+        if(bitmapRemember != null) {
+            Text(
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .clickable {
+                        viewModel.clearImageUri()
+                        bitmapRemember = null
+                    },
+                text = "삭제",
+                color = colorResource(id = AppColor.red),
+                fontSize = 14.sp,
+                fontFamily = suitFamily,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
+
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        if(bitmapRemember != null) {
-            Image(
-                bitmap = bitmapRemember!!.asImageBitmap(),
-                contentDescription = null,
-                modifier = Modifier.size(400.dp)
-            )
-        }
+//        if(bitmapRemember != null) {
+//            Image(
+//                bitmap = bitmapRemember!!.asImageBitmap(),
+//                contentDescription = null,
+//                modifier = Modifier.size(400.dp)
+//            )
+//        }
     }
 }

@@ -68,4 +68,5 @@
     <string name="invite_code_generation">초대 코드가 생성되었습니다!</string>
     <string name="goto_sign_in">이미 계정이 있습니까?</string>
     <string name="invite_code">초대 코드</string>
+    <string name="upload_image">이미지 업로드</string>
 </resources>

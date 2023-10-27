@@ -46,6 +46,11 @@ class WishListEditViewModel @Inject constructor(
         }
     }
 
+    fun clearImageUri() {
+        imageUri = null
+        zipImageUri = null
+    }
+
     fun onTitleChange(newValue: String) {
         wishList.value = wishList.value.copy(title = newValue)
     }
