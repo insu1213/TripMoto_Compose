@@ -86,6 +86,7 @@
 
     <!--Main/WishList-->
     <string name="wishlist">WishList</string>
+    <string name="create_wishlist">Create WishList</string>
 
     <!--Main/Map-->
     <string name="edit_marker">Edit Marker</string>

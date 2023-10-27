@@ -44,7 +44,7 @@ fun TravelManagementScreen(
             modifier = Modifier
                 .padding(end = 4.dp)
                 .clickable {
-                    onBackPressed
+                    viewModel.popUpBackStack(openAndPopUp)
                 },
             painter = painterResource(id = AppIcon.ic_left_arrow),
             contentDescription = ""

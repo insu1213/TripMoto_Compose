@@ -57,6 +57,7 @@
     <string name="empty_expenses_error">경비를 입력하십시오.</string>
     <string name="low_expenses_error">정확한  경비를 입력하세요.</string>
     <string name="wishlist">포스트</string>
+    <string name="create_wishlist">포스트 작성</string>
     <string name="edit_marker">마커 편집</string>
     <string name="detail_marker">마커 내용</string>
     <string name="chat">채팅</string>
