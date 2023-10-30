@@ -3,8 +3,10 @@ package com.insu.tripmoto_compose.screen.main.menu
 import android.annotation.SuppressLint
 import android.graphics.drawable.ShapeDrawable
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Shapes
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -24,9 +27,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -82,21 +87,40 @@ fun MenuScreen(
                     .height(80.dp),
                 color = colorResource(AppColor.gray_1)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = nickNameState,
-                        fontFamily = suitFamily,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp
-                    )
-                    Text(
-                        modifier = Modifier.padding(4.dp),
-                        text = emailState,
-                        fontFamily = suitFamily,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 12.sp
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                    ) {
+                        Text(
+                            text = nickNameState,
+                            fontFamily = suitFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 16.sp
+                        )
+                        Text(
+                            modifier = Modifier.padding(4.dp),
+                            text = emailState,
+                            fontFamily = suitFamily,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 12.sp
+                        )
+                    }
+                    Icon(
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .clickable {
+                                viewModel.onProfileSettingClick(openAndPopUp)
+                            },
+                        painter = painterResource(AppIcon.ic_settings),
+                        contentDescription = null
                     )
                 }
+
             }
 
             Spacer(modifier = Modifier.padding(6.dp))

@@ -14,6 +14,7 @@
     <string name="network_error">인터넷 연결을 확인하세요.</string>
     <string name="already_part">이미 참가 중입니다!</string>
     <string name="copied">초대코드가 복사되었습니다.</string>
+    <string name="profile_settings">프로필 편집</string>
     <string name="start">시작</string>
     <string name="try_again">재시도</string>
     <string name="email_error">올바르지 않은 이메일</string>
@@ -69,4 +70,5 @@
     <string name="goto_sign_in">이미 계정이 있습니까?</string>
     <string name="invite_code">초대 코드</string>
     <string name="upload_image">이미지 업로드</string>
+    <string name="password_error_login">유효하지 않은 패스워드</string>
 </resources>

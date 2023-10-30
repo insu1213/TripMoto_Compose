@@ -43,6 +43,10 @@ class MemberViewModel @Inject constructor(
         }
     }
 
+    fun popUpBackStack(openAndPopUp: (String) -> Unit) {
+        openAndPopUp("TravelManagementScreen")
+    }
+
     fun getMemberNickNameList(): List<UserInfo> {
         return memberInfoList
     }

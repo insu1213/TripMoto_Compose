@@ -1,15 +1,22 @@
 package com.insu.tripmoto_compose.screen.sign_up
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -18,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.maps.model.Circle
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.*
 import com.insu.tripmoto_compose.common.ext.basicButton
@@ -57,8 +65,47 @@ fun SignUpScreen(
 
         MenuTitleText(modifier = Modifier.padding(top = 12.dp), text = AppText.register)
 
+//        Surface(
+//            modifier = Modifier.size(80.dp),
+//            shape = CircleShape,
+//        ) {
+//
+//        }
+        Box(modifier = Modifier.padding(top = 12.dp)) {
+            Image(
+                painter = painterResource(R.drawable.zoe),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(88.dp)
+                    .clip(CircleShape)
+                    .border(4.dp, colorResource(R.color.primary_800), CircleShape)
+                    .align(Alignment.Center)
+            )
+            Surface(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .clip(CircleShape)
+                    .clickable {
+
+                    },
+                color = colorResource(R.color.white)
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_camera),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .padding(2.dp)
+                        .border(2.dp, colorResource(R.color.white)),
+                    tint = colorResource(R.color.primary_800)
+                )
+            }
+
+        }
+
+
         LimitTextField(
-            modifier = Modifier.padding(top = 32.dp),
+            modifier = Modifier.padding(top = 20.dp),
             maxLength = 10,
             text = AppText.nick_name,
             value = uiState.nickName,
@@ -70,24 +117,24 @@ fun SignUpScreen(
             viewModel::onEmailChange,
             Modifier
                 .fieldModifier()
-                .padding(top = 40.dp)
+                .padding(top = 60.dp)
         )
         PasswordField(
             uiState.password, viewModel::onPasswordChange, Modifier
                 .fieldModifier()
-                .padding(top = 32.dp)
+                .padding(top = 20.dp)
         )
         RepeatPasswordField(
             uiState.repeatPassword, viewModel::onRepeatPasswordChange, Modifier
                 .fieldModifier()
-                .padding(top = 32.dp)
+                .padding(top = 20.dp)
         )
 
         BasicButton(
             AppText.create_account,
             Modifier
                 .basicButton()
-                .padding(top = 44.dp)
+                .padding(top = 40.dp)
         ) {
             viewModel.onSignUpClick(openAndPopUp)
         }

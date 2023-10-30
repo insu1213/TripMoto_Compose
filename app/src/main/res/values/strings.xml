@@ -15,6 +15,7 @@
     <string name="network_error">Disconnected</string>
     <string name="already_part">You\'re already participating.</string>
     <string name="copied">Invite code is copied</string>
+    <string name="profile_settings">Edit Profile</string>
 
     <!--First/HelloScreen-->
     <string name="start">Start</string>
@@ -25,6 +26,7 @@
     <string name="empty_password_error">Password cannot be empty.</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="password_error_login">Invalid Password</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
     <string name="goto_sign_up">Sign up to TripMoto?</string>

@@ -52,6 +52,10 @@ class MenuViewModel @Inject constructor(
         openAndPopUp("TravelManagementScreen")
     }
 
+    fun onProfileSettingClick(openAndPopUp: (String) -> Unit) {
+        openAndPopUp("ProfileScreen")
+    }
+
     fun getUidToNickName(uid: String, callback: (String, String) -> Unit) {
         launchCatching {
             val userInfo = storageService.getUserInfo(uid) ?: UserInfo()

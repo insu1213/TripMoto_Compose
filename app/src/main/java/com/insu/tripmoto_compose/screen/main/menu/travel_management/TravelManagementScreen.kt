@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
+import com.insu.tripmoto_compose.common.composable.BackPress
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.screen.trip_selection.TripSelectionViewModel
 import com.insu.tripmoto_compose.R.string as AppText
@@ -30,6 +31,10 @@ fun TravelManagementScreen(
 ) {
     LaunchedEffect(Unit) {
         viewModel.initialize()
+    }
+
+    BackHandler() {
+        viewModel.popUpBackStack(openAndPopUp)
     }
 
     val activity = LocalContext.current
