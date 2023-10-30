@@ -4,5 +4,6 @@ data class SignUpUiState(
     val nickName: String = "",
     val email: String = "",
     val password: String = "",
-    val repeatPassword: String = ""
+    val repeatPassword: String = "",
+    val isImage: Boolean = false
 )

@@ -63,7 +63,6 @@ class WishListEditViewModel @Inject constructor(
     fun onImageResourceChange(newImage: Uri) {
         imageUri = newImage
         wishList.value.isImage = true
-        // TODO: 이미지 업로드 후 삭제 기능
     }
 
     fun onFlagToggle(newValue: String) {

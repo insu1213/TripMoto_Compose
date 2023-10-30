@@ -216,12 +216,9 @@ fun RequestContentPermission(viewModel: WishListEditViewModel, uri: (Uri) -> Uni
     }
 
     LaunchedEffect(imageUri) {
-        Log.d(TAG, "실행0")
         if (imageUri != null) {
-            Log.d(TAG, "실행")
             uri(imageUri!!)
             viewModel.formatImage(context) { bitmap ->
-                Log.d(TAG, "실행2")
                 bitmapRemember = bitmap
 
             }

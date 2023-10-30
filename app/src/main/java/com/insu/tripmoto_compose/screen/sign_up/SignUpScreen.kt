@@ -1,5 +1,9 @@
 package com.insu.tripmoto_compose.screen.sign_up
 
+import android.graphics.Bitmap
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,10 +17,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,6 +40,7 @@ import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.*
 import com.insu.tripmoto_compose.common.ext.basicButton
 import com.insu.tripmoto_compose.common.ext.fieldModifier
+import com.insu.tripmoto_compose.screen.main.wishlist.edit.WishListEditViewModel
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.string as AppText
 
@@ -71,38 +82,10 @@ fun SignUpScreen(
 //        ) {
 //
 //        }
-        Box(modifier = Modifier.padding(top = 12.dp)) {
-            Image(
-                painter = painterResource(R.drawable.zoe),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(88.dp)
-                    .clip(CircleShape)
-                    .border(4.dp, colorResource(R.color.primary_800), CircleShape)
-                    .align(Alignment.Center)
-            )
-            Surface(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .clip(CircleShape)
-                    .clickable {
 
-                    },
-                color = colorResource(R.color.white)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_camera),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(28.dp)
-                        .padding(2.dp)
-                        .border(2.dp, colorResource(R.color.white)),
-                    tint = colorResource(R.color.primary_800)
-                )
-            }
-
+        RequestContentPermission(viewModel) { uri ->
+            viewModel.onImageResourceChange(uri)
         }
-
 
         LimitTextField(
             modifier = Modifier.padding(top = 20.dp),
@@ -164,5 +147,75 @@ fun SignUpScreen(
                 fontSize = 12.sp,
             )
         }
+    }
+}
+
+@Composable
+fun RequestContentPermission(viewModel: SignUpViewModel, uri: (Uri) -> Unit) {
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val context = LocalContext.current
+    var bitmapRemember by remember { mutableStateOf<Bitmap?>(null) }
+
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        imageUri = uri
+    }
+
+    LaunchedEffect(imageUri) {
+        if (imageUri != null) {
+            uri(imageUri!!)
+            viewModel.formatImage(context) { bitmap ->
+                bitmapRemember = bitmap
+
+            }
+        }
+    }
+
+    Box(modifier = Modifier.padding(top = 12.dp)) {
+        if(bitmapRemember != null) {
+            Image(
+                bitmap = bitmapRemember!!.asImageBitmap(),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(88.dp)
+                    .clip(CircleShape)
+                    .border(4.dp, colorResource(R.color.primary_800), CircleShape)
+                    .align(Alignment.Center)
+            )
+        } else {
+            Image(
+                painter = painterResource(R.drawable.zoe),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(88.dp)
+                    .clip(CircleShape)
+                    .border(4.dp, colorResource(R.color.primary_800), CircleShape)
+                    .align(Alignment.Center)
+            )
+        }
+
+        Surface(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .clip(CircleShape)
+                .clickable {
+                    imageUri = null
+                    launcher.launch("image/*")
+                },
+            color = colorResource(R.color.white)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_camera),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(28.dp)
+                    .padding(2.dp)
+                    .border(2.dp, colorResource(R.color.white)),
+                tint = colorResource(R.color.primary_800)
+            )
+        }
+
     }
 }
