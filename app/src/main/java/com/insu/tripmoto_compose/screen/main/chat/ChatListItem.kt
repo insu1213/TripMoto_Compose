@@ -1,7 +1,5 @@
 package com.insu.tripmoto_compose.screen.main.chat
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -19,9 +17,12 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.model.ChatList
+import com.insu.tripmoto_compose.screen.main.wishlist.ImageLoadViewModel
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.color as AppColor
 
@@ -40,24 +42,42 @@ fun ChatListItem(
     userId: String, // 현재 로그인된 사용자 UID
     itemUserName: String // 아이템에 저장된 사용자 닉네임
 ) {
+    val viewModel = ImageLoadViewModel()
+
+    val imageBitmapState: State<ImageBitmap?>? = remember { viewModel.getImageBitmap(chat.userId) }
+
     if(chat.userId == userId) {
-        MyMessageCard(chat, itemUserName)
+        MyMessageCard(chat, itemUserName, imageBitmapState)
     } else {
-        MessageCard(chat, itemUserName)
+        MessageCard(chat, itemUserName, imageBitmapState)
     }
 }
 
 @Composable
-fun MessageCard(msg: ChatList, nickName: String) {
+fun MessageCard(msg: ChatList, nickName: String, imageBitmapState: State<ImageBitmap?>?) {
     Row(modifier = Modifier.padding(all = 8.dp)) {
-        Image(
-            painter = painterResource(R.drawable.zoe),
-            contentDescription = null,
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
-        )
+        if(imageBitmapState!!.value != null) {
+            imageBitmapState.value?.let {
+                Image(
+                    bitmap = it,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
+                )
+            }
+        } else {
+            Image(
+                painter = painterResource(R.drawable.zoe),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
+            )
+        }
+
         Spacer(modifier = Modifier.width(8.dp))
 
         Column {
@@ -103,8 +123,10 @@ fun MessageCard(msg: ChatList, nickName: String) {
 }
 
 @Composable
-fun MyMessageCard(msg: ChatList, nickName: String) {
-    Row(modifier = Modifier.padding(all = 8.dp).fillMaxWidth()) {
+fun MyMessageCard(msg: ChatList, nickName: String, imageBitmapState: State<ImageBitmap?>?) {
+    Row(modifier = Modifier
+        .padding(all = 8.dp)
+        .fillMaxWidth()) {
         Spacer(Modifier.weight(1f))
         Column(
             horizontalAlignment = Alignment.End
@@ -149,24 +171,37 @@ fun MyMessageCard(msg: ChatList, nickName: String) {
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        Image(
-            painter = painterResource(R.drawable.zoe),
-            contentDescription = null,
-            modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
-        )
+        if(imageBitmapState!!.value != null) {
+            imageBitmapState.value?.let {
+                Image(
+                    bitmap = it,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
+                )
+            }
+        } else {
+            Image(
+                painter = painterResource(R.drawable.zoe),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .border(1.5.dp, MaterialTheme.colors.secondary, CircleShape)
+            )
+        }
     }
 }
-@Preview
-@Composable
-fun MessageCardPreview() {
-    MessageCard(ChatList(text = "내 이름은 조이야~", userId = "조이, 여명의 성위", uploadTime = "12:25"), "조이, 여명의 성위")
-}
-
-@Preview
-@Composable
-fun MyMessageCardPreview() {
-    MyMessageCard(ChatList(text = "내 이름은 조이야~", userId = "조이, 여명의 성위", uploadTime = "12:25"), "조이, 여명의 성위")
-}
+//@Preview
+//@Composable
+//fun MessageCardPreview() {
+//    MessageCard(ChatList(text = "내 이름은 조이야~", userId = "조이, 여명의 성위", uploadTime = "12:25"), "조이, 여명의 성위", )
+//}
+//
+//@Preview
+//@Composable
+//fun MyMessageCardPreview() {
+//    MyMessageCard(ChatList(text = "내 이름은 조이야~", userId = "조이, 여명의 성위", uploadTime = "12:25"), "조이, 여명의 성위")
+//}

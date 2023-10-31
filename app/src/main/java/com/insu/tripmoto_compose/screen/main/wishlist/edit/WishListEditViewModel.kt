@@ -33,15 +33,21 @@ class WishListEditViewModel @Inject constructor(
     logService: LogService,
     private val storageService: StorageService
 ): MyViewModel(logService) {
+
+    private var imageUri: Uri? = null
+    private var zipImageUri: Uri? = null
+
     val wishList = mutableStateOf(WishList())
-    var imageUri: Uri? = null
-    var zipImageUri: Uri? = null
+    var isImageEdit = mutableStateOf(false)
+        private set
 
     fun initialize(wishListId: String) {
         launchCatching {
             if(wishListId != "-1") {
                 wishList.value = storageService.getWishList(wishListId.idFromParameter()) ?: WishList()
-                Log.d(TAG, "실행됨: ${wishList.value}")
+                if(wishList.value.isImage) {
+                    isImageEdit.value = true
+                }
             }
         }
     }

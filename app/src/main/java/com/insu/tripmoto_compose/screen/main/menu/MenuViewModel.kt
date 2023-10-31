@@ -31,11 +31,14 @@ class MenuViewModel @Inject constructor(
     private val storageService: StorageService
 ): MyViewModel(logService) {
 
-    val currentUserId = accountService.currentUserId
+    private val currentUserId = accountService.currentUserId
     private val _nickName = MutableStateFlow("닉네임 정보를 불러오는 중...")
-    var nickName: StateFlow<String> = _nickName.asStateFlow()
     private val _email = MutableStateFlow("이메일 정보를 불러오는 중...")
+
+    var nickName: StateFlow<String> = _nickName.asStateFlow()
+        private set
     var email: StateFlow<String> = _email.asStateFlow()
+        private set
 
     init {
         getUidToNickName(currentUserId) { nickName, email ->
@@ -56,7 +59,7 @@ class MenuViewModel @Inject constructor(
         openAndPopUp("ProfileScreen")
     }
 
-    fun getUidToNickName(uid: String, callback: (String, String) -> Unit) {
+    private fun getUidToNickName(uid: String, callback: (String, String) -> Unit) {
         launchCatching {
             val userInfo = storageService.getUserInfo(uid) ?: UserInfo()
 

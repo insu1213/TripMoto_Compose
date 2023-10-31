@@ -33,11 +33,12 @@ class SignUpViewModel @Inject constructor(
     private val storageService: StorageService,
     logService: LogService
 ): MyViewModel(logService) {
+
     var uiState = mutableStateOf(SignUpUiState())
         private set
 
-    var imageUri: Uri? = null
-    var zipImageUri: Uri? = null
+    private var imageUri: Uri? = null
+    private var zipImageUri: Uri? = null
 
     private val email
         get() = uiState.value.email
@@ -70,12 +71,6 @@ class SignUpViewModel @Inject constructor(
         uiState.value = uiState.value.copy(isImage = true)
         imageUri = newImage
     }
-
-//    fun clearImageUri() {
-//        uiState.value = uiState.value.copy(isImage = false)
-//        imageUri = null
-//        zipImageUri = null
-//    }
 
     fun formatImage(context: Context, bitmap: (Bitmap) -> Unit) {
         viewModelScope.launch {

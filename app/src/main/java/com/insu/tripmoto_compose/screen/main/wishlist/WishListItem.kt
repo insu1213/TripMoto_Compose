@@ -47,7 +47,12 @@ fun WishListItem(
 ) {
     val viewModel = ImageLoadViewModel()
 
-    val imageBitmapState: State<ImageBitmap?>? = remember { viewModel.getImageBitmap(wishList) }
+    var imageBitmapState: State<ImageBitmap?>? = null
+
+    if(wishList.isImage) {
+        imageBitmapState = remember { viewModel.getImageBitmap(wishList.id) }
+    }
+
 
     Card(
         shape = RoundedCornerShape(6.dp),

@@ -179,6 +179,7 @@ fun ChatScreen(
                     items = models
                 ) { _, item ->
                     //viewModel.chatAlert(activity, item)
+
                     ChatListItem(item, auth.value.id, item.nickName)
                 }
 
