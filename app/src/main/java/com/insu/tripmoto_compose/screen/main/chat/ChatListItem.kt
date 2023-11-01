@@ -1,5 +1,7 @@
 package com.insu.tripmoto_compose.screen.main.chat
 
+import android.graphics.drawable.BitmapDrawable
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -17,12 +19,18 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +43,7 @@ import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.screen.main.wishlist.ImageLoadViewModel
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.color as AppColor
+import com.insu.tripmoto_compose.R.drawable as AppIcon
 
 @Composable
 fun ChatListItem(
@@ -44,7 +53,29 @@ fun ChatListItem(
 ) {
     val viewModel = ImageLoadViewModel()
 
-    val imageBitmapState: State<ImageBitmap?>? = remember { viewModel.getImageBitmap(chat.userId) }
+    var itemIsChecked by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    val drawable = getDrawable(context, AppIcon.zoe)
+    val bitmapDrawable = drawable as BitmapDrawable
+    val bitmap = bitmapDrawable.bitmap
+
+    var imageBitmapState: MutableState<ImageBitmap?>? = remember { mutableStateOf(bitmap.asImageBitmap()) }
+
+    // 이미 불러온 경우
+    for(item in viewModel.imageDownloadState) {
+        if(item.containsKey(userId)) {
+            val value = item.getValue(userId)
+            imageBitmapState?.value = value
+            itemIsChecked = true
+            break
+        }
+    }
+
+    if(!itemIsChecked) {
+        imageBitmapState = remember { viewModel.getImageBitmap(chat.userId) } as MutableState<ImageBitmap?>?
+    }
 
     if(chat.userId == userId) {
         MyMessageCard(chat, itemUserName, imageBitmapState)
