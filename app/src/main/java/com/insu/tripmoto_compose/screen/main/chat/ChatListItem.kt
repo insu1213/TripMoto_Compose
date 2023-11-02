@@ -1,6 +1,8 @@
 package com.insu.tripmoto_compose.screen.main.chat
 
+import android.content.ContentValues.TAG
 import android.graphics.drawable.BitmapDrawable
+import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -61,20 +63,22 @@ fun ChatListItem(
     val bitmapDrawable = drawable as BitmapDrawable
     val bitmap = bitmapDrawable.bitmap
 
-    var imageBitmapState: MutableState<ImageBitmap?>? = remember { mutableStateOf(bitmap.asImageBitmap()) }
+    val imageBitmapState: MutableState<ImageBitmap?> = remember { mutableStateOf(bitmap.asImageBitmap()) }
 
     // 이미 불러온 경우
     for(item in viewModel.imageDownloadState) {
         if(item.containsKey(userId)) {
             val value = item.getValue(userId)
-            imageBitmapState?.value = value
+            imageBitmapState.value = value
             itemIsChecked = true
+            Log.d(TAG, "실행: 이전에 불러온 데이터 사용")
             break
         }
     }
 
     if(!itemIsChecked) {
-        imageBitmapState = remember { viewModel.getImageBitmap(chat.userId) } as MutableState<ImageBitmap?>?
+        //Log.d(TAG, "실행: 새로 불러옴 $userId")
+        //imageBitmapState.value = viewModel.getImageBitmap(chat.userId)?.value
     }
 
     if(chat.userId == userId) {

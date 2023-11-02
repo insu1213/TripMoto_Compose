@@ -179,7 +179,7 @@ fun ChatScreen(
                     items = models
                 ) { _, item ->
                     //viewModel.chatAlert(activity, item)
-
+                    //Log.d(TAG, "실행1")
                     ChatListItem(item, auth.value.id, item.nickName)
                 }
 
