@@ -149,7 +149,7 @@ class StorageServiceImpl @Inject constructor(
     override suspend fun saveMarker(marker: MapMarker): String =
         trace(SAVE_MARKER_TRACE) {
 
-
+            Log.d(TAG, "마커 생성됨")
             val utcTimeZone = TimeZone.getTimeZone("Asia/Seoul")
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             dateFormat.timeZone = utcTimeZone
@@ -163,6 +163,7 @@ class StorageServiceImpl @Inject constructor(
         }
     override suspend fun updateMarker(marker: MapMarker): Unit =
         trace(UPDATE_MARKER_TRACE) {
+            Log.d(TAG, "마커 업데이트됨")
             tripCollection.document(currentTripId.value).collection(MARKER_COLLECTION).document(marker.id).set(marker).await()
             //firestore.collection(MARKER_COLLECTION).document(marker.id).set(marker).await()
         }

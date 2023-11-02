@@ -129,6 +129,8 @@ fun LoadMarker(
 ) {
     var markerFlow = viewModel.markers.collectAsStateWithLifecycle(emptyList())
 
+    val dragStart = remember { mutableStateOf(false) }
+
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -198,9 +200,13 @@ fun LoadMarker(
 //        }
 
         LaunchedEffect(markerState.position) {
-            if(markerState.dragState == DragState.END) {
+            if(markerState.dragState == DragState.START) {
+                dragStart.value = true
+            }
+            if(markerState.dragState == DragState.END && dragStart.value) {
                 Log.d(TAG, "마커 이동 완료됨")
                 viewModel.newMarkerPosition(marker, markerState.position)
+                dragStart.value = false
             }
         }
     }
