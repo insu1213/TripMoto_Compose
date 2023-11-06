@@ -77,8 +77,8 @@ fun ChatListItem(
     }
 
     if(!itemIsChecked) {
-        //Log.d(TAG, "실행: 새로 불러옴 $userId")
-        //imageBitmapState.value = viewModel.getImageBitmap(chat.userId)?.value
+//        Log.d(TAG, "실행: 새로 불러옴 $userId")
+//        imageBitmapState.value = viewModel.getImageBitmap(chat.userId)?.value
     }
 
     if(chat.userId == userId) {

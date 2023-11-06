@@ -131,18 +131,18 @@ fun MenuScreen(
                 itemsIndexed(
                     listOf(
                         Menu(paint = AppIcon.ic_panel, text = "여행 설정"),
-                        Menu(paint = AppIcon.ic_air, text = "항공권"),
-                        Menu(paint = AppIcon.ic_room, text = "숙박"),
-                        Menu(paint = AppIcon.ic_tag, text = "지출 내역"),
+//                        Menu(paint = AppIcon.ic_air, text = "항공권"),
+//                        Menu(paint = AppIcon.ic_room, text = "숙박"),
+//                        Menu(paint = AppIcon.ic_tag, text = "지출 내역"),
                         Menu(paint = AppIcon.ic_menu, text = "여행 목록")
                     )
                 ) { _, item ->
                     MenuList(menu = item) {
                         when (it) {
                             "여행 설정" -> viewModel.onTripSettingClick(openAndPopUp)
-                            "항공권" -> {}
-                            "숙박" -> {}
-                            "지출 내역" -> {}
+//                            "항공권" -> {}
+//                            "숙박" -> {}
+//                            "지출 내역" -> {}
                             "여행 목록" -> viewModel.onOtherTripClick(openAndPopUp)
                         }
                     }

@@ -88,7 +88,7 @@ class WishListEditViewModel @Inject constructor(
                 // 압축된 이미지를 비트맵 콜백으로 전달
                 if (loadedBitmap != null) {
                     val matrix = Matrix()
-                    //matrix.postRotate(90f)
+                    matrix.postRotate(90f)
                     val rotatedBitmap = Bitmap.createBitmap(loadedBitmap, 0, 0, loadedBitmap.width, loadedBitmap.height, matrix, true)
 //                    val outputStream = ByteArrayOutputStream()
 //                    loadedBitmap.compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
