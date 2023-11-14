@@ -20,6 +20,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -54,6 +55,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.compose.AdvancedMarker
 import com.google.maps.android.compose.DragState
 import com.google.maps.android.compose.InputHandler
 import com.google.maps.android.compose.MarkerComposable
@@ -125,37 +127,41 @@ fun LoadMarker(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     viewModel: MapViewModel = hiltViewModel(),
     activity: ComponentActivity,
+    markerFlow: State<List<MapMarker>>,
     markerClick: (MapMarker) -> Unit
 ) {
-    var markerFlow = viewModel.markers.collectAsStateWithLifecycle(emptyList())
-
     val dragStart = remember { mutableStateOf(false) }
 
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                markerFlow = mutableStateOf(emptyList())
-            }
-        }
-        lifecycleOwner.lifecycle.addObserver(observer)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
+//    DisposableEffect(lifecycleOwner) {
+//        val observer = LifecycleEventObserver { _, event ->
+//            if (event == Lifecycle.Event.ON_RESUME) {
+//                markerFlow = mutableStateOf(emptyList())
+//            }
+//        }
+//        lifecycleOwner.lifecycle.addObserver(observer)
+//
+//        onDispose {
+//            lifecycleOwner.lifecycle.removeObserver(observer)
+//        }
+//    }
 
     var i = 0
 
     markerFlow.value.sortedBy { it.uploadTime }.forEach { marker ->
         i += 1
 
-        Log.d(TAG, "markerFlow: $marker")
+        //Log.d(TAG, "markerFlow: $marker")
 
-        val position = LatLng(marker.lat, marker.lng)
+         val position = LatLng(marker.lat, marker.lng)
+        Log.d(TAG, "markerFlowPos: $position")
 
         val markerState = rememberMarkerState(
             position = position
         )
+
+        //markerState.position = position
+
+        Log.d(TAG, "markerFlowState: ${markerState.position}")
 
         //var touchState by remember { mutableStateOf(false) }
 
@@ -165,6 +171,8 @@ fun LoadMarker(
             true
         }
 
+
+
         MarkerComposable(
             title = marker.title,
             keys = arrayOf("marker"),
@@ -172,7 +180,6 @@ fun LoadMarker(
             onClick = markerClickEvent,
             alpha = 0.7f,
             draggable = true,
-
         ) {
             Box(
                 modifier = Modifier
@@ -194,51 +201,44 @@ fun LoadMarker(
             }
         }
 
-
-//        LaunchedEffect(marker.color) {
-//
-//        }
-
-        LaunchedEffect(markerState.position) {
-            if(markerState.dragState == DragState.START) {
-                dragStart.value = true
-            }
-            if(markerState.dragState == DragState.END && dragStart.value) {
-                Log.d(TAG, "마커 이동 완료됨")
-                viewModel.newMarkerPosition(marker, markerState.position)
-                dragStart.value = false
-            }
+        if(markerState.dragState == DragState.START) {
+            dragStart.value = true
+        }
+        if(markerState.dragState == DragState.END && dragStart.value) {
+            //position = markerState.position
+            viewModel.newMarkerPosition(marker, markerState.position)
+            Log.d(TAG, "마커 이동 완료됨: ${markerState.position}")
+            dragStart.value = false
         }
     }
 }
 
 
+@Deprecated("This function is Deprecated. Use MarkerComposable.")
+private fun bitMapFromVector(activity: ComponentActivity, vectorResID:Int): BitmapDescriptor {
+    val vectorDrawable= ContextCompat.getDrawable(activity,vectorResID)
+    vectorDrawable!!.setBounds(0,0, 120, 120)
+    val bitmap=Bitmap.createBitmap(120,120,Bitmap.Config.ARGB_8888)
+    val canvas=Canvas(bitmap)
+    vectorDrawable.draw(canvas)
+    return BitmapDescriptorFactory.fromBitmap(bitmap)
+}
+@Deprecated("This function is Deprecated. Use MarkerComposable.")
+private fun createDrawableFromView(view: View, activity: ComponentActivity): Bitmap {
+    val displayMetrics = DisplayMetrics()
+    activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
+    view.layoutParams = ViewGroup.LayoutParams(
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT
+    )
+    view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)
+    view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
+    view.buildDrawingCache()
+    val bitmap =
+        Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
 
-//private fun bitMapFromVector(activity: ComponentActivity, vectorResID:Int): BitmapDescriptor {
-//    val vectorDrawable= ContextCompat.getDrawable(activity,vectorResID)
-//    vectorDrawable!!.setBounds(0,0, 120, 120)
-//    val bitmap=Bitmap.createBitmap(120,120,Bitmap.Config.ARGB_8888)
-//    val canvas=Canvas(bitmap)
-//    vectorDrawable.draw(canvas)
-//    return BitmapDescriptorFactory.fromBitmap(bitmap)
-//}
+    val canvas = Canvas(bitmap)
+    view.draw(canvas)
 
-
-//private fun createDrawableFromView(view: View, activity: ComponentActivity): Bitmap {
-//    val displayMetrics = DisplayMetrics()
-//    activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
-//    view.layoutParams = ViewGroup.LayoutParams(
-//        ViewGroup.LayoutParams.WRAP_CONTENT,
-//        ViewGroup.LayoutParams.WRAP_CONTENT
-//    )
-//    view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)
-//    view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
-//    view.buildDrawingCache()
-//    val bitmap =
-//        Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
-//
-//    val canvas = Canvas(bitmap)
-//    view.draw(canvas)
-//
-//    return bitmap
-//}
+    return bitmap
+}

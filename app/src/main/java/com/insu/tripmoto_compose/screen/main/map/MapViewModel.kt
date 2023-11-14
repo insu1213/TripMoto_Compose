@@ -52,7 +52,7 @@ class MapViewModel @Inject constructor(
     private fun onDeleteMarkerClick(marker: MapMarker) {
         launchCatching {
             storageService.deleteMarker(marker.id)
-            TODO("여기 수정해")
+            TODO("여기 수정해 마커 삭제시 발생하는 이벤트")
         }
     }
 

@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -118,7 +119,11 @@ fun MapScreen(
         properties = MapProperties(isMyLocationEnabled = true),
         onMapLoaded = { mapLoaded = true },
     ) {
-        LoadMarker(activity = activity) {
+        val markerFlow = viewModel.markers.collectAsStateWithLifecycle(emptyList())
+
+        Log.d(TAG, "markerFlow: $markerFlow")
+
+        LoadMarker(activity = activity, markerFlow = markerFlow) {
             markerClick = it
             markerClickState = true
         }
