@@ -1,8 +1,6 @@
 package com.insu.tripmoto_compose
 
-import android.content.Context
 import android.content.res.Resources
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -17,12 +15,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import android.Manifest
 import android.os.Build
-import android.provider.Settings.Secure.getString
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -48,7 +44,7 @@ import com.insu.tripmoto_compose.screen.login.LoginScreen
 import com.insu.tripmoto_compose.screen.main.BottomNavItem
 import com.insu.tripmoto_compose.screen.main.direction.DirectionScreen
 import com.insu.tripmoto_compose.screen.main.MainScreen
-import com.insu.tripmoto_compose.screen.main.chat.inner.ChatScreen
+import com.insu.tripmoto_compose.screen.main.chat.ChatScreen
 import com.insu.tripmoto_compose.screen.main.map.MapScreen
 import com.insu.tripmoto_compose.screen.main.menu.MenuScreen
 import com.insu.tripmoto_compose.screen.main.wishlist.WishListScreen
@@ -63,7 +59,6 @@ import com.insu.tripmoto_compose.screen.travel_option.TravelOptionScreen
 import com.insu.tripmoto_compose.screen.trip_selection.TripSelectionScreen
 import com.insu.tripmoto_compose.screen.settings.SettingsScreen
 import com.insu.tripmoto_compose.ui.theme.TripMotoTheme
-import io.grpc.internal.JsonUtil.getString
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

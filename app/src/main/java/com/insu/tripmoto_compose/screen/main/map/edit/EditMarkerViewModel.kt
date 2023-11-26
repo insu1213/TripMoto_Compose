@@ -29,7 +29,6 @@ class EditMarkerViewModel @Inject constructor(
                 marker.value = MapMarker()
             }
             loading = true
-            Log.d(TAG, "실행실행")
         }
     }
 

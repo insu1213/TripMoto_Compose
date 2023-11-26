@@ -1,8 +1,6 @@
-package com.insu.tripmoto_compose.screen.main.chat.inner
+package com.insu.tripmoto_compose.screen.main.chat
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -18,20 +16,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,9 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -55,26 +42,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
-import com.insu.tripmoto_compose.common.composable.CustomTextField
-import com.insu.tripmoto_compose.common.composable.Keyboard
 import com.insu.tripmoto_compose.common.composable.MainTitleText
-import com.insu.tripmoto_compose.common.composable.keyboardAsState
 import com.insu.tripmoto_compose.common.network.ConnectionState
 import com.insu.tripmoto_compose.common.network.connectivityState
 import com.insu.tripmoto_compose.model.ChatList
 import com.insu.tripmoto_compose.model.User
-import com.insu.tripmoto_compose.screen.main.chat.ChatListItem
+import com.insu.tripmoto_compose.screen.main.chat.inner.ChatViewModel
 import com.insu.tripmoto_compose.suitFamily
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.util.concurrent.TimeUnit
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 import com.insu.tripmoto_compose.R.string as AppText
 import com.insu.tripmoto_compose.R.color as AppColor
@@ -108,7 +85,6 @@ fun ChatScreen(
     var previousChat: Map<String, List<ChatList>> by remember { mutableMapOf() }
 
     val listState = rememberLazyListState()
-    val isKeyboardOpen by keyboardAsState()
     val coroutineScope = rememberCoroutineScope()
 
 
