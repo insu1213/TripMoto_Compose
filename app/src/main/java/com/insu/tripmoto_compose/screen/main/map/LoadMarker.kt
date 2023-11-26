@@ -152,14 +152,15 @@ fun LoadMarker(
 
         //Log.d(TAG, "markerFlow: $marker")
 
-         val position = LatLng(marker.lat, marker.lng)
+         var position = LatLng(marker.lat, marker.lng)
         Log.d(TAG, "markerFlowPos: $position")
 
         val markerState = rememberMarkerState(
             position = position
         )
 
-        //markerState.position = position
+        //TODO("markerState.position = position")
+        //마커 Position 이동되는 버그. 확인요함.
 
         Log.d(TAG, "markerFlowState: ${markerState.position}")
 
