@@ -119,11 +119,9 @@ fun MapScreen(
         properties = MapProperties(isMyLocationEnabled = true),
         onMapLoaded = { mapLoaded = true },
     ) {
-        val markerFlow = viewModel.markers.collectAsStateWithLifecycle(emptyList())
 
-        Log.d(TAG, "markerFlow: $markerFlow")
 
-        LoadMarker(activity = activity, markerFlow = markerFlow) {
+        LoadMarker(activity = activity) {
             markerClick = it
             markerClickState = true
         }
@@ -133,10 +131,7 @@ fun MapScreen(
                 marker = markerClick,
                 options = options,
                 onActionClick = { action ->
-                    viewModel.onMarkerActionClick(
-                        markerClick,
-                        action
-                    ) {
+                    viewModel.onMarkerActionClick(markerClick, action) {
                         editState = true
                     }
                 }

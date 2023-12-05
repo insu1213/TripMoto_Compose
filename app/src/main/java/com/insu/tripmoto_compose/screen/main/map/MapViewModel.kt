@@ -41,7 +41,9 @@ class MapViewModel @Inject constructor(
     fun onMarkerActionClick(marker: MapMarker, action: String, editMarker: () -> Unit) {
         when (MarkerActionOption.getByTitle(action)) {
             MarkerActionOption.EditMarker -> editMarker()
-            MarkerActionOption.DeleteMarker -> onDeleteMarkerClick(marker)
+            MarkerActionOption.DeleteMarker -> {
+                onDeleteMarkerClick(marker)
+            }
         }
     }
 
@@ -50,9 +52,10 @@ class MapViewModel @Inject constructor(
     }
 
     private fun onDeleteMarkerClick(marker: MapMarker) {
-            launchCatching {
-                storageService.deleteMarker(marker.id)
-            TODO("여기 수정해 마커 삭제시 발생하는 이벤트")
+        launchCatching {
+            storageService.deleteMarker(marker.id)
+            //마커 삭제시 실행
+            Log.d("a", "marker 삭제")
         }
     }
 

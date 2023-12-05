@@ -127,10 +127,10 @@ fun LoadMarker(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     viewModel: MapViewModel = hiltViewModel(),
     activity: ComponentActivity,
-    markerFlow: State<List<MapMarker>>,
     markerClick: (MapMarker) -> Unit
 ) {
     val dragStart = remember { mutableStateOf(false) }
+    val markerFlow = viewModel.markers.collectAsStateWithLifecycle(emptyList())
 
 //    DisposableEffect(lifecycleOwner) {
 //        val observer = LifecycleEventObserver { _, event ->
@@ -147,19 +147,20 @@ fun LoadMarker(
 
     var i = 0
 
+
     markerFlow.value.sortedBy { it.uploadTime }.forEach { marker ->
         i += 1
 
         //Log.d(TAG, "markerFlow: $marker")
 
-         var position = LatLng(marker.lat, marker.lng)
+        val position = LatLng(marker.lat, marker.lng)
         Log.d(TAG, "markerFlowPos: $position")
 
         val markerState = rememberMarkerState(
             position = position
         )
 
-        //TODO("markerState.position = position")
+        //markerState.position = position
         //마커 Position 이동되는 버그. 확인요함.
 
         Log.d(TAG, "markerFlowState: ${markerState.position}")
@@ -171,8 +172,6 @@ fun LoadMarker(
             markerClick(marker)
             true
         }
-
-
 
         MarkerComposable(
             title = marker.title,
@@ -205,6 +204,7 @@ fun LoadMarker(
         if(markerState.dragState == DragState.START) {
             dragStart.value = true
         }
+
         if(markerState.dragState == DragState.END && dragStart.value) {
             //position = markerState.position
             viewModel.newMarkerPosition(marker, markerState.position)
