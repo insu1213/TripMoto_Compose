@@ -156,7 +156,7 @@ fun LoadMarker(
         val position = LatLng(marker.lat, marker.lng)
         Log.d(TAG, "markerFlowPos: $position")
 
-        val markerState = rememberMarkerState(
+        val markerState = MarkerState(
             position = position
         )
 
@@ -179,7 +179,7 @@ fun LoadMarker(
             state = markerState,
             onClick = markerClickEvent,
             alpha = 0.7f,
-            draggable = true,
+            //draggable = true,
         ) {
             Box(
                 modifier = Modifier
@@ -206,7 +206,6 @@ fun LoadMarker(
         }
 
         if(markerState.dragState == DragState.END && dragStart.value) {
-            //position = markerState.position
             viewModel.newMarkerPosition(marker, markerState.position)
             Log.d(TAG, "마커 이동 완료됨: ${markerState.position}")
             dragStart.value = false
