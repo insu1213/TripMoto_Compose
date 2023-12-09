@@ -87,7 +87,7 @@ fun MemberScreen(
                 .padding(top = 12.dp)
         ) {
             itemsIndexed(members) { _, item ->
-                MemberList(item.nickName, item.email)
+                MemberList(item.nickName, item.email, "그룹장")
             }
         }
     }

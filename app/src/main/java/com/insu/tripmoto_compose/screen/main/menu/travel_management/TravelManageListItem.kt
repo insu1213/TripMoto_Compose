@@ -52,7 +52,7 @@ fun TravelManageListItem(title: TravelManageList, data: Trip, onClick: (String) 
                     }
 
                     TravelManageList.Exit -> {
-
+                        onClick("")
                     }
 //                    "제목" -> {}
 //                    "위치" -> {}
