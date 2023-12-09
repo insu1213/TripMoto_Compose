@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.insu.tripmoto_compose.R
+import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.service.AccountService
@@ -61,13 +63,62 @@ class MemberViewModel @Inject constructor(
 
     fun checkPermission(uid: String, callback: (String) -> Unit) {
         if(trip.administrator == uid) {
-            callback("그룹장")
-        } else if(trip.co_administrator == uid) {
-            callback("공동 그룹장")
-        } else if(trip.co_modifier == uid) {
-            callback("공동 수정자")
+            callback("관리자")
+        } else if(trip.co_administrator.contains(uid)) {
+            callback("공동 관리자")
+        } else if(trip.co_modifier.contains(uid)) {
+            callback("수정자")
         } else {
             callback("")
+        }
+    }
+
+    fun changePermission(uid: String, role: String) {
+
+        if(role == "공동 관리자") {
+            if(trip.co_modifier.contains(uid)) {
+                val idx = trip.co_modifier.indexOf(uid)
+                val newRole = trip.co_modifier.toMutableList()
+                newRole.removeAt(idx)
+                trip = trip.copy(co_modifier = newRole)
+            }
+
+            if(trip.co_administrator.contains(uid)) { // 이미 참가 상태인 경우
+                SnackbarManager.showMessage(R.string.already_part)
+            } else {
+                val newRole = trip.co_administrator.plus(uid)
+                trip = trip.copy(co_administrator = newRole)
+            }
+        } else if(role == "수정자") {
+            if (trip.co_administrator.contains(uid)){
+                val idx = trip.co_administrator.indexOf(uid)
+                val newRole = trip.co_administrator.toMutableList()
+                newRole.removeAt(idx)
+                trip = trip.copy(co_administrator = newRole)
+            }
+            if(trip.co_modifier.contains(uid)) {
+                SnackbarManager.showMessage(R.string.already_part)
+            } else {
+                val newRole = trip.co_modifier.plus(uid)
+                trip = trip.copy(co_modifier = newRole)
+            }
+        } else if(role == "그룹원") {
+            if(trip.co_modifier.contains(uid)) {
+                val idx = trip.co_modifier.indexOf(uid)
+                val newRole = trip.co_modifier.toMutableList()
+                newRole.removeAt(idx)
+                trip = trip.copy(co_modifier = newRole)
+
+            } else if (trip.co_administrator.contains(uid)){
+                val idx = trip.co_administrator.indexOf(uid)
+                val newRole = trip.co_administrator.toMutableList()
+                newRole.removeAt(idx)
+                trip = trip.copy(co_administrator = newRole)
+            }
+        }
+
+        viewModelScope.launch {
+            storageService.updateTrip(trip)
         }
     }
 

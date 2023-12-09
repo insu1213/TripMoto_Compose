@@ -31,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.insu.tripmoto_compose.R
 import com.insu.tripmoto_compose.common.composable.MainTitleText
 import com.insu.tripmoto_compose.model.UserInfo
+import com.insu.tripmoto_compose.screen.member.permission.PermissionDialog
 import com.insu.tripmoto_compose.screen.trip_selection.TripItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +43,8 @@ fun MemberScreen(
     openScreen: (String) -> Unit
 ) {
     var members by remember { mutableStateOf<List<UserInfo>>(mutableListOf()) }
+    var clickFlag by remember { mutableStateOf(false) }
+    var clickData by remember { mutableStateOf("") }
 
     viewModel.getMember() {
         members = it
@@ -91,8 +94,20 @@ fun MemberScreen(
                 viewModel.checkPermission(item.id) {
                     permission = it
                 }
-                MemberList(item.nickName, item.email, permission)
+                MemberList(item.id, item.nickName, item.email, permission) {
+                    clickData = it
+                    clickFlag = true
+                }
             }
+        }
+
+        if(clickFlag) {
+            PermissionDialog(onDismiss = {
+                if(it != "") {
+                    viewModel.changePermission(clickData, it)
+                }
+                clickFlag = false
+            })
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.insu.tripmoto_compose.screen.member
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,9 +19,14 @@ import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.color as AppColor
 
 @Composable
-fun MemberList(nickName: String, email: String, permission: String) {
+fun MemberList(uid: String, nickName: String, email: String, permission: String, onClick: (String) -> Unit) {
     Box(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                onClick(uid)
+            }
+        ) {
             Row() {
                 Text(modifier = Modifier
                     .padding(start = 12.dp, end = 8.dp),
@@ -49,8 +55,8 @@ fun MemberList(nickName: String, email: String, permission: String) {
     }
 }
 
-@Composable
-@Preview
-fun MemberListPreView() {
-    MemberList("insu1213", "insu12345_@naver.com", "그룹장")
-}
+//@Composable
+//@Preview
+//fun MemberListPreView() {
+//    MemberList("insu1213", "insu12345_@naver.com", "그룹장")
+//}
