@@ -45,6 +45,16 @@ fun MemberAddScreen(
         .fillMaxWidth()
         .fillMaxHeight()
     ) {
+        Icon(
+            modifier = Modifier
+                .padding(start = 12.dp, top = 12.dp, end = 4.dp)
+                .align(Alignment.TopStart)
+                .clickable {
+                    viewModel.popUpBackStack(popUpScreen)
+                },
+            painter = painterResource(id = R.drawable.ic_left_arrow),
+            contentDescription = ""
+        )
         Column(modifier = Modifier
             .align(Alignment.Center)
         ) {

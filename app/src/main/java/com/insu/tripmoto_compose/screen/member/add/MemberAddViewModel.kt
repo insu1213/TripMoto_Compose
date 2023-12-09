@@ -41,6 +41,10 @@ class MemberAddViewModel @Inject constructor(
         clipManager.setText(AnnotatedString(code.value))
     }
 
+    fun popUpBackStack(openAndPopUp: () -> Unit) {
+        openAndPopUp()
+    }
+
     private fun generateRandomString(callback: (String) -> Unit) { // 10자리 난수 생성 (같을 확를 0.00000000000000015%
         var code: String = ""
         viewModelScope.launch {

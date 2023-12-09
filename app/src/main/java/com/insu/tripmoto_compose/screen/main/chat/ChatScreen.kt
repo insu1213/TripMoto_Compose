@@ -103,7 +103,7 @@ fun ChatScreen(
 
     LaunchedEffect(groupItems) {
         coroutineScope.launch {
-            listState.scrollToItem(chatListStorage.value.size+6)
+            listState.scrollToItem(chatListStorage.value.size+10)
         }
     }
 

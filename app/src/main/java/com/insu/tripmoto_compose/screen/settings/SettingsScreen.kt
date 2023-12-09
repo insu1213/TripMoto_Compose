@@ -23,8 +23,8 @@ fun SettingsScreen(
                 "계정",
                 "알림",
                 "언어",
+                "공지사항",
                 "로그아웃",
-                "공지사항"
             )
         ) { _, item ->
             SettingsItem(item) { data ->
@@ -38,14 +38,14 @@ fun SettingsScreen(
                     "언어" -> {
 
                     }
+                    "공지사항" -> {
+
+                    }
                     "로그아웃" -> {
                         viewModel.signOut {
                             openAndPopUp("LoginScreen")
 
                         }
-                    }
-                    "공지사항" -> {
-
                     }
                 }
             }
