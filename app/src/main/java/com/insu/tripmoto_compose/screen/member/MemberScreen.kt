@@ -87,7 +87,11 @@ fun MemberScreen(
                 .padding(top = 12.dp)
         ) {
             itemsIndexed(members) { _, item ->
-                MemberList(item.nickName, item.email, "그룹장")
+                var permission = ""
+                viewModel.checkPermission(item.id) {
+                    permission = it
+                }
+                MemberList(item.nickName, item.email, permission)
             }
         }
     }

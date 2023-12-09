@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.model.UserInfo
 import com.insu.tripmoto_compose.model.service.AccountService
 import com.insu.tripmoto_compose.model.service.LogService
@@ -29,6 +30,13 @@ class MemberViewModel @Inject constructor(
 ): MyViewModel(logService) {
 
     private var memberInfoList = mutableListOf<UserInfo>()
+    var trip: Trip = Trip()
+
+    init {
+        viewModelScope.launch {
+            trip = storageService.getTrip(storageService.getCurrentTripId()) ?: Trip()
+        }
+    }
 
     fun getMember(callback: (List<UserInfo>) -> Unit) {
         memberInfoList = mutableListOf()
@@ -49,6 +57,18 @@ class MemberViewModel @Inject constructor(
 
     fun getMemberNickNameList(): List<UserInfo> {
         return memberInfoList
+    }
+
+    fun checkPermission(uid: String, callback: (String) -> Unit) {
+        if(trip.administrator == uid) {
+            callback("그룹장")
+        } else if(trip.co_administrator == uid) {
+            callback("공동 그룹장")
+        } else if(trip.co_modifier == uid) {
+            callback("공동 수정자")
+        } else {
+            callback("")
+        }
     }
 
     private suspend fun uidToNickName(uid: String): UserInfo {

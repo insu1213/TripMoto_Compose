@@ -11,6 +11,8 @@ data class Trip(
     val region: String = "",
     val city: String = "",
     val administrator: String = "",
+    val co_administrator: String = "",
+    val co_modifier: String = "",
     val member: List<String> = listOf(""),
     val startDate: String = "",
     val endDate: String = "",
