@@ -16,6 +16,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.insu.tripmoto_compose.model.Trip
 import com.insu.tripmoto_compose.suitFamily
 import com.insu.tripmoto_compose.R.color as AppColor
@@ -52,7 +53,7 @@ fun TravelManageListItem(title: TravelManageList, data: Trip, onClick: (String) 
                     }
 
                     TravelManageList.Exit -> {
-                        onClick("")
+                        onClick("Exit")
                     }
 //                    "제목" -> {}
 //                    "위치" -> {}

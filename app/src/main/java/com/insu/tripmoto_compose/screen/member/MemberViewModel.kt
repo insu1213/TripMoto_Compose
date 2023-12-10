@@ -74,7 +74,6 @@ class MemberViewModel @Inject constructor(
     }
 
     fun changePermission(uid: String, role: String) {
-
         if(role == "공동 관리자") {
             if(trip.co_modifier.contains(uid)) {
                 val idx = trip.co_modifier.indexOf(uid)

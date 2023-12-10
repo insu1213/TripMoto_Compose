@@ -9,13 +9,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.composable.BackPress
@@ -29,6 +35,8 @@ fun TravelManagementScreen(
     openAndPopUp: (String) -> Unit,
     viewModel: TravelManagementViewModel = hiltViewModel()
 ) {
+    var exitState by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
         viewModel.initialize()
     }
@@ -70,8 +78,18 @@ fun TravelManagementScreen(
             )
         ) { _, item ->
             TravelManageListItem(title = item, data = viewModel.trip.value) { route ->
-                openAndPopUp(route)
+                if(route != "Exit") {
+                    openAndPopUp(route)
+                } else {
+                    exitState = true
+                }
             }
+        }
+    }
+
+    if(exitState) {
+        TravelExitDialog() {
+            exitState = false
         }
     }
 }
