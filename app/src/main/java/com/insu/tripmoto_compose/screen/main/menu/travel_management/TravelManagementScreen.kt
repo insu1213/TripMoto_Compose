@@ -1,5 +1,6 @@
 package com.insu.tripmoto_compose.screen.main.menu.travel_management
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -26,7 +27,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.insu.tripmoto_compose.common.composable.BackOnPressed
 import com.insu.tripmoto_compose.common.composable.BackPress
 import com.insu.tripmoto_compose.common.composable.MainTitleText
+import com.insu.tripmoto_compose.common.snackbar.SnackbarManager
 import com.insu.tripmoto_compose.screen.trip_selection.TripSelectionViewModel
+import kotlin.coroutines.coroutineContext
 import com.insu.tripmoto_compose.R.string as AppText
 import com.insu.tripmoto_compose.R.drawable as AppIcon
 
@@ -81,7 +84,12 @@ fun TravelManagementScreen(
                 if(route != "Exit") {
                     openAndPopUp(route)
                 } else {
-                    exitState = true
+                    //만약 그룹장이라면 나가기 불가능.
+                    if(viewModel.trip.value.administrator == viewModel.accountService.currentUserId) {
+                        SnackbarManager.showMessage(AppText.do_not_exitTrip)
+                    } else {
+                        exitState = true
+                    }
                 }
             }
         }
@@ -90,6 +98,9 @@ fun TravelManagementScreen(
     if(exitState) {
         TravelExitDialog() {
             exitState = false
+            if(it == 1) {
+                viewModel.exitTrip(openAndPopUp)
+            }
         }
     }
 }

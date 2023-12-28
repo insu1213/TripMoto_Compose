@@ -107,6 +107,7 @@
     <string name="invite_code">Invite Code</string>
 
     <!--Main/Menu/Management-->
+    <string name="do_not_exitTrip">Administrator is not allowed to travel</string>
 <!--    <string name=""-->
 
 </resources>
