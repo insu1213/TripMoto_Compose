@@ -214,31 +214,31 @@ fun LoadMarker(
 }
 
 
-@Deprecated("This function is Deprecated. Use MarkerComposable.")
-private fun bitMapFromVector(activity: ComponentActivity, vectorResID:Int): BitmapDescriptor {
-    val vectorDrawable= ContextCompat.getDrawable(activity,vectorResID)
-    vectorDrawable!!.setBounds(0,0, 120, 120)
-    val bitmap=Bitmap.createBitmap(120,120,Bitmap.Config.ARGB_8888)
-    val canvas=Canvas(bitmap)
-    vectorDrawable.draw(canvas)
-    return BitmapDescriptorFactory.fromBitmap(bitmap)
-}
-@Deprecated("This function is Deprecated. Use MarkerComposable.")
-private fun createDrawableFromView(view: View, activity: ComponentActivity): Bitmap {
-    val displayMetrics = DisplayMetrics()
-    activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
-    view.layoutParams = ViewGroup.LayoutParams(
-        ViewGroup.LayoutParams.WRAP_CONTENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT
-    )
-    view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)
-    view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
-    view.buildDrawingCache()
-    val bitmap =
-        Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
-
-    val canvas = Canvas(bitmap)
-    view.draw(canvas)
-
-    return bitmap
-}
+//@Deprecated("This function is Deprecated. Use MarkerComposable.")
+//private fun bitMapFromVector(activity: ComponentActivity, vectorResID:Int): BitmapDescriptor {
+//    val vectorDrawable= ContextCompat.getDrawable(activity,vectorResID)
+//    vectorDrawable!!.setBounds(0,0, 120, 120)
+//    val bitmap=Bitmap.createBitmap(120,120,Bitmap.Config.ARGB_8888)
+//    val canvas=Canvas(bitmap)
+//    vectorDrawable.draw(canvas)
+//    return BitmapDescriptorFactory.fromBitmap(bitmap)
+//}
+//@Deprecated("This function is Deprecated. Use MarkerComposable.")
+//private fun createDrawableFromView(view: View, activity: ComponentActivity): Bitmap {
+//    val displayMetrics = DisplayMetrics()
+//    activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
+//    view.layoutParams = ViewGroup.LayoutParams(
+//        ViewGroup.LayoutParams.WRAP_CONTENT,
+//        ViewGroup.LayoutParams.WRAP_CONTENT
+//    )
+//    view.measure(displayMetrics.widthPixels, displayMetrics.heightPixels)
+//    view.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
+//    view.buildDrawingCache()
+//    val bitmap =
+//        Bitmap.createBitmap(view.measuredWidth, view.measuredHeight, Bitmap.Config.ARGB_8888)
+//
+//    val canvas = Canvas(bitmap)
+//    view.draw(canvas)
+//
+//    return bitmap
+//}

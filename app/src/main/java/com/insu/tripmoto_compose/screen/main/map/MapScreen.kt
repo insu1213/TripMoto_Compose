@@ -103,7 +103,6 @@ fun MapScreen(
         }
     }
 
-
     GoogleMap(
         modifier = Modifier
             .fillMaxSize()
